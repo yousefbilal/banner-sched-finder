@@ -92,8 +92,7 @@ def main():
     
     # print(lectures_list)
     
-    all_schedules = []
-    generate_scheds(courses, lectures_list, labs_list, [], all_schedules)
+    all_schedules = generate_scheds(lectures_list, labs_list)
     with open("output.txt", 'wt') as sys.stdout:
         print(all_schedules)
 if __name__ == '__main__':

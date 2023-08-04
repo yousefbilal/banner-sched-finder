@@ -82,25 +82,30 @@ def already_added(lecture, current_sched):
 #                 generate_scheds(courses, [x for x in lectures if x!=lecture], labs, current_schedule, all_schedules)
 #             current_schedule.remove(lecture)
 
-def generate_scheds(courses:list, lectures:list, labs:list, current_schedule:list, all_schedules:list):
-    if len(lectures) ==0 :
-        all_schedules.append(current_schedule[:])
-        return
-    
-    for lecture in lectures[0]:
+def generate_scheds(lectures:list, labs:list):
+    def helper(lectures:list, labs:list, current_schedule:list, all_schedules:list):
+        if len(lectures) ==0 :
+            all_schedules.append(current_schedule[:])
+            return
         
-        if not lecture.is_conflicting(current_schedule):
-            current_schedule.append(lecture)
-            if lecture.has_lab:
-                for lab in lecture.get_available_labs(labs):
-                    if not lab.is_conflicting(current_schedule):
-                        current_schedule.append(lab)
-                        generate_scheds(courses, lectures[1:],labs ,current_schedule, all_schedules)
-                        current_schedule.pop()   
-            else:
-                generate_scheds(courses, lectures[1:], labs, current_schedule, all_schedules)
-            current_schedule.pop()
-    
+        for lecture in lectures[0]:
+            
+            if not lecture.is_conflicting(current_schedule):
+                current_schedule.append(lecture)
+                if lecture.has_lab:
+                    for lab in lecture.get_available_labs(labs):
+                        if not lab.is_conflicting(current_schedule):
+                            current_schedule.append(lab)
+                            helper(lectures[1:],labs ,current_schedule, all_schedules)
+                            current_schedule.pop()   
+                else:
+                    helper(lectures[1:], labs, current_schedule, all_schedules)
+                current_schedule.pop()
+                
+    all_scheds = []
+    helper(lectures, labs, [], all_scheds)
+    return all_scheds
+
 
 
 # def prod(ls:list[list], current:list, all_combos:list[list]):
