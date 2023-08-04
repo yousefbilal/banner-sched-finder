@@ -57,11 +57,4 @@ class Lecture(Course):
     
     def __str__(self):
         return __repr__(self)
-    
-                    
-        
-        
-        
-        
-        
         
