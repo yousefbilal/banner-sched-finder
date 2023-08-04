@@ -17,10 +17,17 @@ class Course:
                 return True
         return False
     
+    
 
 @dataclass
 class Lab(Course):
-    pass
+    def __repr__(self):
+        return f'Lab({self.course_code} - {self.section} - {self.crn} - {self.day} - {self.time} - {self.instructor})'
+    
+    def __str__(self):
+        return __repr__(self)
+ 
+        
 
     
 @dataclass
@@ -35,8 +42,8 @@ class Lecture(Course):
         self.required_sections = required_sections
     
     def get_available_labs(self, lab_list : list[Lab]):
-        if not self.has_lab:
-            return []
+        # if not self.has_lab:
+        #     return []
         
         available_labs =[]
         for lab in lab_list:
@@ -44,6 +51,12 @@ class Lecture(Course):
                 if not self.is_required_with_section or lab.section in self.required_sections:
                     available_labs.append(lab)
         return available_labs
+    
+    def __repr__(self):
+        return f'Lecture({self.course_code} - {self.section} - {self.crn} - {self.day} - {self.time} - {self.instructor})'
+    
+    def __str__(self):
+        return __repr__(self)
     
                     
         

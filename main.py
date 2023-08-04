@@ -66,31 +66,39 @@ def main():
     soup = BeautifulSoup(r.text, 'html.parser')
         
     row_list = soup.find('table', class_ = 'datadisplaytable').find_all('tr', recursive=False)
-
-    lab_list = []
-    lecture_list = []
-
+    
+    lectures_list = []
+    lectures_dict = dict()
+    labs_list = []
     for i in range(0, len(row_list), 2):
-        course_title = row_list[i].get_text().rstrip().split(' - ') # [full name, CRN, course code, section]
-        found, is_lab = find_course(courses, course_title[2])  
+        *full_name, crn, course_code, section = row_list[i].get_text().rstrip().split(' - ') # [full name, CRN, course code, section]
+        full_name = "".join(full_name)
         
+        found, is_lab = find_course(courses, course_code)  
         if found:
             course_info = row_list[i+1].find('table', class_ = 'datadisplaytable').find_all('tr', recursive=False)[1].find_all('td')
             # contains [type, time, days, seats, where, date range, sched type, instructor]
             useful_info = [course_info[i].find(string=True, recursive=False) for i in [1,2,-1]] # contains [time, days, instructor]
             useful_info[-1] = useful_info[-1][:-2] if useful_info[-1] else useful_info[-1] #removes ' (' at the emd of instructor name
             if is_lab:
-                lab_list.append(Lab(course_title[2], course_title[1], int(course_title[-1]),
+                labs_list.append(Lab(course_code, crn, int(section),
                                     *useful_info))
             else: 
-                lecture_list.append(Lecture(course_title[2], course_title[1], int(course_title[-1]),
-                                            *useful_info, courses, *find_required_section(course_title[0])))
+                lectures_dict.setdefault(course_code, []).append(Lecture(course_code, crn, int(section),
+                                            *useful_info, courses, *find_required_section(full_name)))
+        
+    for value in lectures_dict.values():
+        lectures_list.append(value)
+    
+    # print(lectures_list)
+    
     all_schedules = []
-    generate_scheds(courses, lecture_list, lab_list, [], all_schedules)
+    generate_scheds(courses, lectures_list, labs_list, [], all_schedules)
     with open("output.txt", 'wt') as sys.stdout:
         print(all_schedules)
 if __name__ == '__main__':
     main()
+    
     
     
 

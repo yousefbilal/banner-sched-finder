@@ -63,26 +63,54 @@ def already_added(lecture, current_sched):
     return lecture.course_code in [course.course_code for course in current_sched]
 
 
+# def generate_scheds(courses:list, lectures:list, labs:list, current_schedule:list, all_schedules:list):
+#     if all_courses_added(courses, current_schedule):
+#         all_schedules.append(current_schedule.copy())
+#         return
+#     for lecture in lectures:
+#         if already_added(lecture, current_schedule):
+#             continue
+#         if not lecture.is_conflicting(current_schedule):
+#             current_schedule.append(lecture)
+#             if lecture.has_lab:
+#                 for lab in lecture.get_available_labs(labs):
+#                     if not lab.is_conflicting(current_schedule):
+#                         current_schedule.append(lab)
+#                         generate_scheds(courses, [x for x in lectures if x!=lecture],labs ,current_schedule, all_schedules)
+#                         current_schedule.remove(lab)   
+#             else:
+#                 generate_scheds(courses, [x for x in lectures if x!=lecture], labs, current_schedule, all_schedules)
+#             current_schedule.remove(lecture)
+
 def generate_scheds(courses:list, lectures:list, labs:list, current_schedule:list, all_schedules:list):
-    if all_courses_added(courses, current_schedule):
-        all_schedules.append(current_schedule.copy())
+    if len(lectures) ==0 :
+        all_schedules.append(current_schedule[:])
         return
-    for lecture in lectures:
-        if already_added(lecture, current_schedule):
-            continue
+    
+    for lecture in lectures[0]:
+        
         if not lecture.is_conflicting(current_schedule):
             current_schedule.append(lecture)
             if lecture.has_lab:
                 for lab in lecture.get_available_labs(labs):
                     if not lab.is_conflicting(current_schedule):
                         current_schedule.append(lab)
-                        generate_scheds(courses, [x for x in lectures if x!=lecture],labs ,current_schedule, all_schedules)
-                        current_schedule.remove(lab)   
+                        generate_scheds(courses, lectures[1:],labs ,current_schedule, all_schedules)
+                        current_schedule.pop()   
             else:
-                generate_scheds(courses, [x for x in lectures if x!=lecture], labs, current_schedule, all_schedules)
-            current_schedule.remove(lecture)
+                generate_scheds(courses, lectures[1:], labs, current_schedule, all_schedules)
+            current_schedule.pop()
+    
 
 
-                    
-            
+# def prod(ls:list[list], current:list, all_combos:list[list]):
+#     if len(ls) == 0:
+#         all_combos.append(current[:])
+#         return
+    
+    
+#     for j in ls[0]:
+#         current.append(j)
+#         prod(ls[1:], current, all_combos)
+#         current.pop()
     
