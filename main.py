@@ -85,7 +85,7 @@ def main():
                                     *useful_info))
             else: 
                 lectures_dict.setdefault(course_code, []).append(Lecture(course_code, crn, int(section),
-                                            *useful_info, courses, *find_required_section(full_name)))
+                                            *useful_info, courses, *Lecture.find_required_section(full_name)))
         
     for value in lectures_dict.values():
         lectures_list.append(value)

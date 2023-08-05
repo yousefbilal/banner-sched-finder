@@ -1,5 +1,8 @@
 from dataclasses import dataclass
 from utils import *
+import re
+
+
 @dataclass
 class Course:
     course_code: str
@@ -18,7 +21,6 @@ class Course:
         return False
     
     
-
 @dataclass
 class Lab(Course):
     def __repr__(self):
@@ -27,9 +29,7 @@ class Lab(Course):
     def __str__(self):
         return __repr__(self)
  
-        
-
-    
+            
 @dataclass
 class Lecture(Course):
     has_lab: bool
@@ -42,9 +42,6 @@ class Lecture(Course):
         self.required_sections = required_sections
     
     def get_available_labs(self, lab_list : list[Lab]):
-        # if not self.has_lab:
-        #     return []
-        
         available_labs =[]
         for lab in lab_list:
             if self.course_code in lab.course_code:
@@ -57,4 +54,11 @@ class Lecture(Course):
     
     def __str__(self):
         return __repr__(self)
+    
+    @staticmethod
+    def find_required_section(course_name):
+        if 'Take it with' in course_name:
+            # the regex pattern returns a list of section numbers
+            return True, [int(i) for i in re.findall("Sec\.([0-9]+)", course_name)]
+        return False, []
         

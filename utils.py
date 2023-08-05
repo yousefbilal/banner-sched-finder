@@ -1,6 +1,3 @@
-import re
-# from course import *
-
 course_codes = ["AUS","ACC","ANT","ARA","ARC","ART","BIO","BME","BSE","BPE","BUS","BIS","BLW","CHE",
                 "CHM","CVE","COE","CMP","CMT","DES","ECO","ELE","NGN","EGM","ESM","ENG","ELP","ELT",
                 "ENV","EWE","FLM","FIN","GEO","HIS","INE","ISA","IEN","IDE","INS","KOR","MGT","MKT",
@@ -46,45 +43,9 @@ def float_to_time(float_time: list) -> str:
         times_edited.append(time + period)
     return ' - '.join(times_edited)
 
-def find_required_section(course_name):
-    if 'Take it with' in course_name:
-        # the regex pattern returns a list of section numbers
-        return True, [int(i) for i in re.findall("Sec\.([0-9]+)", course_name)]
-    return False, []
-
-def all_courses_added(courses, current_sched):
-    for course in courses:
-        if not course in [i.course_code for i in current_sched]:
-            return False
-    return True
-
-
-def already_added(lecture, current_sched):
-    return lecture.course_code in [course.course_code for course in current_sched]
-
-
-# def generate_scheds(courses:list, lectures:list, labs:list, current_schedule:list, all_schedules:list):
-#     if all_courses_added(courses, current_schedule):
-#         all_schedules.append(current_schedule.copy())
-#         return
-#     for lecture in lectures:
-#         if already_added(lecture, current_schedule):
-#             continue
-#         if not lecture.is_conflicting(current_schedule):
-#             current_schedule.append(lecture)
-#             if lecture.has_lab:
-#                 for lab in lecture.get_available_labs(labs):
-#                     if not lab.is_conflicting(current_schedule):
-#                         current_schedule.append(lab)
-#                         generate_scheds(courses, [x for x in lectures if x!=lecture],labs ,current_schedule, all_schedules)
-#                         current_schedule.remove(lab)   
-#             else:
-#                 generate_scheds(courses, [x for x in lectures if x!=lecture], labs, current_schedule, all_schedules)
-#             current_schedule.remove(lecture)
-
 def generate_scheds(lectures:list, labs:list):
     def helper(lectures:list, labs:list, current_schedule:list, all_schedules:list):
-        if len(lectures) ==0 :
+        if not lectures : #if lectures is empty
             all_schedules.append(current_schedule[:])
             return
         
@@ -105,17 +66,3 @@ def generate_scheds(lectures:list, labs:list):
     all_scheds = []
     helper(lectures, labs, [], all_scheds)
     return all_scheds
-
-
-
-# def prod(ls:list[list], current:list, all_combos:list[list]):
-#     if len(ls) == 0:
-#         all_combos.append(current[:])
-#         return
-    
-    
-#     for j in ls[0]:
-#         current.append(j)
-#         prod(ls[1:], current, all_combos)
-#         current.pop()
-    
