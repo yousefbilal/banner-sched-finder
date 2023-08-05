@@ -98,7 +98,9 @@ def main():
         
 if __name__ == '__main__':
     main()
-    input('Done')
+    sys.stdout = sys.__stdout__
+    print("Done")
+    input('')
     
     
     
