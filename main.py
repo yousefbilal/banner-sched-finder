@@ -5,8 +5,7 @@ import sys # temporary
 from course import *
 
 def main():
-    sys.stdin = open('input.txt', 'rt')
-
+    
     while True:
         semester = input("Semester (eg. Fall 2022): ").lower().split()
         if semester and (semester[0] == "fall" or semester[0] == "spring" or semester[0] == "summer"):
@@ -95,6 +94,8 @@ def main():
     all_schedules = generate_scheds(lectures_list, labs_list)
     with open("output.txt", 'wt') as sys.stdout:
         print(all_schedules)
+        
+        
 if __name__ == '__main__':
     main()
     
