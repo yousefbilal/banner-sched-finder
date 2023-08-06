@@ -7,10 +7,11 @@ course_codes = ["AUS","ACC","ANT","ARA","ARC","ART","BIO","BME","BSE","BPE","BUS
 def find_course(courses, title):
     '''the first return value represents whether a course exists
         given the course title, and return True if the course found is a lab
-        as the second return value'''
+        as the second return value
+        Note: I treated labs with no lecture as a lecture and the "and" check is for that reason'''
     for course in courses:
         if course == title:
-            return True, title[-1] == 'L' or title[-1] == 'R'
+            return True, title[-1] == 'R' or (title[-1] == 'L' and title[:-1] in courses)
     return False, False
 
 def time_to_float(time : str) -> list:
