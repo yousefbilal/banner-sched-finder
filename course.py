@@ -9,13 +9,21 @@ class Course:
     crn: str
     section: int
     time: str
-    day: str
+    days: str
     instructor: str
+    
     def is_conflicting(self, current_sched:list):
         current_course_time = time_to_float(self.time)
         for course in current_sched:
             course_time = time_to_float(course.time)
-            if self.day in course.day and (current_course_time[0] >= course_time[0] and current_course_time[0] <= course_time[1]\
+            
+            same_day = False
+            for day in self.days:
+                if day in course.days:
+                    same_day = True
+                    break
+            
+            if same_day and (current_course_time[0] >= course_time[0] and current_course_time[0] <= course_time[1]\
             or current_course_time[1] >= course_time[0] and current_course_time[1] <= course_time[1]):
                 return True
         return False
@@ -23,11 +31,8 @@ class Course:
     
 @dataclass
 class Lab(Course):
-    def __repr__(self):
-        return f'Lab({self.course_code} - {self.section} - {self.crn} - {self.day} - {self.time} - {self.instructor})'
-    
     def __str__(self):
-        return __repr__(self)
+        return f'Lab({self.course_code} - {self.section} - {self.crn} - {self.days} - {self.time} - {self.instructor})'
  
             
 @dataclass
@@ -35,8 +40,8 @@ class Lecture(Course):
     has_lab: bool
     is_required_with_section : bool
     required_sections : list
-    def __init__(self, course_code, crn, section, time, day, instructor, courses_list, is_required_with_section, required_sections):
-        super().__init__(course_code,crn, section, time,day, instructor)
+    def __init__(self, course_code, crn, section, time, days, instructor, courses_list, is_required_with_section, required_sections):
+        super().__init__(course_code,crn, section, time,days, instructor)
         self.has_lab = course_code+'L' in courses_list or course_code+'R' in courses_list
         self.is_required_with_section = is_required_with_section
         self.required_sections = required_sections
@@ -49,11 +54,8 @@ class Lecture(Course):
                     available_labs.append(lab)
         return available_labs
     
-    def __repr__(self):
-        return f'Lecture({self.course_code} - {self.section} - {self.crn} - {self.day} - {self.time} - {self.instructor})'
-    
     def __str__(self):
-        return __repr__(self)
+        return f'Lecture({self.course_code} - {self.section} - {self.crn} - {self.days} - {self.time} - {self.instructor})'
     
     @staticmethod
     def find_required_section(course_name):

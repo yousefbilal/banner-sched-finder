@@ -71,7 +71,7 @@ def main():
     labs_list = []
     for i in range(0, len(row_list), 2):
         *full_name, crn, course_code, section = row_list[i].get_text().rstrip().split(' - ') # [full name, CRN, course code, section]
-        full_name = "".join(full_name)
+        full_name = " ".join(full_name)
         
         found, is_lab = find_course(courses, course_code)  
         if found:
@@ -99,8 +99,7 @@ def main():
 if __name__ == '__main__':
     main()
     sys.stdout = sys.__stdout__
-    print("Done")
-    input('')
+    input('Done')
     
     
     
