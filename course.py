@@ -1,14 +1,14 @@
 from dataclasses import dataclass
 from utils import *
 import re
-
+from datetime import datetime
 
 @dataclass
 class Course:
     course_code: str
     crn: str
     section: int
-    time: str
+    time: list[datetime]
     days: str
     instructor: str
     
