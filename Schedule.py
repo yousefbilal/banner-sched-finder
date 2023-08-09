@@ -14,7 +14,7 @@ class Schedule:
         self.courses_list = sorted(courses_list, key= lambda course: course.time[0]) 
     
     def draw_schedule(self):
-        fig, ax = plt.subplots()
+        fig, ax = plt.subplots(figsize=(10,10))
 
         ax.xaxis.tick_top()
         ax.yaxis_date()
@@ -41,7 +41,7 @@ class Schedule:
             # Plot rectangles
             days_figure_indices = {'M':0, 'T':1, 'W':2, 'R':3}
             for day in course.days:
-                ax.add_patch(Rectangle((days_figure_indices[day], dates.date2num(course.time[0])), width, height, color='yellow', alpha = 0.5))
+                ax.add_patch(Rectangle((days_figure_indices[day], dates.date2num(course.time[0])), width, height, color=choice, alpha = 0.5))
                 plt.text(days_figure_indices[day], dates.date2num(course.time[0]),
                         f'{course.course_code}-{course.section}\n{course.instructor}\n{course.time[0].strftime("%I:%M %p")}-{course.time[1].strftime("%I:%M %p")}', 
                         horizontalalignment='left',
