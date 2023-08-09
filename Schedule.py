@@ -11,7 +11,7 @@ from course import Course
 class Schedule:
     courses_list: list[Course]
     def __init__(self, courses_list):
-        self.courses_list = courses_list.sorted(key= lambda course: course.time[0]) 
+        self.courses_list = sorted(courses_list, key= lambda course: course.time[0]) 
     
     def draw_schedule(self):
         fig, ax = plt.subplots()
@@ -43,7 +43,7 @@ class Schedule:
             for day in course.days:
                 ax.add_patch(Rectangle((days_figure_indices[day], dates.date2num(course.time[0])), width, height, color='yellow', alpha = 0.5))
                 plt.text(days_figure_indices[day], dates.date2num(course.time[0]),
-                        f'{course.course_code}-{course.section}\n{course.instructor}\n{course.time[0].strftime("%I:%H %p")}-{course.time[1].strftime("%I:%H %p")}', 
+                        f'{course.course_code}-{course.section}\n{course.instructor}\n{course.time[0].strftime("%I:%M %p")}-{course.time[1].strftime("%I:%M %p")}', 
                         horizontalalignment='left',
                         verticalalignment='top')
             
@@ -54,3 +54,8 @@ class Schedule:
         plt.ylim([end,start])
         plt.show()
         
+        
+if __name__ == '__main__':
+    s = Schedule([Course('CMP111', '123', 1, [datetime(1900,1,1,9,30), datetime(1900,1,1,10,45)], 'MW', 'Tamer'), Course('MTH100', '1234', 5, [datetime(1900,1,1,11,0), datetime(1900,1,1,12,15)], 'TR', 'Issam')])
+    s.draw_schedule()
+    input('')

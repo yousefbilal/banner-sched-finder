@@ -82,7 +82,7 @@ def main():
 
             time = [datetime.strptime(time_str.upper(), '%I:%M %p') for time_str in useful_info[0].split(' - ')]
             days = useful_info[1]
-            instructor_name = useful_info[-1][:-2] if useful_info[-1] else useful_info[-1] #removes ' (' at the emd of instructor name
+            instructor_name = useful_info[-1][:-2].replace('   ', ' ') if useful_info[-1] else useful_info[-1] #removes ' (' at the emd of instructor name
 
             
             if is_lab:
