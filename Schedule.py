@@ -47,10 +47,10 @@ class Schedule:
                         horizontalalignment='left',
                         verticalalignment='top')
             
-        labels = 9*[""]
-        labels[1::2] = ['M', 'T', 'W', 'R']
-        ax.set_xticks(np.arange(0,4.5, 0.5), labels)
+        labels = ['M', 'T', 'W', 'R']
+        ax.set_xticks(np.arange(0.5,4, 1), labels)
         ax.set_yticks(times)
+        plt.xlim([0,4])
         plt.ylim([end,start])
         plt.show()
         
