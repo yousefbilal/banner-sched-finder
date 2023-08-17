@@ -2,7 +2,7 @@ from dataclasses import dataclass
 import matplotlib as mpl
 from matplotlib import pyplot as plt, dates
 from matplotlib.patches import Rectangle
-from datetime import datetime
+from datetime import datetime, timedelta
 import matplotlib.colors as mcolors
 import random
 import numpy as np
@@ -15,19 +15,20 @@ class Schedule:
     def __init__(self, courses_list):
         self.courses_list = sorted(courses_list, key= lambda course: course.time[0]) 
     
-    def draw_schedule(self):
-        fig, ax = plt.subplots(figsize=(19.2,10.8))
-        plt.rc('font', size=8)
-        
-        ax.xaxis.tick_top()
-        ax.yaxis_date()
-        ax.yaxis.set_major_formatter(dates.DateFormatter('%I:%M %p'))
+    def draw_schedule(self, name :str):
         
         start_time = datetime(1900,1,1,self.courses_list[0].time[0].hour,0) # Starting time
         end_time = datetime(1900,1,1, self.courses_list[-1].time[1].hour+1 , 0) # Ending time
         start = dates.date2num(start_time)
         end = dates.date2num(end_time)
-            
+        
+        fig, ax = plt.subplots(figsize=(10, 1.1*((end_time-start_time)/timedelta(minutes=50))), dpi=100)
+        
+        plt.rc('font', size=8)
+        ax.xaxis.tick_top()
+        ax.yaxis_date()
+        ax.yaxis.set_major_formatter(dates.DateFormatter('%I:%M %p'))
+        
         width = 1
         colors = list(mcolors.TABLEAU_COLORS.keys())
         
@@ -60,11 +61,10 @@ class Schedule:
         ax.tick_params(which='major', length = 0)
         ax.tick_params(which='minor', colors =[0,0,0,0.15], length = 7)
         ax.set_frame_on(False)
+        plt.savefig(name, dpi=1000)
         
-        plt.show()
         
-        
-if __name__ == '__main__':
-    s = Schedule([Course('CMP111', '123', 1, [datetime(1900,1,1,9,30), datetime(1900,1,1,10,20)], 'MW', 'Ahmed Abdeljawad Al Nabulsi'), Course('MTH100', '1234', 5, [datetime(1900,1,1,14,0), datetime(1900,1,1,16,50)], 'TR', 'Issam')])
-    s.draw_schedule()
-    input('')
+# if __name__ == '__main__':
+#     s = Schedule([Course('CMP111', '123', 1, [datetime(1900,1,1,8,0), datetime(1900,1,1,8,50)], 'MW', 'Ahmed Abdeljawad Al Nabulsi')])
+#     s.draw_schedule()
+#     input('')

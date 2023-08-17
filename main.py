@@ -1,10 +1,12 @@
 import requests
 from bs4 import BeautifulSoup
 from utils import *
-import sys # temporary
+# import sys # temporary
+import os
+from shutil import rmtree
 import datetime
 from course import *
-
+from sys import exit
 def main():
     
     while True:
@@ -96,16 +98,24 @@ def main():
         lectures_list.append(value)
     
     # print(lectures_list)
-    
-    all_schedules = generate_scheds(lectures_list, labs_list)
-    with open("output.txt", 'wt') as sys.stdout:
-        print(all_schedules)
+    try:
+        rmtree('output',ignore_errors=True)
+        os.mkdir('output')
+    except:
+        input("An unexpected error occured")
+        exit(-1)
         
+        
+        
+    all_schedules = generate_scheds(lectures_list, labs_list)
+    for i  in range(len(all_schedules)):
+        all_schedules[i].draw_schedule("output/schedule" + str(i) +".png")
+
+   
         
 if __name__ == '__main__':
     main()
-    sys.stdout = sys.__stdout__
-    input('Done')
+    input("Done")
     
     
     

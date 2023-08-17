@@ -46,7 +46,7 @@ def find_course(courses, title):
 #         times_edited.append(time + period)
 #     return ' - '.join(times_edited)
 
-def generate_scheds(lectures:list, labs:list):
+def generate_scheds(lectures:list, labs:list) -> list[Schedule]:
     def helper(lectures:list, labs:list, current_schedule:list, all_schedules:list) -> list[Schedule]:
         if not lectures : #if lectures is empty
             all_schedules.append(Schedule(current_schedule[:]))

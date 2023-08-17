@@ -165,5 +165,5 @@ py310/
 testing
 
 input.txt
-output.txt
+*.png
 
