@@ -13,7 +13,7 @@ from matplotlib.ticker import AutoMinorLocator
 class Schedule:
     courses_list: list[Course]
     def __init__(self, courses_list):
-        self.courses_list = sorted(courses_list, key= lambda course: course.time[0]) 
+        self.courses_list = sorted(courses_list, key= lambda course: course.time[1]) 
     
     def draw_schedule(self, name :str):
         
