@@ -84,8 +84,9 @@ def main():
 
             time = [datetime.strptime(time_str.upper(), '%I:%M %p') for time_str in useful_info[0].split(' - ')]
             days = useful_info[1]
-            instructor_name = useful_info[-1][:-2].replace('  ', ' ') if useful_info[-1] else useful_info[-1] #removes ' (' at the end of instructor name
-
+            #some instructor names have 3 spaces separating their names and others only have 2   
+            instructor_name = useful_info[-1][:-2].replace('   ', ' ') if useful_info[-1] else useful_info[-1] #removes ' (' at the end of instructor name
+            instructor_name = instructor_name.replace('  ', ' ') if useful_info[-1] else "TBA"
             
             if is_lab:
                 labs_list.append(Lab(course_code, crn, int(section),

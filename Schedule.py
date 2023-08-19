@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-import matplotlib as mpl
 from matplotlib import pyplot as plt, dates
 from matplotlib.patches import Rectangle
 from datetime import datetime, timedelta
@@ -11,7 +10,9 @@ from matplotlib.ticker import AutoMinorLocator
 
 @dataclass
 class Schedule:
+    
     courses_list: list[Course]
+    
     def __init__(self, courses_list):
         self.courses_list = sorted(courses_list, key= lambda course: course.time[1]) 
     
@@ -22,11 +23,10 @@ class Schedule:
         start = dates.date2num(start_time)
         end = dates.date2num(end_time)
         
-        fig, ax = plt.subplots(figsize=(10, 1.1*((end_time-start_time)/timedelta(minutes=50))), dpi=100)
+        plt.rc('font', size=9)
+        fig, ax = plt.subplots(figsize=(11, 1.1*((end_time-start_time)/timedelta(minutes=50))), dpi=100)
         
-        plt.rc('font', size=8)
         ax.xaxis.tick_top()
-        ax.yaxis_date()
         ax.yaxis.set_major_formatter(dates.DateFormatter('%I:%M %p'))
         
         width = 1
@@ -38,15 +38,16 @@ class Schedule:
             colors.remove(choice)
             # Plot rectangles
             days_figure_indices = {'M':0, 'T':1, 'W':2, 'R':3}
+            font_size = 7 if len(course.instructor) >= 30 else 8
             for day in course.days:
                 ax.add_patch(Rectangle((days_figure_indices[day], dates.date2num(course.time[0])), width, height, facecolor=choice, edgecolor=None, alpha = 0.5))
                 plt.text(days_figure_indices[day] + 0.5, dates.date2num(course.time[0]),
                         f'\n{course.course_code}-{course.section}\n\n{course.instructor}\n\n{course.time[0].strftime("%I:%M %p")}-{course.time[1].strftime("%I:%M %p")}', 
                         horizontalalignment='center',
-                        verticalalignment='top')
+                        verticalalignment='top', fontsize = font_size)
             
         labels = ['Mon', 'Tue', 'Wed', 'Thu']
-        ax.set_xticks(np.arange(0.5,4, 1), labels, )
+        ax.set_xticks(np.arange(0.5,4, 1), labels)
         ax.set_xticks(np.arange(0, 5, 1), minor = True)
         ax.yaxis.set_major_locator(dates.HourLocator())
         ax.yaxis.set_minor_locator(AutoMinorLocator())
@@ -55,14 +56,12 @@ class Schedule:
         plt.grid(which='minor', axis = 'x', alpha =0.2)
         plt.grid(which='both', axis = 'y', alpha =0.2)
         
-        for label in ax.get_yticklabels():
-            label.set_fontsize(8)
          
         ax.tick_params(which='major', length = 0)
         ax.tick_params(which='minor', colors =[0,0,0,0.15], length = 7)
         ax.set_frame_on(False)
         plt.savefig(name, dpi=1000)
-        
+        plt.close()
         
 # if __name__ == '__main__':
 #     s = Schedule([Course('CMP111', '123', 1, [datetime(1900,1,1,8,0), datetime(1900,1,1,8,50)], 'MW', 'Ahmed Abdeljawad Al Nabulsi')])
