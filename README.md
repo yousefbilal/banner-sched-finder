@@ -5,7 +5,7 @@ This program was made to make it easier for the American University of Sharjah s
 # Dependencies
 
 To run the program, first install the requirements throght:
-```
+```powershell
 $ pip install -r requirements.txt
 ```
 then run `main.py`
