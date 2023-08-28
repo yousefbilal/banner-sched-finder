@@ -6,6 +6,6 @@ This program was made to make it easier for the American University of Sharjah s
 
 To run the program, first install the requirements throght:
 
-```$ pip install -r requirements.txt ```
+  $ pip install -r requirements.txt
 
 then run `main.py`
