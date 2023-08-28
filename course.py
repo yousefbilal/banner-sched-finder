@@ -1,30 +1,29 @@
 from dataclasses import dataclass
-from utils import *
+# from utils import *
 import re
-
+from datetime import datetime
 
 @dataclass
 class Course:
     course_code: str
     crn: str
     section: int
-    time: str
+    time: list[datetime]
     days: str
     instructor: str
     
     def is_conflicting(self, current_sched:list):
-        current_course_time = time_to_float(self.time)
+        # current_course_time = time_to_float(self.time)
         for course in current_sched:
-            course_time = time_to_float(course.time)
-            
+            # course_time = time_to_float(course.time)
             same_day = False
             for day in self.days:
                 if day in course.days:
                     same_day = True
                     break
             
-            if same_day and (current_course_time[0] >= course_time[0] and current_course_time[0] <= course_time[1]\
-            or current_course_time[1] >= course_time[0] and current_course_time[1] <= course_time[1]):
+            if same_day and (self.time[0] >= course.time[0] and self.time[0] <= course.time[1]\
+            or self.time[1] >= course.time[0] and self.time[1] <= course.time[1]):
                 return True
         return False
     

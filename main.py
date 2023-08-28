@@ -1,8 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
 from utils import *
-import sys # temporary
+import os
+from shutil import rmtree
+import datetime
 from course import *
+from sys import exit
 
 def main():
     
@@ -78,28 +81,42 @@ def main():
             course_info = row_list[i+1].find('table', class_ = 'datadisplaytable').find_all('tr', recursive=False)[1].find_all('td')
             # contains [type, time, days, seats, where, date range, sched type, instructor]
             useful_info = [course_info[i].find(string=True, recursive=False) for i in [1,2,-1]] # contains [time, days, instructor]
-            useful_info[-1] = useful_info[-1][:-2] if useful_info[-1] else useful_info[-1] #removes ' (' at the emd of instructor name
+
+            time = [datetime.strptime(time_str.upper(), '%I:%M %p') for time_str in useful_info[0].split(' - ')]
+            days = useful_info[1]
+            #some instructor names have 3 spaces separating their names and others only have 2   
+            instructor_name = useful_info[-1][:-2].replace('   ', ' ') if useful_info[-1] else useful_info[-1] #removes ' (' at the end of instructor name
+            instructor_name = instructor_name.replace('  ', ' ') if useful_info[-1] else "TBA"
+            
             if is_lab:
                 labs_list.append(Lab(course_code, crn, int(section),
-                                    *useful_info))
+                                    time, days, instructor_name))
             else: 
                 lectures_dict.setdefault(course_code, []).append(Lecture(course_code, crn, int(section),
-                                            *useful_info, courses, *Lecture.find_required_section(full_name)))
+                                        time, days, instructor_name, courses, *Lecture.find_required_section(full_name)))
         
     for value in lectures_dict.values():
         lectures_list.append(value)
     
     # print(lectures_list)
-    
-    all_schedules = generate_scheds(lectures_list, labs_list)
-    with open("output.txt", 'wt') as sys.stdout:
-        print(all_schedules)
+    try:
+        rmtree('output',ignore_errors=True)
+        os.mkdir('output')
+    except:
+        input("An unexpected error occured")
+        exit(-1)
         
+        
+        
+    all_schedules = generate_scheds(lectures_list, labs_list)
+    for i  in range(len(all_schedules)):
+        all_schedules[i].draw_schedule("output/schedule" + str(i) +".png")
+
+   
         
 if __name__ == '__main__':
     main()
-    sys.stdout = sys.__stdout__
-    input('Done')
+    input("Done")
     
     
     
