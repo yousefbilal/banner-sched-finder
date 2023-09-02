@@ -7,7 +7,10 @@ This website was made to make it easier for the American University of Sharjah s
 ### Prerequisites
 
 Clone the repository<br>
-Install required packages using `pip install -r requirements.txt`<br>
+Install required packages using
+```powershell
+pip install -r requirements.txt
+```    
 Add `MONGODB_URI` environment variable with your mongodb credentials<br>
 Run `app.py`<br>
 
