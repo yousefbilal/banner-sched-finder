@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/static/style.css" />
+    <title>Banner Schedule Finder</title>
+  </head>
+  <body>
+    <div class="alertBox" id="alertBox"></div>
+    <h1>Banner Schedule Finder</h1>
+    <br />
+    <div class="form-container">
+      <form onsubmit="generateSchedule(event)">
+        <div class="entries" id="entries">
+          <div class="entry">
+            <label for="dropdown0">Subject</label>
+            <select
+              id="dropdown0"
+              name="dropdown"
+              class="input subject"
+              required
+            ></select>
+            <label for="inputTextTwo0">Code </label>
+            <select
+              id="inputTextTwo0"
+              name="courseCodes"
+              class="input code"
+              required
+            ></select>
+            <input
+              type="button"
+              value="x"
+              class="inputBtn deleteBtn"
+              onclick="deleteEntry(event)"
+            />
+          </div>
+        </div>
+
+        <input
+          type="button"
+          value="+"
+          class="inputBtn addBtn"
+          onclick="addEntry()"
+        />
+        <br />
+        <input type="submit" value="Submit" class="inputBtn" id="submitBtn" />
+      </form>
+      <!-- <a id="downloadLink" class="downloadLink">Download All Schedules</a> -->
+    </div>
+    <footer
+      style="
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      "
+    >
+      <p>
+        <a href="">
+          <i class="fab fa-github"></i>
+        </a>
+      </p>
+    </footer>
+    <script src="/static/index.js"></script>
+  </body>
+</html>
