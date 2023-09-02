@@ -3,3 +3,4 @@ matplotlib==3.7.2
 requests
 pymongo
 flask
+waitress

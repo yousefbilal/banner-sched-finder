@@ -197,4 +197,5 @@ def scrape(semester_specifier):
 
 # scrape('202410') # this was intentionally commented out
 if __name__ == '__main__':
-    app.run()
+    from waitress import serve
+    serve(app, host="0.0.0.0", port=8080)
