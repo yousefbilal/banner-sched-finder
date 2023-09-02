@@ -1,11 +1,16 @@
 # banner-sched-finder
 
-This program was made to make it easier for the American University of Sharjah students to register their courses by finding all the possible non-conflicting sections of the courses they want to take. After running the program, an output folder is created that includes the different schedules in .png image format.
+This website was made to make it easier for the American University of Sharjah students to register their courses by generating all the possible schedules of the courses they want to take. Each schedule is automatically downloaded as an image format (png)
 
-# Dependencies
+### **Go To** [**Live App**](https://bannerschedule.onrender.com)
 
-To run the program, first install the requirements throght:
-```powershell
-pip install -r requirements.txt
-```
-then run `main.py`
+### Prerequisites
+
+Clone the repository<br>
+Install required packages using `pip install -r requirements.txt`<br>
+Add `MONGODB_URI` environment variable with your mongodb credentials<br>
+Run `app.py`<br>
+
+### Credits
+
+Developed by [_yousefbilal_](https://github.com/yousefbilal) & [_akvn_] (https://github.com/akvnn)

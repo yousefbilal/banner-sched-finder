@@ -195,6 +195,6 @@ def scrape(semester_specifier):
         print(e + ' - error scraping')
 
 
-scrape('202410')
+# scrape('202410') # this was intentionally commented out
 if __name__ == '__main__':
     app.run()
