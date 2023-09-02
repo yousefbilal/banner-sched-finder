@@ -153,7 +153,7 @@ def scrape(semester_specifier):
         row_list = soup.find('table', class_='datadisplaytable').find_all(
             'tr', recursive=False)
         # # delete all entries in courseCollection
-        # coursesCollection.delete_many({})
+        coursesCollection.delete_many({})
 
         for i in range(0, len(row_list), 2):
             # [full name, CRN, course code, section]
@@ -185,7 +185,7 @@ def scrape(semester_specifier):
                 except Exception as e:
                     print(e)
                     continue
-                if subject.endswith('L') or subject.endswith('R'):
+                if course_code.endswith('L') or course_code.endswith('R'):
                     coursesCollection.insert_one({"code": course_code_number, 'subject': subject, 'crn': crn, "fullCode": course_code, 'full_name': full_name,
                                                  'time': time, 'days': days, 'section': section, 'instructor': instructor_name, 'isLab': True})
                 else:
@@ -195,6 +195,6 @@ def scrape(semester_specifier):
         print(e + ' - error scraping')
 
 
-# scrape('202410')
+scrape('202410')
 if __name__ == '__main__':
     app.run()

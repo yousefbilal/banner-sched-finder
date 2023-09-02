@@ -7,7 +7,8 @@ import random
 import numpy as np
 from course import Course
 from matplotlib.ticker import AutoMinorLocator
-
+import matplotlib
+matplotlib.use('Agg')
 @dataclass
 class Schedule:
     
