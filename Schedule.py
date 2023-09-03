@@ -63,8 +63,3 @@ class Schedule:
         ax.set_frame_on(False)
         plt.savefig(name, dpi=1000)
         plt.close()
-        
-# if __name__ == '__main__':
-#     s = Schedule([Course('CMP111', '123', 1, [datetime(1900,1,1,8,0), datetime(1900,1,1,8,50)], 'MW', 'Ahmed Abdeljawad Al Nabulsi')])
-#     s.draw_schedule()
-#     input('')
