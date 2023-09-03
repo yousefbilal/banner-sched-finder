@@ -22,8 +22,8 @@ class Course:
                     same_day = True
                     break
             
-            if same_day and (self.time[0] >= course.time[0] and self.time[0] <= course.time[1]\
-            or self.time[1] >= course.time[0] and self.time[1] <= course.time[1]):
+            if same_day and ((self.time[0] <= course.time[1] and self.time[1] >= course.time[0])\
+            or (course.time[0] <= self.time[1] and course.time[1] >= self.time[0])):
                 return True
         return False
     
@@ -49,7 +49,7 @@ class Lecture(Course):
         available_labs =[]
         for lab in lab_list:
             if self.course_code in lab.course_code:
-                if not self.is_required_with_section or lab.section in self.required_sections:
+                if not self.is_required_with_section or lab.section.lstrip('0') in self.required_sections:
                     available_labs.append(lab)
         return available_labs
     
