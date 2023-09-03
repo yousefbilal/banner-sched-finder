@@ -14,14 +14,13 @@ matplotlib.use('Agg')
 class Schedule:
     
     courses_list: list[Course]
-    
-    def __init__(self, courses_list):
-        self.courses_list = sorted(courses_list, key= lambda course: course.time[1]) 
-    
+
     def draw_schedule(self, name :str):
         
-        start_time = datetime(1900,1,1,self.courses_list[0].time[0].hour,0) # Starting time
-        end_time = datetime(1900,1,1, self.courses_list[-1].time[1].hour+1 , 0) # Ending time
+        min_time = min([i.time[0] for i in self.courses_list])
+        max_time = max([i.time[1] for i in self.courses_list])
+        start_time = datetime(1900,1,1,min_time.hour,0) # Starting time
+        end_time = datetime(1900,1,1, max_time.hour+1 , 0) # Ending time
         start = dates.date2num(start_time)
         end = dates.date2num(end_time)
         
