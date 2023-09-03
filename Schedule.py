@@ -25,7 +25,7 @@ class Schedule:
         end = dates.date2num(end_time)
         
         plt.rc('font', size=9)
-        fig, ax = plt.subplots(figsize=(10, 1.1*((end_time-start_time)/timedelta(minutes=50))), dpi=50)
+        fig, ax = plt.subplots(figsize=(10, 1.25*((end_time-start_time)/timedelta(minutes=50))), dpi=50)
         
         ax.xaxis.tick_top()
         ax.yaxis.set_major_formatter(dates.DateFormatter('%I:%M %p'))
@@ -43,7 +43,7 @@ class Schedule:
             for day in course.days:
                 ax.add_patch(Rectangle((days_figure_indices[day], dates.date2num(course.time[0])), width, height, facecolor=choice, edgecolor=None, alpha = 0.5))
                 plt.text(days_figure_indices[day] + 0.5, dates.date2num(course.time[0]),
-                        f'\n{course.course_code}-{course.section}\n\n{course.instructor}\n\n{course.time[0].strftime("%I:%M %p")}-{course.time[1].strftime("%I:%M %p")}', 
+                        f'\n{course.course_code}-{course.section}\n\nCRN:{course.crn}\n\n{course.instructor}\n\n{course.time[0].strftime("%I:%M %p")}-{course.time[1].strftime("%I:%M %p")}', 
                         horizontalalignment='center',
                         verticalalignment='top', fontsize = font_size)
             
