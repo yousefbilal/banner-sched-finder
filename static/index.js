@@ -162,8 +162,16 @@ const generateSchedule = async (e) => {
     selectedCourses.forEach((course) => {
       const subject = course.querySelector('.subject').value
       const code = course.querySelector('.code').value
+      if (
+        selectedCoursesArray.find(
+          (c) => c.code === code && c.subject === subject
+        )
+      ) {
+        throw new Error('Please remove duplicate courses')
+      }
       selectedCoursesArray.push({ subject, code })
     })
+
     if (selectedCoursesArray.length === 0) {
       throw new Error('Please add at least one course')
     }

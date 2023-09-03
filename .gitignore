@@ -167,5 +167,6 @@ testing
 input.txt
 output
 *.png
+hidden.py
 
 .vscode
