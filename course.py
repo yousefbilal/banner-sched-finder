@@ -3,7 +3,7 @@ from dataclasses import dataclass
 import re
 from datetime import datetime
 
-@dataclass(slots=True)
+@dataclass
 class Course:
     course_code: str
     crn: str
@@ -28,13 +28,13 @@ class Course:
         return False
     
     
-@dataclass(slots=True)
+@dataclass
 class Lab(Course):
     def __str__(self):
         return f'Lab({self.course_code} - {self.section} - {self.crn} - {self.days} - {self.time} - {self.instructor})'
  
             
-@dataclass(slots=True)
+@dataclass
 class Lecture(Course):
     has_lab: bool
     is_required_with_section : bool
@@ -60,6 +60,6 @@ class Lecture(Course):
     def find_required_section(course_name):
         if 'Take it with' in course_name:
             # the regex pattern returns a list of section numbers
-            return True, [int(i) for i in re.findall("Sec\.([0-9]+)", course_name)]
+            return True, [i for i in re.findall("Sec\.([0-9]+)", course_name)]
         return False, []
         
