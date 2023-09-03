@@ -67,28 +67,30 @@ def generate():
                 instructor_name = course["instructor"]
                 isLab = course["isLab"]
                 if isLab:
-                    labs_list.append(Lab(course_code, crn, int(section),
+                    labs_list.append(Lab(course_code, crn, section,
                                      time, days, instructor_name))
                 else:
-                    if (section.endswith('A') or section.endswith('E')):  # if its ARA course
-                        section = section[:-1]
-                    lectures_dict.setdefault(course_code, []).append(Lecture(course_code, crn, int(section),
+                    lectures_dict.setdefault(course_code, []).append(Lecture(course_code, crn, section,
                                                                              time, days, instructor_name, selectedCoursesArrayString, *Lecture.find_required_section(course["full_name"])))
         for value in lectures_dict.values():
             lectures_list.append(value)
-
+        del lectures_dict
         # print(lectures_list)
         try:
             rmtree('output', ignore_errors=True)
             os.mkdir('output')
         except:
-            input("An unexpected error occured")
+            print("An unexpected error occured")
             exit(-1)
 
         all_schedules = generate_scheds(lectures_list, labs_list)
         if (len(all_schedules) == 0):
             return jsonify({'message': 'no schedules found'}), 300
         images = []
+        
+        del lectures_list
+        del labs_list
+        
         for i in range(len(all_schedules)):
             all_schedules[i].draw_schedule("output/schedule" + str(i) + ".png")
             # # convert to base64
@@ -97,7 +99,9 @@ def generate():
             image.save(imgByte, format='PNG')
             base64_image = base64.b64encode(imgByte.getvalue()).decode('utf-8')
             images.append(base64_image)
-
+            os.remove("output/schedule" + str(i) + ".png")
+        rmtree('output', ignore_errors=True)
+        del all_schedules
         # send back the schedules
         return jsonify({'schedules': images}), 200
 

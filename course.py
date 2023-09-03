@@ -3,11 +3,11 @@ from dataclasses import dataclass
 import re
 from datetime import datetime
 
-@dataclass
+@dataclass(slots=True)
 class Course:
     course_code: str
     crn: str
-    section: int
+    section: str
     time: list[datetime]
     days: str
     instructor: str
@@ -28,13 +28,13 @@ class Course:
         return False
     
     
-@dataclass
+@dataclass(slots=True)
 class Lab(Course):
     def __str__(self):
         return f'Lab({self.course_code} - {self.section} - {self.crn} - {self.days} - {self.time} - {self.instructor})'
  
             
-@dataclass
+@dataclass(slots=True)
 class Lecture(Course):
     has_lab: bool
     is_required_with_section : bool

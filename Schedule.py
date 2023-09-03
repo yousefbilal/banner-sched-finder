@@ -9,7 +9,8 @@ from course import Course
 from matplotlib.ticker import AutoMinorLocator
 import matplotlib
 matplotlib.use('Agg')
-@dataclass
+
+@dataclass(slots=True)
 class Schedule:
     
     courses_list: list[Course]
@@ -25,7 +26,7 @@ class Schedule:
         end = dates.date2num(end_time)
         
         plt.rc('font', size=9)
-        fig, ax = plt.subplots(figsize=(11, 1.1*((end_time-start_time)/timedelta(minutes=50))), dpi=100)
+        fig, ax = plt.subplots(figsize=(10, 1.1*((end_time-start_time)/timedelta(minutes=50))), dpi=50)
         
         ax.xaxis.tick_top()
         ax.yaxis.set_major_formatter(dates.DateFormatter('%I:%M %p'))
@@ -39,7 +40,7 @@ class Schedule:
             colors.remove(choice)
             # Plot rectangles
             days_figure_indices = {'M':0, 'T':1, 'W':2, 'R':3}
-            font_size = 7 if len(course.instructor) >= 30 else 8
+            font_size = 6 if len(course.instructor) >= 30 else 7
             for day in course.days:
                 ax.add_patch(Rectangle((days_figure_indices[day], dates.date2num(course.time[0])), width, height, facecolor=choice, edgecolor=None, alpha = 0.5))
                 plt.text(days_figure_indices[day] + 0.5, dates.date2num(course.time[0]),
@@ -61,5 +62,5 @@ class Schedule:
         ax.tick_params(which='major', length = 0)
         ax.tick_params(which='minor', colors =[0,0,0,0.15], length = 7)
         ax.set_frame_on(False)
-        plt.savefig(name, dpi=1000)
+        plt.savefig(name, dpi=200)
         plt.close()
