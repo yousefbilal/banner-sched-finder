@@ -33,6 +33,8 @@ db = client.get_database('banner')
 collection = db.get_collection('subjects')
 coursesCollection = db.get_collection('courses')
 projection = {"_id": 0, "subject": 1, "code": 1}
+schedulesCollection = db.get_collection('schedules')
+schedulesProjection = {"_id": 0, "courses": 1, "schedules": 1}
 # end of mongo db
 
 
@@ -54,6 +56,11 @@ def generate():
         # make it a list of strings
         selectedCoursesArrayString = [
             f"{obj['subject']} {obj['code']}" for obj in selectedCoursesArray]
+        findSchedule = schedulesCollection.find_one(
+            {"courses": selectedCoursesArrayString}, schedulesProjection)
+        if(findSchedule != None):
+            return jsonify({'schedules': findSchedule["schedules"]}), 200
+
         for i in range(len(selectedCoursesArray)):
             dataCourse = data["selectedCoursesArray"][i]
             courses = coursesCollection.find(
@@ -102,6 +109,9 @@ def generate():
             os.remove("output/schedule" + str(i) + ".png")
         rmtree('output', ignore_errors=True)
         del all_schedules
+        # save the schedules to the database
+        schedulesCollection.insert_one(
+            {"courses": selectedCoursesArrayString, "schedules": images})
         # send back the schedules
         return jsonify({'schedules': images}), 200
 
