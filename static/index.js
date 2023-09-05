@@ -191,20 +191,25 @@ const generateSchedule = async (e) => {
     if (schedules.length === 0) {
       throw new Error('No schedules found')
     }
-    // decode the base 64 images
+    var zip = new JSZip()
+    // add the base 64 images to the zip
     schedules.forEach((schedule, index) => {
-      const img = document.createElement('img')
-      img.src = `data:image/png;base64,${schedule}`
-      img.style.display = 'block'
-      img.id = `schedule${index}`
-      const a = document.createElement('a')
-      a.href = `data:image/png;base64,${schedule}`
-      a.style.display = 'block'
-      a.download = `schedule${index}.png`
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
+      zip.file(`schedule${index}.png`, schedule, {
+        base64: true,
+      })
     })
+    // generate the zip file
+    zip.generateAsync({ type: 'blob' }).then(function (content) {
+      var blob = new Blob([content], { type: 'application/zip' })
+      var link = document.createElement('a')
+      link.href = window.URL.createObjectURL(blob)
+      link.download = 'schedules.zip'
+      document.body.appendChild(link)
+      link.click()
+      window.URL.revokeObjectURL(link.href)
+      document.body.removeChild(link)
+    })
+
     alertBox.innerHTML = 'Schedule(s) generated'
     submitBtn.disabled = false
 

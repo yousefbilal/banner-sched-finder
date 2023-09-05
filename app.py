@@ -33,8 +33,8 @@ db = client.get_database('banner')
 collection = db.get_collection('subjects')
 coursesCollection = db.get_collection('courses')
 projection = {"_id": 0, "subject": 1, "code": 1}
-schedulesCollection = db.get_collection('schedules')
-schedulesProjection = {"_id": 0, "courses": 1, "schedules": 1}
+# schedulesCollection = db.get_collection('schedules')
+# schedulesProjection = {"_id": 0, "courses": 1, "schedules": 1}
 # end of mongo db
 
 
@@ -56,10 +56,10 @@ def generate():
         # make it a list of strings
         selectedCoursesArrayString = [
             f"{obj['subject']} {obj['code']}" for obj in selectedCoursesArray]
-        findSchedule = schedulesCollection.find_one(
-            {"courses": selectedCoursesArrayString}, schedulesProjection)
-        if(findSchedule != None):
-            return jsonify({'schedules': findSchedule["schedules"]}), 200
+        # findSchedule = schedulesCollection.find_one(
+        #     {"courses": {"$all": selectedCoursesArrayString}}, schedulesProjection)
+        # if(findSchedule != None):
+        #     return jsonify({'schedules': findSchedule["schedules"]}), 200
 
         for i in range(len(selectedCoursesArray)):
             dataCourse = data["selectedCoursesArray"][i]
@@ -94,10 +94,10 @@ def generate():
         if (len(all_schedules) == 0):
             return jsonify({'message': 'no schedules found'}), 300
         images = []
-        
+
         del lectures_list
         del labs_list
-        
+
         for i in range(len(all_schedules)):
             all_schedules[i].draw_schedule("output/schedule" + str(i) + ".png")
             # # convert to base64
@@ -110,8 +110,8 @@ def generate():
         rmtree('output', ignore_errors=True)
         del all_schedules
         # save the schedules to the database
-        schedulesCollection.insert_one(
-            {"courses": selectedCoursesArrayString, "schedules": images})
+        # schedulesCollection.insert_one(
+        #     {"courses": selectedCoursesArrayString, "schedules": images})
         # send back the schedules
         return jsonify({'schedules': images}), 200
 
@@ -130,6 +130,7 @@ def getCourses():
     except Exception as e:
         print(e)
         return jsonify({'message': 'error'}), 500
+
 
 if __name__ == '__main__':
     from waitress import serve
