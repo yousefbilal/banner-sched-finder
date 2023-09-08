@@ -188,7 +188,7 @@ const generateSchedule = async (e) => {
     //   throw new Error(data.message)
     // }
     const schedules = data.schedules
-    if (schedules.length === 0) {
+    if (!schedules || schedules.length === 0) {
       throw new Error('No schedules found')
     }
     var zip = new JSZip()

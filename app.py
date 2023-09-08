@@ -33,36 +33,18 @@ db = client.get_database('banner')
 collection = db.get_collection('subjects')
 coursesCollection = db.get_collection('courses')
 projection = {"_id": 0, "subject": 1, "code": 1}
-# schedulesCollection = db.get_collection('schedules')
-# schedulesProjection = {"_id": 0, "courses": 1, "schedules": 1}
+schedulesCollection = db.get_collection('schedules')
+schedulesProjection = {"_id": 0, "courses": 1, "schedules": 1}
 # end of mongo db
 
 
-@app.route('/')
-def home():
-    return render_template('index.html')
-
-
-@app.route('/generateSchedule', methods=['POST'])
-def generate():
-    if request.method == 'POST':
-        data = request.get_json()
-        print(data)
+def generateHelper(selectedCoursesArray, selectedCoursesArrayString):
+    try:
         lectures_list = []
         lectures_dict = dict()
         labs_list = []
-        selectedCoursesArray = data["selectedCoursesArray"]
-        # selectedCoursesArray is a list of objects (strings)
-        # make it a list of strings
-        selectedCoursesArrayString = [
-            f"{obj['subject']} {obj['code']}" for obj in selectedCoursesArray]
-        # findSchedule = schedulesCollection.find_one(
-        #     {"courses": {"$all": selectedCoursesArrayString}}, schedulesProjection)
-        # if(findSchedule != None):
-        #     return jsonify({'schedules': findSchedule["schedules"]}), 200
-
         for i in range(len(selectedCoursesArray)):
-            dataCourse = data["selectedCoursesArray"][i]
+            dataCourse = selectedCoursesArray[i]
             courses = coursesCollection.find(
                 {"code": dataCourse["code"], "subject": dataCourse["subject"]})
             for course in courses:
@@ -75,43 +57,78 @@ def generate():
                 isLab = course["isLab"]
                 if isLab:
                     labs_list.append(Lab(course_code, crn, section,
-                                     time, days, instructor_name))
+                                         time, days, instructor_name))
                 else:
-                    lectures_dict.setdefault(course_code, []).append(Lecture(course_code, crn, section,
-                                                                             time, days, instructor_name, selectedCoursesArrayString, *Lecture.find_required_section(course["full_name"])))
+                    lectures_dict.setdefault(course_code, []).append(Lecture(course_code, crn, section, time, days,
+                                                                             instructor_name, selectedCoursesArrayString, *Lecture.find_required_section(course["full_name"])))
         for value in lectures_dict.values():
             lectures_list.append(value)
         del lectures_dict
         # print(lectures_list)
+        all_schedules = generate_scheds(lectures_list, labs_list)
+        del lectures_list
+        del labs_list
+        if (len(all_schedules) == 0):
+            return all_schedules
+        # print(all_schedules)
+        # insert the schedules into the database
+        # schedulesCollection.insert_one(
+        #     {"courses": selectedCoursesArrayString, "schedules": all_schedules.to_dict()})
+
+        return all_schedules
+    except Exception as e:
+        print(e)
+        return []
+
+
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+
+@app.route('/generateSchedule', methods=['POST'])
+def generate():
+    if request.method == 'POST':
+        data = request.get_json()
+        print(data)
+
+        selectedCoursesArray = data["selectedCoursesArray"]
+        # selectedCoursesArray is a list of objects (strings)
+        # make it a list of strings
+        selectedCoursesArrayString = [
+            f"{obj['subject']} {obj['code']}" for obj in selectedCoursesArray]
+        # all_schedules = schedulesCollection.find_one(
+        #     {"courses": {"$all": selectedCoursesArrayString}}, schedulesProjection)
+        # found = False
+        # if (all_schedules != None):
+        #     found = True
+        #     all_schedules = list(all_schedules)
+        # if (found == False):
+        all_schedules = generateHelper(
+            selectedCoursesArray, selectedCoursesArrayString)
+        if (len(all_schedules) == 0):
+            return jsonify({'message': 'no schedules found'}), 300
+
+        images = []
         # try:
         #     rmtree('output', ignore_errors=True)
         #     os.mkdir('output')
         # except:
         #     print("An unexpected error occured")
         #     exit(-1)
-
-        all_schedules = generate_scheds(lectures_list, labs_list)
-        if (len(all_schedules) == 0):
-            return jsonify({'message': 'no schedules found'}), 300
-        images = []
-
-        del lectures_list
-        del labs_list
-
         for i in range(len(all_schedules)):
-            
+
             # # convert to base64
             image = all_schedules[i].draw_schedule()
             with io.BytesIO() as imgByte:
                 image.save(imgByte, format='PNG')
-                base64_image = base64.b64encode(imgByte.getvalue()).decode('utf-8')
+                base64_image = base64.b64encode(
+                    imgByte.getvalue()).decode('utf-8')
                 images.append(base64_image)
             # os.remove("output/schedule" + str(i) + ".png")
         # rmtree('output', ignore_errors=True)
         del all_schedules
         # save the schedules to the database
-        # schedulesCollection.insert_one(
-        #     {"courses": selectedCoursesArrayString, "schedules": images})
         # send back the schedules
         return jsonify({'schedules': images}), 200
 
