@@ -8,6 +8,7 @@ import numpy as np
 from course import Course
 from matplotlib.ticker import AutoMinorLocator
 import matplotlib
+from PIL import Image
 matplotlib.use('Agg')
 
 @dataclass(slots=True)
@@ -15,7 +16,7 @@ class Schedule:
     
     courses_list: list[Course]
 
-    def draw_schedule(self, name :str):
+    def draw_schedule(self):
         
         min_time = min([i.time[0] for i in self.courses_list])
         max_time = max([i.time[1] for i in self.courses_list])
@@ -25,7 +26,7 @@ class Schedule:
         end = dates.date2num(end_time)
         
         plt.rc('font', size=9)
-        fig, ax = plt.subplots(figsize=(10, 1.25*((end_time-start_time)/timedelta(minutes=50))), dpi=50)
+        fig, ax = plt.subplots(figsize=(10, 1.25*((end_time-start_time)/timedelta(minutes=50))), dpi=200)
         
         ax.xaxis.tick_top()
         ax.yaxis.set_major_formatter(dates.DateFormatter('%I:%M %p'))
@@ -61,5 +62,13 @@ class Schedule:
         ax.tick_params(which='major', length = 0)
         ax.tick_params(which='minor', colors =[0,0,0,0.15], length = 7)
         ax.set_frame_on(False)
-        plt.savefig(name, dpi=200)
+        
+        fig.canvas.draw()                               #####
+        rgb = fig.canvas.tostring_rgb()                 #####
+        width, height = fig.canvas.get_width_height()   #####
+        img = Image.frombytes('RGB', (width, height), rgb)   #####
+        
+        # plt.savefig(name, dpi=200)
+        
         plt.close()
+        return img          #####

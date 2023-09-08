@@ -83,12 +83,12 @@ def generate():
             lectures_list.append(value)
         del lectures_dict
         # print(lectures_list)
-        try:
-            rmtree('output', ignore_errors=True)
-            os.mkdir('output')
-        except:
-            print("An unexpected error occured")
-            exit(-1)
+        # try:
+        #     rmtree('output', ignore_errors=True)
+        #     os.mkdir('output')
+        # except:
+        #     print("An unexpected error occured")
+        #     exit(-1)
 
         all_schedules = generate_scheds(lectures_list, labs_list)
         if (len(all_schedules) == 0):
@@ -99,15 +99,15 @@ def generate():
         del labs_list
 
         for i in range(len(all_schedules)):
-            all_schedules[i].draw_schedule("output/schedule" + str(i) + ".png")
+            
             # # convert to base64
-            image = Image.open("output/schedule" + str(i) + ".png")
-            imgByte = io.BytesIO()
-            image.save(imgByte, format='PNG')
-            base64_image = base64.b64encode(imgByte.getvalue()).decode('utf-8')
-            images.append(base64_image)
-            os.remove("output/schedule" + str(i) + ".png")
-        rmtree('output', ignore_errors=True)
+            image = all_schedules[i].draw_schedule()
+            with io.BytesIO() as imgByte:
+                image.save(imgByte, format='PNG')
+                base64_image = base64.b64encode(imgByte.getvalue()).decode('utf-8')
+                images.append(base64_image)
+            # os.remove("output/schedule" + str(i) + ".png")
+        # rmtree('output', ignore_errors=True)
         del all_schedules
         # save the schedules to the database
         # schedulesCollection.insert_one(
