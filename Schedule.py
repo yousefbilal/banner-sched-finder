@@ -10,7 +10,7 @@ from matplotlib.ticker import AutoMinorLocator
 import matplotlib
 from PIL import Image
 matplotlib.use('Agg')
-
+plt.rc('font', size=9)
 @dataclass(slots=True)
 class Schedule:
     
@@ -25,7 +25,6 @@ class Schedule:
         start = dates.date2num(start_time)
         end = dates.date2num(end_time)
         
-        plt.rc('font', size=9)
         fig, ax = plt.subplots(figsize=(10, 1.25*((end_time-start_time)/timedelta(minutes=50))), dpi=200)
         
         ax.xaxis.tick_top()
@@ -43,7 +42,7 @@ class Schedule:
             font_size = 6 if len(course.instructor) >= 30 else 7
             for day in course.days:
                 ax.add_patch(Rectangle((days_figure_indices[day], dates.date2num(course.time[0])), width, height, facecolor=choice, edgecolor=None, alpha = 0.5))
-                plt.text(days_figure_indices[day] + 0.5, dates.date2num(course.time[0]),
+                ax.text(days_figure_indices[day] + 0.5, dates.date2num(course.time[0]),
                         f'\n{course.course_code}-{course.section}\n\nCRN:{course.crn}\n\n{course.instructor}\n\n{course.time[0].strftime("%I:%M %p")}-{course.time[1].strftime("%I:%M %p")}', 
                         horizontalalignment='center',
                         verticalalignment='top', fontsize = font_size)
@@ -53,10 +52,10 @@ class Schedule:
         ax.set_xticks(np.arange(0, 5, 1), minor = True)
         ax.yaxis.set_major_locator(dates.HourLocator())
         ax.yaxis.set_minor_locator(AutoMinorLocator())
-        plt.xlim([0,4])
-        plt.ylim([end,start])
-        plt.grid(which='minor', axis = 'x', alpha =0.2)
-        plt.grid(which='both', axis = 'y', alpha =0.2)
+        ax.set_xlim([0,4])
+        ax.set_ylim([end,start])
+        ax.grid(which='minor', axis = 'x', alpha =0.2)
+        ax.grid(which='both', axis = 'y', alpha =0.2)
         
          
         ax.tick_params(which='major', length = 0)
@@ -69,6 +68,5 @@ class Schedule:
         img = Image.frombytes('RGB', (width, height), rgb)   #####
         
         # plt.savefig(name, dpi=200)
-        
-        plt.close()
+        plt.close(fig)
         return img          #####
