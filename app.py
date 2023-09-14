@@ -55,7 +55,7 @@ def generateHelper(selectedCoursesArray, selectedCoursesArrayString):
                 days = course["days"]
                 instructor_name = course["instructor"]
                 isLab = course["isLab"]
-                if isLab:
+                if isLab and course_code[:-1] in selectedCoursesArrayString:
                     labs_list.append(Lab(course_code, crn, section,
                                          time, days, instructor_name))
                 else:

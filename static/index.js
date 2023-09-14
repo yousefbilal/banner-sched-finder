@@ -194,7 +194,7 @@ const generateSchedule = async (e) => {
     var zip = new JSZip()
     // add the base 64 images to the zip
     schedules.forEach((schedule, index) => {
-      zip.file(`schedule${index}.png`, schedule, {
+      zip.file(`schedule${index + 1}.png`, schedule, {
         base64: true,
       })
     })
