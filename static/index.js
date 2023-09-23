@@ -104,6 +104,7 @@ const addEntry = (e) => {
   const dropdownlabel = document.createElement('label')
   // dropdownlabel.setAttribute('for', 'subject')
   dropdownlabel.innerHTML = 'Subject'
+  dropdownlabel.classList.add('formLabel')
   const dropdownselect = document.createElement('select')
   dropdownselect.setAttribute('name', 'subject')
   dropdownselect.classList.add('input')
@@ -112,6 +113,7 @@ const addEntry = (e) => {
   const dropdownlabelTwo = document.createElement('label')
   // dropdownlabelTwo.setAttribute('for', 'code')
   dropdownlabelTwo.innerHTML = 'Code'
+  dropdownlabelTwo.classList.add('formLabel')
   const dropdownselectTwo = document.createElement('select')
   dropdownselectTwo.setAttribute('name', 'code')
   dropdownselectTwo.classList.add('input')
@@ -341,7 +343,7 @@ const createScheduleEntry = (entry, count, color) => {
     scheduleEntryInfo.setAttribute('data-end-time', endTimeFormatted)
     const scheduleEntryInfoSubject = document.createElement('h1')
     scheduleEntryInfoSubject.className = 'schedule-name'
-    scheduleEntryInfoSubject.innerHTML = entry.course_code
+    scheduleEntryInfoSubject.innerHTML = entry.course_code + ' ' + entry.section
     const scheduleEntryInfoCode = document.createElement('h1')
     scheduleEntryInfoCode.className = 'schedule-crn'
     scheduleEntryInfoCode.innerHTML = entry.crn
@@ -358,6 +360,11 @@ const createScheduleEntry = (entry, count, color) => {
     scheduleEntryInfo.appendChild(scheduleEntryInfoTime)
     scheduleEntry.appendChild(scheduleEntryInfo)
     positionScheduleEntry(scheduleEntry)
+    if (scheduleEntry.scrollHeight > scheduleEntry.clientHeight) {
+      const instructorArray = entry.instructor.split(' ')
+      scheduleEntryInfoInstructor.innerHTML =
+        instructorArray[0] + ' ' + instructorArray[instructorArray.length - 1]
+    }
   }
 }
 // schedule
