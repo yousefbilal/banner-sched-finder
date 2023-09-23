@@ -216,6 +216,12 @@ a {
   .schedule-header-item {
     font-size: 0.8rem;
   }
+  .schedule-time-item {
+    font-size: 0.8rem;
+  }
+  .schedule-entry-info h1 {
+    font-size: 0.4rem;
+  }
   .headerTitle {
     font-size: 1.5rem;
   }
@@ -228,6 +234,9 @@ a {
 }
 @media (max-width: 500px) {
   .schedule-header-item {
+    font-size: 0.6rem;
+  }
+  .schedule-time-item {
     font-size: 0.6rem;
   }
 }
