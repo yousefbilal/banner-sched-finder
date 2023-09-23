@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-# from utils import *
 import re
 from datetime import datetime
 
@@ -11,11 +10,11 @@ class Course:
     time: list[datetime]
     days: str
     instructor: str
+    is_required_with_section : bool
+    required_sections : list
     
     def is_conflicting(self, current_sched:list):
-        # current_course_time = time_to_float(self.time)
         for course in current_sched:
-            # course_time = time_to_float(course.time)
             same_day = False
             for day in self.days:
                 if day in course.days:
@@ -26,6 +25,13 @@ class Course:
             or (course.time[0] <= self.time[1] and course.time[1] >= self.time[0])):
                 return True
         return False
+    
+    @staticmethod
+    def find_required_sections(course_name):
+        if 'Take it with' in course_name:
+            # the regex pattern returns a list of section numbers
+            return True, [i for i in re.findall("Sec\.([0-9]+)", course_name)]
+        return False, []
     
     
 @dataclass
@@ -40,26 +46,20 @@ class Lecture(Course):
     is_required_with_section : bool
     required_sections : list
     def __init__(self, course_code, crn, section, time, days, instructor, courses_list, is_required_with_section, required_sections):
-        super().__init__(course_code,crn, section, time,days, instructor)
+        super().__init__(course_code,crn, section, time,days, instructor, is_required_with_section, required_sections)
         self.has_lab = course_code+'L' in courses_list or course_code+'R' in courses_list
-        self.is_required_with_section = is_required_with_section
-        self.required_sections = required_sections
     
-    def get_available_labs(self, lab_list : list[Lab]):
+    def get_available_labs(self, lab_dict : dict[str, list[Lab]]) -> list[Lab]:
         available_labs =[]
-        for lab in lab_list:
-            if self.course_code in lab.course_code:
-                if not self.is_required_with_section or lab.section.lstrip('0') in self.required_sections:
-                    available_labs.append(lab)
+        labs_list = lab_dict[self.course_code]
+        for lab in labs_list:
+            if (not self.is_required_with_section and not lab.is_required_with_section)\
+            or (self.is_required_with_section and lab.section.lstrip('0') in self.required_sections):
+                available_labs.append(lab)
         return available_labs
     
     def __str__(self):
         return f'Lecture({self.course_code} - {self.section} - {self.crn} - {self.days} - {self.time} - {self.instructor})'
     
-    @staticmethod
-    def find_required_section(course_name):
-        if 'Take it with' in course_name:
-            # the regex pattern returns a list of section numbers
-            return True, [i for i in re.findall("Sec\.([0-9]+)", course_name)]
-        return False, []
+    
         

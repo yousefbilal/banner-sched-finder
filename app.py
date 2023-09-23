@@ -1,12 +1,6 @@
 from course import *
-from datetime import datetime, timedelta
 from utils import *
-from bs4 import BeautifulSoup
-import requests
 import os
-from shutil import rmtree
-from sys import exit
-from PIL import Image
 import io
 import base64
 
@@ -42,7 +36,7 @@ def generateHelper(selectedCoursesArray, selectedCoursesArrayString):
     try:
         lectures_list = []
         lectures_dict = dict()
-        labs_list = []
+        labs_dict = dict()
         for i in range(len(selectedCoursesArray)):
             dataCourse = selectedCoursesArray[i]
             courses = coursesCollection.find(
@@ -54,22 +48,19 @@ def generateHelper(selectedCoursesArray, selectedCoursesArrayString):
                 time = course["time"]
                 days = course["days"]
                 instructor_name = course["instructor"]
-                isLab = course["isLab"]
-                if isLab and course_code[:-1] in selectedCoursesArrayString:
-                    labs_list.append(Lab(course_code, crn, section,
-                                         time, days, instructor_name))
+                # isLab = course["isLab"]
+                if course["isLab"] and course_code[:-1] in selectedCoursesArrayString:
+                    labs_dict.setdefault(course_code[:-1], []).append(Lab(course_code, crn, section,time, days,
+                                                                     instructor_name, *Course.find_required_sections(course["full_name"])))
                 else:
                     lectures_dict.setdefault(course_code, []).append(Lecture(course_code, crn, section, time, days,
-                                                                             instructor_name, selectedCoursesArrayString, *Lecture.find_required_section(course["full_name"])))
+                                                                             instructor_name, selectedCoursesArrayString, *Course.find_required_sections(course["full_name"])))
         for value in lectures_dict.values():
             lectures_list.append(value)
-        del lectures_dict
-        # print(lectures_list)
-        all_schedules = generate_scheds(lectures_list, labs_list)
-        del lectures_list
-        del labs_list
-        if (len(all_schedules) == 0):
-            return all_schedules
+        
+        all_schedules = generate_scheds(lectures_list, labs_dict)
+        # if (len(all_schedules) == 0):
+        #     return all_schedules
         # print(all_schedules)
         # insert the schedules into the database
         # schedulesCollection.insert_one(
