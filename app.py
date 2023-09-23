@@ -86,6 +86,30 @@ def home():
     return render_template('index.html')
 
 
+@app.route('/generateScheduleDOM', methods=['POST'])
+def generatedom():
+    if request.method == 'POST':
+        data = request.get_json()
+        print(data)
+        selectedCoursesArray = data["selectedCoursesArray"]
+        # selectedCoursesArray is a list of objects (strings)
+        # make it a list of strings
+        selectedCoursesArrayString = [
+            f"{obj['subject']} {obj['code']}" for obj in selectedCoursesArray]
+        # all_schedules = schedulesCollection.find_one(
+        #     {"courses": {"$all": selectedCoursesArrayString}}, schedulesProjection)
+        # found = False
+        # if (all_schedules != None):
+        #     found = True
+        #     all_schedules = list(all_schedules)
+        # if (found == False):
+        all_schedules = generateHelper(
+            selectedCoursesArray, selectedCoursesArrayString)
+        if (len(all_schedules) == 0):
+            return jsonify({'message': 'no schedules found'}), 300
+        return jsonify({'schedules': all_schedules}), 200
+
+
 @app.route('/generateSchedule', methods=['POST'])
 def generate():
     if request.method == 'POST':
@@ -150,5 +174,6 @@ def getCourses():
 
 
 if __name__ == '__main__':
+    # app.run(debug=True, port=8080)
     from waitress import serve
     serve(app, host="0.0.0.0", port=8080)

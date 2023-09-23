@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
@@ -68,8 +69,8 @@
     <div class="alertBox" id="alertBox"></div>
     <h1>Banner Schedule Finder</h1>
     <br />
-    <div class="form-container">
-      <form onsubmit="generateSchedule(event)">
+    <div class="form-container" id="form-container">
+      <form onsubmit="generateScheduleDOM(event)">
         <div class="entries" id="entries">
           <div class="entry">
             <label for="dropdown0">Subject</label>
@@ -105,6 +106,57 @@
         <input type="submit" value="Submit" class="inputBtn" id="submitBtn" />
       </form>
       <!-- <a id="downloadLink" class="downloadLink">Download All Schedules</a> -->
+    </div>
+    <h1 class="schedule-total-header" id="schedule-total-header"></h1>
+    <div class="schedules">
+      <div class="schedule-container" id="schedule-container">
+        <div class="schedule-header">
+          <div class="schedule-header-item">Time</div>
+          <div class="schedule-header-item" data-day="M">
+            &nbsp;Monday&nbsp;&nbsp;
+          </div>
+          <div class="schedule-header-item" data-day="T">
+            &nbsp;Tuesday&nbsp;
+          </div>
+          <div class="schedule-header-item" data-day="W">Wednesday</div>
+          <div class="schedule-header-item" data-day="R">&nbsp;Thursday</div>
+          <!-- <div class="schedule-header-item" data-day="F">
+            &nbsp;&nbsp;Friday&nbsp;
+          </div> -->
+        </div>
+        <div class="schedule-time">
+          <div class="schedule-time-item" data-time="8:00">8:00</div>
+          <div class="schedule-time-item" data-time="9:00">9:00</div>
+          <div class="schedule-time-item" data-time="10:00">10:00</div>
+          <div class="schedule-time-item" data-time="11:00">11:00</div>
+          <div class="schedule-time-item" data-time="12:00">12:00</div>
+          <div class="schedule-time-item" data-time="13:00">13:00</div>
+          <div class="schedule-time-item" data-time="14:00">14:00</div>
+          <div class="schedule-time-item" data-time="15:00">15:00</div>
+          <div class="schedule-time-item" data-time="16:00">16:00</div>
+          <div class="schedule-time-item" data-time="17:00">17:00</div>
+          <div class="schedule-time-item" data-time="18:00">18:00</div>
+          <div class="schedule-time-item" data-time="19:00">19:00</div>
+          <div class="schedule-time-item" data-time="20:00">20:00</div>
+          <div class="schedule-time-item" data-time="21:00">21:00</div>
+          <div class="schedule-time-item" data-time="22:00">22:00</div>
+        </div>
+        <div class="schedule-body" id="schedule-body">
+          <!-- <div class="schedule-entry">
+            <div
+              class="schedule-entry-info"
+              data-day="monday"
+              data-start-time="8:00"
+              data-end-time="10:00"
+            >
+              <h1 class="entry-name">COE221-01</h1>
+              <h1 class="entry-crn">10327</h1>
+              <h1 class="entry-professor">Hicham Hallal</h1>
+              <h1 class="entry-time">8:00 - 9:00</h1>
+            </div>
+          </div> -->
+        </div>
+      </div>
     </div>
     <footer
       style="
