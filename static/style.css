@@ -12,7 +12,7 @@ body {
 }
 * {
   box-sizing: border-box;
-  overflow-y: hidden;
+  /* overflow-y: hidden; */
 }
 .form-container {
   width: 30rem;
@@ -115,6 +115,7 @@ a {
   justify-content: center;
   margin-top: 1rem;
   position: relative;
+  overflow-y: hidden;
 }
 .schedule-container {
   visibility: hidden;
