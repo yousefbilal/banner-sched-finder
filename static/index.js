@@ -157,7 +157,7 @@ const generateSchedule = async (e) => {
     alertBox.style.backgroundColor = '#ccc'
     alertBox.style.color = '#1a1a1a'
     alertBox.style.display = 'block'
-    alertBox.innerHTML = 'Generating Schedule...'
+    alertBox.innerHTML = 'Generating Schedules...'
     const selectedCourses = document.querySelectorAll('.entry')
     const selectedCoursesArray = []
     selectedCourses.forEach((course) => {
@@ -259,7 +259,7 @@ const generateScheduleDOM = async (e) => {
   alertBox.style.backgroundColor = '#ccc'
   alertBox.style.color = '#1a1a1a'
   alertBox.style.display = 'block'
-  alertBox.innerHTML = 'Generating Schedule...'
+  alertBox.innerHTML = 'Generating Schedules...'
   const selectedCourses = document.querySelectorAll('.entry')
   const selectedCoursesArray = []
   selectedCourses.forEach((course) => {

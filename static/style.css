@@ -12,6 +12,7 @@ body {
 }
 * {
   box-sizing: border-box;
+  overflow-y: hidden;
 }
 .form-container {
   width: 30rem;
@@ -98,20 +99,6 @@ h1 {
 }
 a {
   text-decoration: none;
-}
-@media (max-width: 768px) {
-  .form-container {
-    width: 100%;
-  }
-  .alertBox {
-    width: 80%;
-    padding: 0.8rem;
-    font-size: 0.9rem;
-    border-radius: 0.25rem;
-    top: 3rem;
-    left: 50%;
-    transform: translateX(-50%);
-  }
 }
 .downloadLink {
   color: #8a2be2;
@@ -208,4 +195,39 @@ a {
 .backToFormBtn:hover {
   background-color: #fff;
   color: #8a2be2;
+}
+/* mobile screen sizes */
+@media (max-width: 600px) {
+  * {
+    overflow-x: hidden;
+  }
+  .form-container {
+    width: 85vw;
+  }
+  .alertBox {
+    width: 80%;
+    padding: 0.8rem;
+    font-size: 0.9rem;
+    border-radius: 0.25rem;
+    top: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .schedule-header-item {
+    font-size: 0.8rem;
+  }
+  .headerTitle {
+    font-size: 1.5rem;
+  }
+  .schedule-total-header {
+    font-size: 1.2rem;
+  }
+  .formLabel {
+    font-size: 0.8rem;
+  }
+}
+@media (max-width: 500px) {
+  .schedule-header-item {
+    font-size: 0.6rem;
+  }
 }
