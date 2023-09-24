@@ -17,7 +17,9 @@ plt.rc('font', size=9)
 class Schedule:
 
     courses_list: list[Course]
-
+    min_time: datetime
+    max_time: datetime
+    
     def draw_schedule(self):
 
         min_time = min([i.time[0] for i in self.courses_list])

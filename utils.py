@@ -1,5 +1,6 @@
 from Schedule import Schedule
 from course import *
+from datetime import datetime
 course_codes = ["AUS","ACC","ANT","ARA","ARC","ART","BIO","BME","BSE","BPE","BUS","BIS","BLW","CHE",
                 "CHM","CVE","COE","CMP","CMT","DES","ECO","ELE","NGN","EGM","ESM","ENG","ELP","ELT",
                 "ENV","EWE","FLM","FIN","GEO","HIS","INE","ISA","IEN","IDE","INS","KOR","MGT","MKT",
@@ -18,25 +19,32 @@ course_codes = ["AUS","ACC","ANT","ARA","ARC","ART","BIO","BME","BSE","BPE","BUS
 
 
 def generate_scheds(lectures:list[list[Lecture]], labs:dict[str, list[Lab]]) -> list[Schedule]:
-    def helper(lectures:list[list[Lecture]], labs:dict[str, list[Lab]], current_schedule:list[Course], all_schedules:list[Schedule]) -> list[Schedule]:
+    
+    def helper(lectures:list[list[Lecture]], labs:dict[str, list[Lab]], current_schedule:list[Course], all_schedules:list[Schedule], min_time, max_time) -> list[Schedule]:
         if not lectures : #if lectures is empty
-            all_schedules.append(Schedule(current_schedule[:]))
+            all_schedules.append(Schedule(current_schedule[:], min_time, max_time))
             return
         
         for lecture in lectures[0]:
             
             if not lecture.is_conflicting(current_schedule):
                 current_schedule.append(lecture)
+                min_time = min(min_time, lecture.time[0])
+                max_time = max(max_time, lecture.time[1])
                 if lecture.has_lab:
                     for lab in lecture.get_available_labs(labs):
                         if not lab.is_conflicting(current_schedule):
                             current_schedule.append(lab)
-                            helper(lectures[1:],labs ,current_schedule, all_schedules)
+                            min_time = min(min_time, lab.time[0])
+                            max_time = max(max_time, lab.time[1])
+                            helper(lectures[1:],labs ,current_schedule, all_schedules, min_time, max_time)
                             current_schedule.pop()   
                 else:
-                    helper(lectures[1:], labs, current_schedule, all_schedules)
+                    helper(lectures[1:], labs, current_schedule, all_schedules, min_time, max_time)
                 current_schedule.pop()
-                
+    max_time = datetime(1,1,1,0,0)
+    min_time = datetime(9999,1,1,0,0)
+    
     all_scheds = []
-    helper(lectures, labs, [], all_scheds)
+    helper(lectures, labs, [], all_scheds, min_time, max_time)
     return all_scheds

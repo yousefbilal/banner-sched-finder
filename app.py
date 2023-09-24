@@ -85,8 +85,7 @@ def generatedom():
         selectedCoursesArray = data["selectedCoursesArray"]
         # selectedCoursesArray is a list of objects (strings)
         # make it a list of strings
-        selectedCoursesArrayString = [
-            f"{obj['subject']} {obj['code']}" for obj in selectedCoursesArray]
+        selectedCoursesArrayString = [f"{obj['subject']} {obj['code']}" for obj in selectedCoursesArray]
         # all_schedules = schedulesCollection.find_one(
         #     {"courses": {"$all": selectedCoursesArrayString}}, schedulesProjection)
         # found = False
@@ -94,10 +93,14 @@ def generatedom():
         #     found = True
         #     all_schedules = list(all_schedules)
         # if (found == False):
-        all_schedules = generateHelper(
-            selectedCoursesArray, selectedCoursesArrayString)
+        all_schedules = generateHelper(selectedCoursesArray, selectedCoursesArrayString)
+        
         if (len(all_schedules) == 0):
             return jsonify({'message': 'no schedules found'}), 300
+        for schd in all_schedules:
+            print("min", schd.min_time)
+            print("max", schd.max_time)
+        
         return jsonify({'schedules': all_schedules}), 200
 
 
@@ -110,8 +113,7 @@ def generate():
         selectedCoursesArray = data["selectedCoursesArray"]
         # selectedCoursesArray is a list of objects (strings)
         # make it a list of strings
-        selectedCoursesArrayString = [
-            f"{obj['subject']} {obj['code']}" for obj in selectedCoursesArray]
+        selectedCoursesArrayString = [f"{obj['subject']} {obj['code']}" for obj in selectedCoursesArray]
         # all_schedules = schedulesCollection.find_one(
         #     {"courses": {"$all": selectedCoursesArrayString}}, schedulesProjection)
         # found = False
@@ -119,8 +121,8 @@ def generate():
         #     found = True
         #     all_schedules = list(all_schedules)
         # if (found == False):
-        all_schedules = generateHelper(
-            selectedCoursesArray, selectedCoursesArrayString)
+        all_schedules = generateHelper(selectedCoursesArray, selectedCoursesArrayString)
+        
         if (len(all_schedules) == 0):
             return jsonify({'message': 'no schedules found'}), 300
 
