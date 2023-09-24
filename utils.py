@@ -20,9 +20,9 @@ course_codes = ["AUS","ACC","ANT","ARA","ARC","ART","BIO","BME","BSE","BPE","BUS
 
 def generate_scheds(lectures:list[list[Lecture]], labs:dict[str, list[Lab]]) -> list[Schedule]:
     
-    def helper(lectures:list[list[Lecture]], labs:dict[str, list[Lab]], current_schedule:list[Course], all_schedules:list[Schedule], min_time, max_time) -> list[Schedule]:
+    def helper(lectures:list[list[Lecture]], labs:dict[str, list[Lab]], current_schedule:list[Course], all_schedules:list[Schedule], min_time:datetime, max_time:datetime) -> list[Schedule]:
         if not lectures : #if lectures is empty
-            all_schedules.append(Schedule(current_schedule[:], min_time, max_time))
+            all_schedules.append(Schedule(current_schedule[:], f"{min_time.hour}:00", f"{max_time.hour+1}:00"))
             return
         
         for lecture in lectures[0]:

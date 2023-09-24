@@ -91,15 +91,11 @@ def generatedom():
         # found = False
         # if (all_schedules != None):
         #     found = True
-        #     all_schedules = list(all_schedules)
+        #     all_sc hedules = list(all_schedules)
         # if (found == False):
         all_schedules = generateHelper(selectedCoursesArray, selectedCoursesArrayString)
-        
         if (len(all_schedules) == 0):
             return jsonify({'message': 'no schedules found'}), 300
-        for schd in all_schedules:
-            print("min", schd.min_time)
-            print("max", schd.max_time)
         
         return jsonify({'schedules': all_schedules}), 200
 
