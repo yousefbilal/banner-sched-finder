@@ -142,7 +142,8 @@ a {
   margin-left: 1rem;
   margin-bottom: 2rem;
   border-top: 1px solid #8a2be2;
-  visibility: hidden;
+  /* visibility: hidden; */
+  display: none;
 }
 .schedule-entry {
   display: flex;
