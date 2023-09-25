@@ -29,18 +29,18 @@ def generate_scheds(lectures:list[list[Lecture]], labs:dict[str, list[Lab]]) -> 
             
             if not lecture.is_conflicting(current_schedule):
                 current_schedule.append(lecture)
-                min_time = min(min_time, lecture.time[0])
-                max_time = max(max_time, lecture.time[1])
+                cmin_time = min(min_time, lecture.time[0])
+                cmax_time = max(max_time, lecture.time[1])
                 if lecture.has_lab:
                     for lab in lecture.get_available_labs(labs):
                         if not lab.is_conflicting(current_schedule):
                             current_schedule.append(lab)
-                            min_time = min(min_time, lab.time[0])
-                            max_time = max(max_time, lab.time[1])
-                            helper(lectures[1:],labs ,current_schedule, all_schedules, min_time, max_time)
+                            cmin_time = min(min_time, lab.time[0])
+                            cmax_time = max(max_time, lab.time[1])
+                            helper(lectures[1:],labs ,current_schedule, all_schedules, cmin_time, cmax_time)
                             current_schedule.pop()   
                 else:
-                    helper(lectures[1:], labs, current_schedule, all_schedules, min_time, max_time)
+                    helper(lectures[1:], labs, current_schedule, all_schedules, cmin_time, cmax_time)
                 current_schedule.pop()
     max_time = datetime(1,1,1,0,0)
     min_time = datetime(9999,1,1,0,0)
