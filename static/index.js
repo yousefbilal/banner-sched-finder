@@ -194,7 +194,7 @@ const generateSchedule = async (e) => {
     if (!schedules || schedules.length === 0) {
       throw new Error('No schedules found')
     }
-    var zip = new JSZip()
+    // var zip = new JSZip() // commented in html file
     // add the base 64 images to the zip
     schedules.forEach((schedule, index) => {
       zip.file(`schedule${index + 1}.png`, schedule, {
@@ -256,7 +256,6 @@ const generateScheduleDOM = async (e) => {
   e.preventDefault()
   // const submitBtn = document.getElementById('submitBtn')
   // submitBtn.disabled = true
-
   const alertBox = document.getElementById('alertBox')
   alertBox.style.backgroundColor = '#ccc'
   alertBox.style.color = '#1a1a1a'
@@ -293,13 +292,36 @@ const generateScheduleDOM = async (e) => {
   const schedulediv = document.getElementById('schedule-body')
   schedulediv.innerHTML = ''
   // add first schedule
+  // show relevant time items
   const timeItems = document.querySelectorAll('.schedule-time-item')
+  let heightOfOneHourTimeSlot = 48
   timeItems.forEach((timeItem) => {
-    timeItem.style.visibility = 'hidden'
+    if (
+      Number(timeItem.getAttribute('data-time').split(':')[0]) >=
+        Number(schedules[0].min_hour.split(':')[0]) &&
+      Number(timeItem.getAttribute('data-time').split(':')[0]) <=
+        Number(schedules[0].max_hour.split(':')[0])
+    ) {
+      timeItem.style.display = 'block'
+      if (
+        Number(timeItem.getAttribute('data-time').split(':')[0]) ==
+        Number(schedules[0].min_hour.split(':')[0]) + 1
+      ) {
+        heightOfOneHourTimeSlot =
+          timeItem.offsetTop - timeItem.previousElementSibling.offsetTop
+      }
+    } else {
+      timeItem.style.display = 'none'
+    }
   })
   let colorCount = 0
   schedules[0].courses_list.forEach((scheduleEntry) => {
-    createScheduleEntry(scheduleEntry, scheduleEntry.days.length, colorCount++)
+    createScheduleEntry(
+      scheduleEntry,
+      scheduleEntry.days.length,
+      colorCount++,
+      heightOfOneHourTimeSlot
+    )
   })
   const formContainer = document.getElementById('form-container')
   formContainer.style.display = 'none'
@@ -319,7 +341,7 @@ const generateScheduleDOM = async (e) => {
     alertBox.style.display = 'none'
   }, 5000)
 }
-const createScheduleEntry = (entry, count, color) => {
+const createScheduleEntry = (entry, count, color, heightOfOneHourTimeSlot) => {
   for (let i = 0; i < count; i++) {
     const scheduleEntry = document.createElement('div')
     scheduleEntry.className = 'schedule-entry'
@@ -359,7 +381,7 @@ const createScheduleEntry = (entry, count, color) => {
     scheduleEntryInfo.appendChild(scheduleEntryInfoInstructor)
     scheduleEntryInfo.appendChild(scheduleEntryInfoTime)
     scheduleEntry.appendChild(scheduleEntryInfo)
-    positionScheduleEntry(scheduleEntry)
+    positionScheduleEntry(scheduleEntry, heightOfOneHourTimeSlot)
     if (scheduleEntry.scrollHeight > scheduleEntry.clientHeight) {
       const instructorArray = entry.instructor.split(' ')
       scheduleEntryInfoInstructor.innerHTML =
@@ -368,7 +390,7 @@ const createScheduleEntry = (entry, count, color) => {
   }
 }
 // schedule
-const positionScheduleEntry = (element) => {
+const positionScheduleEntry = (element, heightOfOneHourTimeSlot) => {
   try {
     const scheduleEntry = element
     const startTime = scheduleEntry
@@ -405,38 +427,9 @@ const positionScheduleEntry = (element) => {
         '.schedule-time-item[data-time="' + newTime + '"]'
       )
     }
-    //show the used times
-    scheduleEntryTopElement.style.visibility = 'visible'
-    let previousElement = scheduleEntryTopElement.previousElementSibling
-    while (previousElement != null) {
-      previousElement.style.visibility = 'visible'
-      previousElement = previousElement.previousElementSibling
-    }
-    // show elements between top and bottom
-    let nextElement = scheduleEntryTopElement.nextElementSibling
-    while (nextElement != scheduleEntryBottomElement) {
-      nextElement.style.visibility = 'visible'
-      nextElement = nextElement.nextElementSibling
-    }
-    scheduleEntryBottomElement.style.visibility = 'visible'
-
-    let timePlusOne = endTime.split(':')[0]
-
-    timePlusOne = Number(timePlusOne) + 1
-    timePlusOne = timePlusOne + ':00'
-    const scheduleEntryTimePlusOneElement = document.querySelector(
-      '.schedule-time-item[data-time="' + timePlusOne + '"]'
-    )
-    if (scheduleEntryTimePlusOneElement != null) {
-      scheduleEntryTimePlusOneElement.style.visibility = 'visible'
-    }
     //calculations
     const scheduleEntryTop = scheduleEntryTopElement.offsetTop
     const scheduleEntryBottom = scheduleEntryBottomElement.offsetTop
-    const heightOfOneHourTimeSlot =
-      document.querySelector('.schedule-time-item[data-time="10:00"]')
-        .offsetTop -
-      document.querySelector('.schedule-time-item[data-time="9:00"]').offsetTop
     const scheduleEntryHeight = //calculate height based on start and end time
       scheduleEntryBottom -
       scheduleEntryTop +
@@ -481,13 +474,36 @@ const goPreviousSchedule = () => {
   const schedulediv = document.getElementById('schedule-body')
   schedulediv.innerHTML = ''
   // add previous schedule
+  // show relevant time items
   const timeItems = document.querySelectorAll('.schedule-time-item')
+  let heightOfOneHourTimeSlot = 48
   timeItems.forEach((timeItem) => {
-    timeItem.style.visibility = 'hidden'
+    if (
+      Number(timeItem.getAttribute('data-time').split(':')[0]) >=
+        Number(schedules[previousSchedule - 1].min_hour.split(':')[0]) &&
+      Number(timeItem.getAttribute('data-time').split(':')[0]) <=
+        Number(schedules[previousSchedule - 1].max_hour.split(':')[0])
+    ) {
+      timeItem.style.display = 'block'
+      if (
+        Number(timeItem.getAttribute('data-time').split(':')[0]) ==
+        Number(schedules[previousSchedule - 1].min_hour.split(':')[0]) + 1
+      ) {
+        heightOfOneHourTimeSlot =
+          timeItem.offsetTop - timeItem.previousElementSibling.offsetTop
+      }
+    } else {
+      timeItem.style.display = 'none'
+    }
   })
   let colorCount = 0
   schedules[previousSchedule - 1].courses_list.forEach((scheduleEntry) => {
-    createScheduleEntry(scheduleEntry, scheduleEntry.days.length, colorCount++)
+    createScheduleEntry(
+      scheduleEntry,
+      scheduleEntry.days.length,
+      colorCount++,
+      heightOfOneHourTimeSlot
+    )
   })
   scheduleTotalSpan.innerHTML = ' ' + previousSchedule + ' of ' + totalSchedules
   const scheduleContainer = document.getElementById('schedule-container')
@@ -506,13 +522,36 @@ const goNextSchedule = () => {
   const schedulediv = document.getElementById('schedule-body')
   schedulediv.innerHTML = ''
   // add next schedule
+  // show relevant time items
   const timeItems = document.querySelectorAll('.schedule-time-item')
+  let heightOfOneHourTimeSlot = 48
   timeItems.forEach((timeItem) => {
-    timeItem.style.visibility = 'hidden'
+    if (
+      Number(timeItem.getAttribute('data-time').split(':')[0]) >=
+        Number(schedules[nextSchedule - 1].min_hour.split(':')[0]) &&
+      Number(timeItem.getAttribute('data-time').split(':')[0]) <=
+        Number(schedules[nextSchedule - 1].max_hour.split(':')[0])
+    ) {
+      timeItem.style.display = 'block'
+      if (
+        Number(timeItem.getAttribute('data-time').split(':')[0]) ==
+        Number(schedules[nextSchedule - 1].min_hour.split(':')[0]) + 1
+      ) {
+        heightOfOneHourTimeSlot =
+          timeItem.offsetTop - timeItem.previousElementSibling.offsetTop
+      }
+    } else {
+      timeItem.style.display = 'none'
+    }
   })
   let colorCount = 0
   schedules[nextSchedule - 1].courses_list.forEach((scheduleEntry) => {
-    createScheduleEntry(scheduleEntry, scheduleEntry.days.length, colorCount++)
+    createScheduleEntry(
+      scheduleEntry,
+      scheduleEntry.days.length,
+      colorCount++,
+      heightOfOneHourTimeSlot
+    )
   })
   scheduleTotalSpan.innerHTML = ' ' + nextSchedule + ' of ' + totalSchedules
   const scheduleContainer = document.getElementById('schedule-container')
@@ -525,7 +564,7 @@ const backToForm = () => {
   formContainer.style.display = 'block'
   const timeItems = document.querySelectorAll('.schedule-time-item')
   timeItems.forEach((timeItem) => {
-    timeItem.style.visibility = 'hidden'
+    timeItem.style.display = 'none'
   })
   const scheduleContainer = document.getElementById('schedule-container')
   scheduleContainer.style.visibility = 'hidden'
