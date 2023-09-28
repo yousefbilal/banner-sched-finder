@@ -34,6 +34,8 @@ class Course:
         return False, []
     
     
+    
+    
 @dataclass
 class Lab(Course):
     def __str__(self):
@@ -45,9 +47,14 @@ class Lecture(Course):
     has_lab: bool
     is_required_with_section : bool
     required_sections : list
-    def __init__(self, course_code, crn, section, time, days, instructor, courses_list, is_required_with_section, required_sections):
-        super().__init__(course_code,crn, section, time,days, instructor, is_required_with_section, required_sections)
-        self.has_lab = course_code+'L' in courses_list or course_code+'R' in courses_list
+    # def __init__(self, course_code, crn, section, time, days, instructor, courses_list, is_required_with_section, required_sections):
+    #     super().__init__(course_code,crn, section, time,days, instructor, is_required_with_section, required_sections)
+    #     self.has_lab = False
+    #     for course in courses_list:
+    #         if self.course_code + 'L' == course or self.course_code + 'R' == course:
+    #             self.has_lab = True
+    #             break
+         
     
     def get_available_labs(self, lab_dict : dict[str, list[Lab]]) -> list[Lab]:
         available_labs =[]
@@ -60,6 +67,21 @@ class Lecture(Course):
     
     def __str__(self):
         return f'Lecture({self.course_code} - {self.section} - {self.crn} - {self.days} - {self.time} - {self.instructor})'
+    
+    @classmethod
+    def createBreak(cls, start_time, end_time, days):
+        return Lecture("BREAK", "", "", [datetime.strptime(start_time,"%H:%M"), datetime.strptime(end_time,"%H:%M")], days, 
+                      "", False, [], False)
+    
+    @classmethod
+    def createLecture(cls, course_code, crn, section, time, days, instructor, courses_list, is_required_with_section, required_sections):
+        has_lab = False
+        for course in courses_list:
+            if course_code + 'L' == course or course_code + 'R' == course:
+                has_lab = True
+                break
+        return Lecture(course_code,crn, section, time,days, instructor, is_required_with_section, required_sections,has_lab)
+        
     
     
         

@@ -1,11 +1,6 @@
 from Schedule import Schedule
 from course import *
 from datetime import datetime
-course_codes = ["AUS","ACC","ANT","ARA","ARC","ART","BIO","BME","BSE","BPE","BUS","BIS","BLW","CHE",
-                "CHM","CVE","COE","CMP","CMT","DES","ECO","ELE","NGN","EGM","ESM","ENG","ELP","ELT",
-                "ENV","EWE","FLM","FIN","GEO","HIS","INE","ISA","IEN","IDE","INS","KOR","MGT","MKT",
-                "MCM","MBA","MSE","MTH","MCE","MTR","MUM","MUS","PHI","PHY","POL","PSY","QBA","SOC",
-                "STA","ABRD","SCM","THE","TRA","UPA","UPL","VIS","WST","WRI"]
 
 # def find_course(courses, title):
 #     '''the first return value represents whether a course exists

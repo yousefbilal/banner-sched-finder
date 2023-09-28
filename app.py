@@ -32,17 +32,18 @@ schedulesProjection = {"_id": 0, "courses": 1, "schedules": 1}
 # end of mongo db
 
 
-def generateHelper(selectedCoursesArray, selectedCoursesArrayString):
+def generateHelper(selectedCoursesArray, breaks):
     try:
         lectures_list = []
         lectures_dict = dict()
         labs_dict = dict()
-        for i in range(len(selectedCoursesArray)):
-            dataCourse = selectedCoursesArray[i]
+        selectedCoursesArrayString = [f"{obj['subject']} {obj['code']}" for obj in selectedCoursesArray]
+        for dataCourse in selectedCoursesArray:
             courses = coursesCollection.find(
                 {"code": dataCourse["code"], "subject": dataCourse["subject"]})
+            
+            course_code = dataCourse["subject"] + ' ' + dataCourse["code"]
             for course in courses:
-                course_code = course["fullCode"]
                 crn = course["crn"]
                 section = course["section"]
                 time = course["time"]
@@ -53,11 +54,14 @@ def generateHelper(selectedCoursesArray, selectedCoursesArrayString):
                     labs_dict.setdefault(course_code[:-1], []).append(Lab(course_code, crn, section,time, days,
                                                                      instructor_name, *Course.find_required_sections(course["full_name"])))
                 else:
-                    lectures_dict.setdefault(course_code, []).append(Lecture(course_code, crn, section, time, days,
-                                                                             instructor_name, selectedCoursesArrayString, *Course.find_required_sections(course["full_name"])))
+                    lectures_dict.setdefault(course_code, []).append(Lecture.createLecture(course_code, crn, section, time, days,
+                                                                    instructor_name, selectedCoursesArrayString, *Course.find_required_sections(course["full_name"])))
         for value in lectures_dict.values():
             lectures_list.append(value)
         
+        for _break in breaks:
+            lectures_list.append([Lecture.createBreak(_break["startTime"], _break["endTime"], _break["days"])])
+            
         all_schedules = generate_scheds(lectures_list, labs_dict)
         # if (len(all_schedules) == 0):
         #     return all_schedules
@@ -83,9 +87,11 @@ def generatedom():
         data = request.get_json()
         print(data)
         selectedCoursesArray = data["selectedCoursesArray"]
+        # breaks = data["breaks"]
+        breaks = [{"startTime":"17:00", "endTime": "19:00", "days":"TR"}]
         # selectedCoursesArray is a list of objects (strings)
         # make it a list of strings
-        selectedCoursesArrayString = [f"{obj['subject']} {obj['code']}" for obj in selectedCoursesArray]
+        
         # all_schedules = schedulesCollection.find_one(
         #     {"courses": {"$all": selectedCoursesArrayString}}, schedulesProjection)
         # found = False
@@ -93,7 +99,7 @@ def generatedom():
         #     found = True
         #     all_sc hedules = list(all_schedules)
         # if (found == False):
-        all_schedules = generateHelper(selectedCoursesArray, selectedCoursesArrayString)
+        all_schedules = generateHelper(selectedCoursesArray, breaks)
         if (len(all_schedules) == 0):
             return jsonify({'message': 'no schedules found'}), 300
         
