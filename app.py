@@ -39,8 +39,12 @@ def generateHelper(selectedCoursesArray, breaks):
         labs_dict = dict()
         selectedCoursesArrayString = [f"{obj['subject']} {obj['code']}" for obj in selectedCoursesArray]
         for dataCourse in selectedCoursesArray:
-            courses = coursesCollection.find(
-                {"code": dataCourse["code"], "subject": dataCourse["subject"]})
+            if dataCourse.has_key("section"):
+                courses = coursesCollection.find(
+                    {"code": dataCourse["code"], "subject": dataCourse["subject"], "section": dataCourse["section"]})
+            else:
+                courses = coursesCollection.find(
+                    {"code": dataCourse["code"], "subject": dataCourse["subject"]})
             
             course_code = dataCourse["subject"] + ' ' + dataCourse["code"]
             for course in courses:
@@ -60,7 +64,7 @@ def generateHelper(selectedCoursesArray, breaks):
             lectures_list.append(value)
         
         for _break in breaks:
-            lectures_list.append([Lecture.createBreak(_break["startTime"], _break["endTime"], _break["days"])])
+            lectures_list.append([Lecture.createBreak(_break["startTime"], _break["endTime"], _break.get("days", "MTWR"))])
             
         all_schedules = generate_scheds(lectures_list, labs_dict)
         # if (len(all_schedules) == 0):
@@ -87,8 +91,7 @@ def generatedom():
         data = request.get_json()
         print(data)
         selectedCoursesArray = data["selectedCoursesArray"]
-        # breaks = data["breaks"]
-        breaks = [{"startTime":"17:00", "endTime": "19:00", "days":"TR"}]
+        breaks = data.get("breaks", [])
         # selectedCoursesArray is a list of objects (strings)
         # make it a list of strings
         

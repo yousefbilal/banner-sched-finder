@@ -24,8 +24,13 @@ def generate_scheds(lectures:list[list[Lecture]], labs:dict[str, list[Lab]]) -> 
             
             if not lecture.is_conflicting(current_schedule):
                 current_schedule.append(lecture)
-                cmin_time = min(min_time, lecture.time[0])
-                cmax_time = max(max_time, lecture.time[1])
+                if lecture.course_code != "BREAK":
+                    cmin_time = min(min_time, lecture.time[0])
+                    cmax_time = max(max_time, lecture.time[1])
+                else:
+                    cmin_time = min_time
+                    cmax_time = max_time
+                    
                 if lecture.has_lab:
                     for lab in lecture.get_available_labs(labs):
                         if not lab.is_conflicting(current_schedule):
