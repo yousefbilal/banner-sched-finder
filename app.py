@@ -39,12 +39,13 @@ def generateHelper(selectedCoursesArray, breaks):
         lectures_list = []
         lectures_dict = dict()
         labs_dict = dict()
+        courses = []
         selectedCoursesArrayString = [
             f"{obj['subject']} {obj['code']}" for obj in selectedCoursesArray]
         for dataCourse in selectedCoursesArray:
             if dataCourse["sections"][0] != "Any":
                 for section in dataCourse["sections"]:
-                    courses = coursesCollection.find(
+                    courses += coursesCollection.find(
                         {"code": dataCourse["code"], "subject": dataCourse["subject"], "section": section})
             else:
                 courses = coursesCollection.find(

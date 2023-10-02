@@ -587,7 +587,7 @@ const displayAdvancedOptions = () => {
   backButton.setAttribute('type', 'button')
   backButton.setAttribute('value', 'Back')
   backButton.classList.add('inputBtn')
-  backButton.classList.add('deleteBtn')
+  backButton.classList.add('backBtn')
   backButton.onclick = (event) => {
     advancedOptionsForm.style.display = 'none'
     form.style.display = 'block'
@@ -657,6 +657,15 @@ const addBreakEntry = (e) => {
 }
 const deleteBreakEntry = (e) => {
   const breakEntry = e.target.parentNode
+  const advancedOptionsForm = breakEntry.parentNode
+  // if its the last breakEntry then just reset it
+  if (advancedOptionsForm.querySelectorAll('.advancedEntry').length === 4) {
+    const options = breakEntry.querySelectorAll('.breakBetween')
+    options.forEach((option) => {
+      option.value = 'None'
+    })
+    return
+  }
   breakEntry.remove()
 }
 const generateSchedule = async (e) => {
@@ -782,7 +791,7 @@ const generateScheduleDOM = async (e) => {
       ) {
         throw new Error('Please remove duplicate courses')
       }
-      const sections = []
+      let sections = []
       const formContainer = document.getElementById('form-container')
       const editForm = formContainer.querySelector(
         '.editForm[data-id="' + course.getAttribute('data-id') + '"]'
@@ -790,13 +799,17 @@ const generateScheduleDOM = async (e) => {
       if (editForm) {
         const sectionsSelect = editForm.querySelectorAll('.sectionSelect')
         sectionsSelect.forEach((section) => {
-          if (section.value === 'Any') return
+          if (section.value === 'Any') {
+            sections = ['Any']
+            return
+          }
           sections.push(section.value.split(' ')[0])
         })
-        selectedCoursesArray.push({ subject, code, sections })
-      } else {
-        selectedCoursesArray.push({ subject, code, sections: ['Any'] })
       }
+      if (sections.length === 0) {
+        sections = ['Any']
+      }
+      selectedCoursesArray.push({ subject, code, sections })
     })
     const advancedOptionsForm = document.getElementById('advancedOptions')
     const breaks = []

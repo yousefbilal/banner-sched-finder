@@ -69,6 +69,10 @@ h1 {
   margin: 0;
   margin-left: 0.5rem;
 }
+.backBtn {
+  padding: 0.3rem 0.8rem;
+  margin: 0;
+}
 .entry {
   display: flex;
   flex-direction: row;
