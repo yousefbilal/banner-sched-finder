@@ -4,14 +4,14 @@ let coursesWithInfo
 let schedules
 const timings = [
   'None',
-  '8:00',
-  '8:15',
-  '8:30',
-  '8:45',
-  '9:00',
-  '9:15',
-  '9:30',
-  '9:45',
+  '08:00',
+  '08:15',
+  '08:30',
+  '08:45',
+  '09:00',
+  '09:15',
+  '09:30',
+  '09:45',
   '10:00',
   '10:15',
   '10:30',
@@ -761,143 +761,163 @@ const colors = [
   '#27AE60', // Light Green
 ]
 const generateScheduleDOM = async (e) => {
-  e.preventDefault()
-  // const submitBtn = document.getElementById('submitBtn')
-  // submitBtn.disabled = true
-  const alertBox = document.getElementById('alertBox')
-  alertBox.style.backgroundColor = '#ccc'
-  alertBox.style.color = '#1a1a1a'
-  alertBox.style.display = 'block'
-  alertBox.innerHTML = 'Generating Schedules...'
-  const selectedCourses = document.querySelectorAll('.entry')
-  const selectedCoursesArray = []
-  selectedCourses.forEach((course) => {
-    const subject = course.querySelector('.subject').value
-    const code = course.querySelector('.code').value
-    if (
-      selectedCoursesArray.find((c) => c.code === code && c.subject === subject)
-    ) {
-      throw new Error('Please remove duplicate courses')
+  try {
+    e.preventDefault()
+    // const submitBtn = document.getElementById('submitBtn')
+    // submitBtn.disabled = true
+    const alertBox = document.getElementById('alertBox')
+    alertBox.style.backgroundColor = '#ccc'
+    alertBox.style.color = '#1a1a1a'
+    alertBox.style.display = 'block'
+    alertBox.innerHTML = 'Generating Schedules...'
+    const selectedCourses = document.querySelectorAll('.entry')
+    const selectedCoursesArray = []
+    selectedCourses.forEach((course) => {
+      const subject = course.querySelector('.subject').value
+      const code = course.querySelector('.code').value
+      if (
+        selectedCoursesArray.find(
+          (c) => c.code === code && c.subject === subject
+        )
+      ) {
+        throw new Error('Please remove duplicate courses')
+      }
+      const sections = []
+      const formContainer = document.getElementById('form-container')
+      const editForm = formContainer.querySelector(
+        '.editForm[data-id="' + course.getAttribute('data-id') + '"]'
+      )
+      if (editForm) {
+        const sectionsSelect = editForm.querySelectorAll('.sectionSelect')
+        sectionsSelect.forEach((section) => {
+          if (section.value === 'Any') return
+          sections.push(section.value.split(' ')[0])
+        })
+        selectedCoursesArray.push({ subject, code, sections })
+      } else {
+        selectedCoursesArray.push({ subject, code, sections: ['Any'] })
+      }
+    })
+    const advancedOptionsForm = document.getElementById('advancedOptions')
+    const breaks = []
+    if (advancedOptionsForm) {
+      const no8AM = advancedOptionsForm.querySelector('.no8AM').checked
+      const noMultipleLabs = //to do
+        advancedOptionsForm.querySelector('.noMultipleLabs').checked
+      const noClassesAfter5PM =
+        advancedOptionsForm.querySelector('.noClassesAfter5PM').checked
+      const breakBetweenSelect =
+        advancedOptionsForm.querySelectorAll('.breakBetween')
+      for (let i = 0; i < breakBetweenSelect.length; i += 2) {
+        if (
+          breakBetweenSelect[i].value === 'None' ||
+          breakBetweenSelect[i + 1].value === 'None' ||
+          breakBetweenSelect[i].value === breakBetweenSelect[i + 1].value ||
+          breakBetweenSelect[i].value > breakBetweenSelect[i + 1].value
+        ) {
+          continue
+        }
+        breaks.push({
+          startTime: breakBetweenSelect[i].value,
+          endTime: breakBetweenSelect[i + 1].value,
+        })
+      }
+      if (no8AM) {
+        breaks.push({
+          startTime: '08:00',
+          endTime: '09:00',
+        })
+      }
+      if (noClassesAfter5PM) {
+        breaks.push({
+          startTime: '17:00',
+          endTime: '22:00',
+        })
+      }
     }
-    const sections = []
+    if (selectedCoursesArray.length === 0) {
+      throw new Error('Please add at least one course')
+    }
+    const response = await fetch('/generateScheduleDOM', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ selectedCoursesArray, breaks }),
+    })
+    const data = await response.json()
+    schedules = data.schedules
+    if (!schedules || schedules.length === 0) {
+      throw new Error('No schedules found')
+    }
+    const schedulediv = document.getElementById('schedule-body')
+    schedulediv.innerHTML = ''
+    // add first schedule
+    // show relevant time items
+    const timeItems = document.querySelectorAll('.schedule-time-item')
+    let heightOfOneHourTimeSlot = 48
+    timeItems.forEach((timeItem) => {
+      if (
+        Number(timeItem.getAttribute('data-time').split(':')[0]) >=
+          Number(schedules[0].min_hour.split(':')[0]) &&
+        Number(timeItem.getAttribute('data-time').split(':')[0]) <=
+          Number(schedules[0].max_hour.split(':')[0])
+      ) {
+        timeItem.style.display = 'block'
+        if (
+          Number(timeItem.getAttribute('data-time').split(':')[0]) ==
+          Number(schedules[0].min_hour.split(':')[0]) + 1
+        ) {
+          heightOfOneHourTimeSlot =
+            timeItem.offsetTop - timeItem.previousElementSibling.offsetTop
+        }
+      } else {
+        timeItem.style.display = 'none'
+      }
+    })
+    let colorCount = 0
+    schedules[0].courses_list.forEach((scheduleEntry) => {
+      if (scheduleEntry.course_code === 'BREAK') {
+      } else {
+        createScheduleEntry(
+          scheduleEntry,
+          scheduleEntry.days.length,
+          colorCount++,
+          heightOfOneHourTimeSlot
+        )
+      }
+    })
     const formContainer = document.getElementById('form-container')
-    const editForm = formContainer.querySelector(
-      '.editForm[data-id="' + course.getAttribute('data-id') + '"]'
-    )
-    if (editForm) {
-      const sectionsSelect = editForm.querySelectorAll('.sectionSelect')
-      sectionsSelect.forEach((section) => {
-        if (section.value === 'Any') return
-        sections.push(section.value.split(' ')[0])
-      })
-      selectedCoursesArray.push({ subject, code, sections })
-    } else {
-      selectedCoursesArray.push({ subject, code, sections: ['Any'] })
-    }
-  })
-  const advancedOptionsForm = document.getElementById('advancedOptions')
-  const breaks = []
-  if (advancedOptionsForm) {
-    const no8AM = advancedOptionsForm.querySelector('.no8AM').checked
-    const noMultipleLabs = //to do
-      advancedOptionsForm.querySelector('.noMultipleLabs').checked
-    const noClassesAfter5PM =
-      advancedOptionsForm.querySelector('.noClassesAfter5PM').checked
-    const breakBetweenSelect =
-      advancedOptionsForm.querySelectorAll('.breakBetween')
-    for (let i = 0; i < breakBetweenSelect.length; i += 2) {
-      if (
-        breakBetweenSelect[i].value === 'None' ||
-        breakBetweenSelect[i + 1].value === 'None' ||
-        breakBetweenSelect[i].value === breakBetweenSelect[i + 1].value ||
-        breakBetweenSelect[i].value > breakBetweenSelect[i + 1].value
-      ) {
-        continue
-      }
-      breaks.push({
-        startTime: breakBetweenSelect[i].value,
-        endTime: breakBetweenSelect[i + 1].value,
-      })
-    }
-    if (no8AM) {
-      breaks.push({
-        startTime: '08:00',
-        endTime: '09:00',
-      })
-    }
-    if (noClassesAfter5PM) {
-      breaks.push({
-        startTime: '17:00',
-        endTime: '22:00',
-      })
-    }
+    formContainer.style.display = 'none'
+    alertBox.innerHTML = 'Schedule(s) generated'
+    const scheduleContainer = document.getElementById('schedule-container')
+    scheduleContainer.style.visibility = 'visible'
+    const scheduleTotalHeader = document.getElementById('schedule-total-header')
+    scheduleTotalHeader.style.display = 'flex'
+    scheduleTotalHeader.innerHTML =
+      '<input type="button" value="x" class="inputBtn backToFormBtn" onclick="backToForm()"/> <i class="fa-solid fa-arrow-left" onclick ="goPreviousSchedule()"></i> ' +
+      ' <span class="schedule-total-span" id="schedule-total-span"> 1 of ' +
+      schedules.length +
+      ' </span><i class="fa-solid fa-arrow-right" onclick="goNextSchedule()"></i>'
+    // submitBtn.disabled = false
+    setTimeout(() => {
+      alertBox.innerHTML = ''
+      alertBox.style.display = 'none'
+    }, 5000)
+  } catch (e) {
+    console.log(e.message)
+    const submitBtn = document.getElementById('submitBtn')
+    submitBtn.disabled = false
+    const alertBox = document.getElementById('alertBox')
+    alertBox.innerHTML = e.message
+    alertBox.style.backgroundColor = '#ccc'
+    alertBox.style.color = '#1a1a1a'
+    alertBox.style.display = 'block'
+    setTimeout(() => {
+      alertBox.innerHTML = ''
+      alertBox.style.display = 'none'
+    }, 5000)
   }
-  if (selectedCoursesArray.length === 0) {
-    throw new Error('Please add at least one course')
-  }
-  const response = await fetch('/generateScheduleDOM', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ selectedCoursesArray, breaks }),
-  })
-  const data = await response.json()
-  schedules = data.schedules
-  if (!schedules || schedules.length === 0) {
-    throw new Error('No schedules found')
-  }
-  const schedulediv = document.getElementById('schedule-body')
-  schedulediv.innerHTML = ''
-  // add first schedule
-  // show relevant time items
-  const timeItems = document.querySelectorAll('.schedule-time-item')
-  let heightOfOneHourTimeSlot = 48
-  timeItems.forEach((timeItem) => {
-    if (
-      Number(timeItem.getAttribute('data-time').split(':')[0]) >=
-        Number(schedules[0].min_hour.split(':')[0]) &&
-      Number(timeItem.getAttribute('data-time').split(':')[0]) <=
-        Number(schedules[0].max_hour.split(':')[0])
-    ) {
-      timeItem.style.display = 'block'
-      if (
-        Number(timeItem.getAttribute('data-time').split(':')[0]) ==
-        Number(schedules[0].min_hour.split(':')[0]) + 1
-      ) {
-        heightOfOneHourTimeSlot =
-          timeItem.offsetTop - timeItem.previousElementSibling.offsetTop
-      }
-    } else {
-      timeItem.style.display = 'none'
-    }
-  })
-  let colorCount = 0
-  schedules[0].courses_list.forEach((scheduleEntry) => {
-    createScheduleEntry(
-      scheduleEntry,
-      scheduleEntry.days.length,
-      colorCount++,
-      heightOfOneHourTimeSlot
-    )
-  })
-  const formContainer = document.getElementById('form-container')
-  formContainer.style.display = 'none'
-  alertBox.innerHTML = 'Schedule(s) generated'
-  const scheduleContainer = document.getElementById('schedule-container')
-  scheduleContainer.style.visibility = 'visible'
-  const scheduleTotalHeader = document.getElementById('schedule-total-header')
-  scheduleTotalHeader.style.display = 'flex'
-  scheduleTotalHeader.innerHTML =
-    '<input type="button" value="x" class="inputBtn backToFormBtn" onclick="backToForm()"/> <i class="fa-solid fa-arrow-left" onclick ="goPreviousSchedule()"></i> ' +
-    ' <span class="schedule-total-span" id="schedule-total-span"> 1 of ' +
-    schedules.length +
-    ' </span><i class="fa-solid fa-arrow-right" onclick="goNextSchedule()"></i>'
-  // submitBtn.disabled = false
-  setTimeout(() => {
-    alertBox.innerHTML = ''
-    alertBox.style.display = 'none'
-  }, 5000)
 }
 const createScheduleEntry = (entry, count, color, heightOfOneHourTimeSlot) => {
   for (let i = 0; i < count; i++) {
@@ -1056,12 +1076,15 @@ const goPreviousSchedule = () => {
   })
   let colorCount = 0
   schedules[previousSchedule - 1].courses_list.forEach((scheduleEntry) => {
-    createScheduleEntry(
-      scheduleEntry,
-      scheduleEntry.days.length,
-      colorCount++,
-      heightOfOneHourTimeSlot
-    )
+    if (scheduleEntry.course_code === 'BREAK') {
+    } else {
+      createScheduleEntry(
+        scheduleEntry,
+        scheduleEntry.days.length,
+        colorCount++,
+        heightOfOneHourTimeSlot
+      )
+    }
   })
   scheduleTotalSpan.innerHTML = ' ' + previousSchedule + ' of ' + totalSchedules
   const scheduleContainer = document.getElementById('schedule-container')
@@ -1104,12 +1127,15 @@ const goNextSchedule = () => {
   })
   let colorCount = 0
   schedules[nextSchedule - 1].courses_list.forEach((scheduleEntry) => {
-    createScheduleEntry(
-      scheduleEntry,
-      scheduleEntry.days.length,
-      colorCount++,
-      heightOfOneHourTimeSlot
-    )
+    if (scheduleEntry.course_code === 'BREAK') {
+    } else {
+      createScheduleEntry(
+        scheduleEntry,
+        scheduleEntry.days.length,
+        colorCount++,
+        heightOfOneHourTimeSlot
+      )
+    }
   })
   scheduleTotalSpan.innerHTML = ' ' + nextSchedule + ' of ' + totalSchedules
   const scheduleContainer = document.getElementById('schedule-container')
