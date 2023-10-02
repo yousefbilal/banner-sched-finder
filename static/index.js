@@ -1,6 +1,67 @@
 let subjects
 let courses
+let coursesWithInfo
 let schedules
+const timings = [
+  'None',
+  '8:00',
+  '8:15',
+  '8:30',
+  '8:45',
+  '9:00',
+  '9:15',
+  '9:30',
+  '9:45',
+  '10:00',
+  '10:15',
+  '10:30',
+  '10:45',
+  '11:00',
+  '11:15',
+  '11:30',
+  '11:45',
+  '12:00',
+  '12:15',
+  '12:30',
+  '12:45',
+  '13:00',
+  '13:15',
+  '13:30',
+  '13:45',
+  '14:00',
+  '14:15',
+  '14:30',
+  '14:45',
+  '15:00',
+  '15:15',
+  '15:30',
+  '15:45',
+  '16:00',
+  '16:15',
+  '16:30',
+  '16:45',
+  '17:00',
+  '17:15',
+  '17:30',
+  '17:45',
+  '18:00',
+  '18:15',
+  '18:30',
+  '18:45',
+  '19:00',
+  '19:15',
+  '19:30',
+  '19:45',
+  '20:00',
+  '20:15',
+  '20:30',
+  '20:45',
+  '21:00',
+  '21:15',
+  '21:30',
+  '21:45',
+  '22:00',
+]
 const fillSubjects = async (subjects, element) => {
   try {
     if (!subjects) {
@@ -34,6 +95,15 @@ const fillCodes = async (courses, element) => {
     }
     //reset options
     element.innerHTML = ''
+    // remove edit form for previous subject
+    const entry = element.parentNode
+    const formContainer = document.getElementById('form-container')
+    const editForm = formContainer.querySelector(
+      '.editForm[data-id="' + entry.getAttribute('data-id') + '"]'
+    )
+    if (editForm) {
+      editForm.remove()
+    }
     //get selected subject
     const subject = element.parentNode.querySelector('.subject').value
     const coursesWithSubject = courses.filter((course) => {
@@ -127,11 +197,20 @@ const addEntry = (e) => {
   deleteButton.onclick = (event) => {
     deleteEntry(event)
   }
+  const editButton = document.createElement('input')
+  editButton.setAttribute('type', 'button')
+  editButton.setAttribute('value', '...')
+  editButton.classList.add('inputBtn')
+  editButton.classList.add('deleteBtn')
+  editButton.onclick = (event) => {
+    editEntry(event)
+  }
   entry.appendChild(dropdownlabel)
   entry.appendChild(dropdownselect)
 
   entry.appendChild(dropdownlabelTwo)
   entry.appendChild(dropdownselectTwo)
+  entry.appendChild(editButton)
   entry.appendChild(deleteButton)
   const entries = document.getElementById('entries')
   entries.appendChild(entry)
@@ -148,7 +227,437 @@ const addEntry = (e) => {
 }
 const deleteEntry = (e) => {
   const entry = e.target.parentNode
+  // const subject = entry.querySelector('.subject').value
+  // const code = entry.querySelector('.code').value
+  const formContainer = document.getElementById('form-container')
+  const editForm = formContainer.querySelector(
+    '.editForm[data-id="' + entry.getAttribute('data-id') + '"]'
+  )
+  if (editForm) {
+    editForm.remove()
+  }
   entry.remove()
+}
+const editEntry = (e) => {
+  try {
+    if (!subjects) {
+      throw new Error('Too fast!')
+    }
+    const entry = e.target.parentNode
+    const subject = entry.querySelector('.subject').value
+    const code = entry.querySelector('.code').value
+    const formContainer = document.getElementById('form-container')
+    const form = document.getElementById('form')
+    if (
+      formContainer.querySelector(
+        '.editForm[data-id="' + entry.getAttribute('data-id') + '"]'
+      )
+    ) {
+      // if edit form already exists show it
+      formContainer.querySelector(
+        '.editForm[data-id="' + entry.getAttribute('data-id') + '"]'
+      ).style.display = 'block'
+      form.style.display = 'none'
+      return
+    }
+    // create edit panel
+    const editForm = document.createElement('form')
+    let randomid = Math.random().toString(36).substring(7)
+    // make sure its unique
+    while (
+      formContainer.querySelector('.editForm[data-id="' + randomid + '"]')
+    ) {
+      randomid = Math.random().toString(36).substring(7)
+    }
+    editForm.className = 'editForm'
+    editForm.setAttribute('data-entry-subject', subject)
+    editForm.setAttribute('data-entry-code', code)
+    editForm.setAttribute('data-id', randomid)
+    entry.setAttribute('data-id', randomid)
+    form.style.display = 'none'
+    const editEntry = document.createElement('div')
+    editEntry.className = 'editEntry'
+    const editPanelSectionLabel = document.createElement('label')
+    editPanelSectionLabel.innerHTML = 'Section'
+    editPanelSectionLabel.classList.add('formLabel')
+    const editPanelSection = document.createElement('select')
+    editPanelSection.setAttribute('name', 'section')
+    editPanelSection.classList.add('input')
+    editPanelSection.classList.add('sectionSelect')
+    // synchronize crn
+    // editPanelSection.addEventListener('change', (e) => {
+    //   e.stopPropagation()
+    //   const crn = e.target.value
+    //   const instructor = e.target.parentNode.querySelector('.instructorSelect')
+    //   if (crn === 'Any') {
+    //     instructor.value = 'Any'
+    //     return
+    //   }
+    //   courses.forEach((course) => {
+    //     if (course.crn === crn) {
+    //       instructor.value = course.instructor
+    //     }
+    //   })
+    // })
+    // any
+    const optionAny = document.createElement('option')
+    optionAny.value = 'Any'
+    optionAny.innerHTML = 'Any'
+    editPanelSection.appendChild(optionAny)
+    courses.forEach((course) => {
+      if (course.subject === subject && course.code === code) {
+        const option = document.createElement('option')
+        option.value = course.section + ' ' + course.instructor
+        option.innerHTML = course.section + ' ' + course.instructor
+        editPanelSection.appendChild(option)
+      }
+    })
+    // const instructorLabel = document.createElement('label')
+    // instructorLabel.innerHTML = 'Instructor'
+    // instructorLabel.classList.add('formLabel')
+    // const instructorInput = document.createElement('select')
+    // instructorInput.setAttribute('name', 'instructor')
+    // instructorInput.classList.add('input')
+    // instructorInput.classList.add('instructorSelect')
+    // // any
+    // const optionAnyInstructor = document.createElement('option')
+    // optionAnyInstructor.value = 'Any'
+    // optionAnyInstructor.innerHTML = 'Any'
+    // instructorInput.appendChild(optionAnyInstructor)
+    // courses.forEach((course) => {
+    //   if (course.subject === subject && course.code === code) {
+    //     const option = document.createElement('option')
+    //     option.value = course.instructor
+    //     option.innerHTML = course.instructor
+    //     instructorInput.appendChild(option)
+    //   }
+    // })
+    // synchronize instructor
+    // instructorInput.addEventListener('change', (e) => {
+    //   e.stopPropagation()
+    //   const instructor = e.target.value
+    //   const crn = e.target.parentNode.querySelector('.crnSelect')
+    //   if (instructor === 'Any') {
+    //     crn.value = 'Any'
+    //     return
+    //   }
+    //   const fileteredCourses = courses.filter((course) => {
+    //     return (
+    //       course.instructor === instructor &&
+    //       course.subject === subject &&
+    //       course.code === code
+    //     )
+    //   })
+    //   crn.value = fileteredCourses[0].crn
+    // })
+
+    const addButton = document.createElement('input')
+    addButton.setAttribute('type', 'button')
+    addButton.setAttribute('value', '+')
+    addButton.classList.add('inputBtn')
+    addButton.classList.add('addBtn')
+    addButton.onclick = (event) => {
+      addSection(event)
+    }
+    const deleteButton = document.createElement('input')
+    deleteButton.setAttribute('type', 'button')
+    deleteButton.setAttribute('value', 'x')
+    deleteButton.classList.add('inputBtn')
+    deleteButton.classList.add('deleteBtn')
+    deleteButton.onclick = (event) => {
+      deleteSection(event)
+    }
+    editEntry.appendChild(editPanelSectionLabel)
+    editEntry.appendChild(editPanelSection)
+    editEntry.appendChild(deleteButton)
+    editForm.appendChild(editEntry)
+    const editFormSave = document.createElement('input')
+    editFormSave.setAttribute('type', 'button')
+    editFormSave.setAttribute('value', 'Back')
+    editFormSave.classList.add('inputBtn')
+    editFormSave.classList.add('deleteBtn')
+    editFormSave.onclick = (event) => {
+      editForm.style.display = 'none'
+      form.style.display = 'block'
+    }
+    editForm.appendChild(addButton)
+    editForm.appendChild(editFormSave)
+    formContainer.appendChild(editForm)
+  } catch (e) {
+    console.log(e.message)
+    const alertBox = document.getElementById('alertBox')
+    alertBox.innerHTML = e.message
+    alertBox.style.backgroundColor = '#ccc'
+    alertBox.style.color = '#1a1a1a'
+    alertBox.style.display = 'block'
+    setTimeout(() => {
+      alertBox.innerHTML = ''
+      alertBox.style.display = 'none'
+    }, 5000)
+  }
+}
+const addSection = (e) => {
+  const formContainer = e.target.parentNode
+  const subject = formContainer.getAttribute('data-entry-subject')
+  const code = formContainer.getAttribute('data-entry-code')
+  // add section entry
+  const editEntry = document.createElement('div')
+  editEntry.className = 'editEntry'
+  const editPanelSectionLabel = document.createElement('label')
+  editPanelSectionLabel.innerHTML = 'Section'
+  editPanelSectionLabel.classList.add('formLabel')
+  const editPanelSection = document.createElement('select')
+  editPanelSection.setAttribute('name', 'section')
+  editPanelSection.classList.add('input')
+  editPanelSection.classList.add('sectionSelect')
+  // synchronize crn
+  // editPanelSection.addEventListener('change', (e) => {
+  //   e.stopPropagation()
+  //   const crn = e.target.value
+  //   const instructor = e.target.parentNode.querySelector('.instructorSelect')
+  //   if (crn === 'Any') {
+  //     instructor.value = 'Any'
+  //     return
+  //   }
+  //   courses.forEach((course) => {
+  //     if (course.crn === crn) {
+  //       instructor.value = course.instructor
+  //     }
+  //   })
+  // })
+  // any
+  const optionAny = document.createElement('option')
+  optionAny.value = 'Any'
+  optionAny.innerHTML = 'Any'
+  editPanelSection.appendChild(optionAny)
+  courses.forEach((course) => {
+    if (course.subject === subject && course.code === code) {
+      const option = document.createElement('option')
+      option.value = course.section + ' ' + course.instructor
+      option.innerHTML = course.section + ' ' + course.instructor
+      editPanelSection.appendChild(option)
+    }
+  })
+  // const instructorLabel = document.createElement('label')
+  // instructorLabel.innerHTML = 'Instructor'
+  // instructorLabel.classList.add('formLabel')
+  // const instructorInput = document.createElement('select')
+  // instructorInput.setAttribute('name', 'instructor')
+  // instructorInput.classList.add('input')
+  // instructorInput.classList.add('instructorSelect')
+  // // any
+  // const optionAnyInstructor = document.createElement('option')
+  // optionAnyInstructor.value = 'Any'
+  // optionAnyInstructor.innerHTML = 'Any'
+  // instructorInput.appendChild(optionAnyInstructor)
+  // courses.forEach((course) => {
+  //   if (course.subject === subject && course.code === code) {
+  //     const option = document.createElement('option')
+  //     option.value = course.instructor
+  //     option.innerHTML = course.instructor
+  //     instructorInput.appendChild(option)
+  //   }
+  // })
+  // synchronize instructor
+  // instructorInput.addEventListener('change', (e) => {
+  //   e.stopPropagation()
+  //   const instructor = e.target.value
+  //   const crn = e.target.parentNode.querySelector('.crnSelect')
+  //   if (instructor === 'Any') {
+  //     crn.value = 'Any'
+  //     return
+  //   }
+  //   const fileteredCourses = courses.filter((course) => {
+  //     return (
+  //       course.instructor === instructor &&
+  //       course.subject === subject &&
+  //       course.code === code
+  //     )
+  //   })
+  //   crn.value = fileteredCourses[0].crn
+  // })
+  const deleteButton = document.createElement('input')
+  deleteButton.setAttribute('type', 'button')
+  deleteButton.setAttribute('value', 'x')
+  deleteButton.classList.add('inputBtn')
+  deleteButton.classList.add('deleteBtn')
+  deleteButton.onclick = (event) => {
+    deleteSection(event)
+  }
+  editEntry.appendChild(editPanelSectionLabel)
+  editEntry.appendChild(editPanelSection)
+  editEntry.appendChild(deleteButton)
+  // add it third to last child
+  formContainer.insertBefore(
+    editEntry,
+    formContainer.childNodes[formContainer.childNodes.length - 2]
+  )
+}
+const deleteSection = (e) => {
+  const sectionEntry = e.target.parentNode
+  sectionEntry.remove()
+}
+const displayAdvancedOptions = () => {
+  const formContainer = document.getElementById('form-container')
+  const form = document.getElementById('form')
+  const advancedOptions = document.getElementById('advancedOptions')
+  if (advancedOptions != null) {
+    advancedOptions.style.display = 'block'
+    form.style.display = 'none'
+    return
+  }
+  const advancedOptionsForm = document.createElement('form')
+  advancedOptionsForm.className = 'advancedOptions'
+  advancedOptionsForm.id = 'advancedOptions'
+  const advancedEntry = document.createElement('div')
+  advancedEntry.className = 'advancedEntry'
+  const advancedOptionsFormLabel = document.createElement('label')
+  advancedOptionsFormLabel.innerHTML = 'No 8 AM Classes'
+  advancedOptionsFormLabel.classList.add('formLabel')
+  const advancedOptionsFormInput = document.createElement('input')
+  advancedOptionsFormInput.setAttribute('type', 'checkbox')
+  advancedOptionsFormInput.setAttribute('name', 'no8AM')
+  advancedOptionsFormInput.classList.add('input')
+  advancedOptionsFormInput.classList.add('no8AM')
+  advancedEntry.appendChild(advancedOptionsFormLabel)
+  advancedEntry.appendChild(advancedOptionsFormInput)
+  const advancedEntryTwo = document.createElement('div')
+  advancedEntryTwo.className = 'advancedEntry'
+  const advancedOptionsFormLabelTwo = document.createElement('label')
+  advancedOptionsFormLabelTwo.innerHTML = 'No Multiple Labs on Same Day'
+  advancedOptionsFormLabelTwo.classList.add('formLabel')
+  const advancedOptionsFormInputTwo = document.createElement('input')
+  advancedOptionsFormInputTwo.setAttribute('type', 'checkbox')
+  advancedOptionsFormInputTwo.setAttribute('name', 'noMultipleLabs')
+  advancedOptionsFormInputTwo.classList.add('input')
+  advancedOptionsFormInputTwo.classList.add('noMultipleLabs')
+  advancedEntryTwo.appendChild(advancedOptionsFormLabelTwo)
+  advancedEntryTwo.appendChild(advancedOptionsFormInputTwo)
+  const advancedEntryFour = document.createElement('div')
+  advancedEntryFour.className = 'advancedEntry'
+  const advancedOptionsFormLabelFour = document.createElement('label')
+  advancedOptionsFormLabelFour.innerHTML = 'No Classes after 5 PM'
+  advancedOptionsFormLabelFour.classList.add('formLabel')
+  const advancedOptionsFormInputFour = document.createElement('input')
+  advancedOptionsFormInputFour.setAttribute('type', 'checkbox')
+  advancedOptionsFormInputFour.setAttribute('name', 'noClassesAfter5PM')
+  advancedOptionsFormInputFour.classList.add('input')
+  advancedOptionsFormInputFour.classList.add('noClassesAfter5PM')
+  advancedEntryFour.appendChild(advancedOptionsFormLabelFour)
+  advancedEntryFour.appendChild(advancedOptionsFormInputFour)
+  const advancedEntryThree = document.createElement('div')
+  advancedEntryThree.className = 'advancedEntry'
+  const advancedOptionsFormLabelThree = document.createElement('label')
+  advancedOptionsFormLabelThree.innerHTML = 'Break Between '
+  advancedOptionsFormLabelThree.classList.add('formLabel')
+  const advancedOptionsFormInputThree = document.createElement('select')
+  advancedOptionsFormInputThree.setAttribute('name', 'breakBetween')
+  advancedOptionsFormInputThree.classList.add('input')
+  advancedOptionsFormInputThree.classList.add('breakBetween')
+  // advancedOptionsFormInputThree.setAttribute('placeholder', 'Start Time')
+  const advancedOptionsFormInputThreeExtra = document.createElement('select')
+  advancedOptionsFormInputThreeExtra.setAttribute('name', 'breakBetween')
+  advancedOptionsFormInputThreeExtra.classList.add('input')
+  advancedOptionsFormInputThreeExtra.classList.add('breakBetween')
+  // advancedOptionsFormInputThreeExtra.setAttribute('placeholder', 'End Time')
+  timings.forEach((time) => {
+    const option = document.createElement('option')
+    option.value = time
+    option.innerHTML = time
+    advancedOptionsFormInputThree.appendChild(option)
+    advancedOptionsFormInputThreeExtra.appendChild(option.cloneNode(true))
+  })
+  const addBreakButton = document.createElement('input')
+  addBreakButton.setAttribute('type', 'button')
+  addBreakButton.setAttribute('value', '+')
+  addBreakButton.classList.add('inputBtn')
+  addBreakButton.classList.add('deleteBtn')
+  addBreakButton.onclick = (event) => {
+    addBreakEntry(event)
+  }
+  const deleteBreakButton = document.createElement('input')
+  deleteBreakButton.setAttribute('type', 'button')
+  deleteBreakButton.setAttribute('value', 'x')
+  deleteBreakButton.classList.add('inputBtn')
+  deleteBreakButton.classList.add('deleteBtn')
+  deleteBreakButton.onclick = (event) => {
+    deleteBreakEntry(event)
+  }
+  const backButton = document.createElement('input')
+  backButton.setAttribute('type', 'button')
+  backButton.setAttribute('value', 'Back')
+  backButton.classList.add('inputBtn')
+  backButton.classList.add('deleteBtn')
+  backButton.onclick = (event) => {
+    advancedOptionsForm.style.display = 'none'
+    form.style.display = 'block'
+  }
+  advancedEntryThree.appendChild(advancedOptionsFormLabelThree)
+  advancedEntryThree.appendChild(advancedOptionsFormInputThree)
+  advancedEntryThree.appendChild(advancedOptionsFormInputThreeExtra)
+  advancedEntryThree.appendChild(addBreakButton)
+  advancedEntryThree.appendChild(deleteBreakButton)
+  advancedOptionsForm.appendChild(advancedEntry)
+  advancedOptionsForm.appendChild(advancedEntryTwo)
+  advancedOptionsForm.appendChild(advancedEntryFour)
+  advancedOptionsForm.appendChild(advancedEntryThree)
+  advancedOptionsForm.appendChild(backButton)
+  formContainer.appendChild(advancedOptionsForm)
+  form.style.display = 'none'
+}
+const addBreakEntry = (e) => {
+  const advancedOptionsForm = e.target.parentNode.parentNode
+  const advancedEntryThree = document.createElement('div')
+  advancedEntryThree.className = 'advancedEntry'
+  const advancedOptionsFormLabelThree = document.createElement('label')
+  advancedOptionsFormLabelThree.innerHTML = 'Break Between '
+  advancedOptionsFormLabelThree.classList.add('formLabel')
+  const advancedOptionsFormInputThree = document.createElement('select')
+  advancedOptionsFormInputThree.setAttribute('name', 'breakBetween')
+  advancedOptionsFormInputThree.classList.add('input')
+  advancedOptionsFormInputThree.classList.add('breakBetween')
+  // advancedOptionsFormInputThree.setAttribute('placeholder', 'Start Time')
+  const advancedOptionsFormInputThreeExtra = document.createElement('select')
+  advancedOptionsFormInputThreeExtra.setAttribute('name', 'breakBetween')
+  advancedOptionsFormInputThreeExtra.classList.add('input')
+  advancedOptionsFormInputThreeExtra.classList.add('breakBetween')
+  // advancedOptionsFormInputThreeExtra.setAttribute('placeholder', 'End Time')
+  timings.forEach((time) => {
+    const option = document.createElement('option')
+    option.value = time
+    option.innerHTML = time
+    advancedOptionsFormInputThree.appendChild(option)
+    advancedOptionsFormInputThreeExtra.appendChild(option.cloneNode(true))
+  })
+  const addBreakButton = document.createElement('input')
+  addBreakButton.setAttribute('type', 'button')
+  addBreakButton.setAttribute('value', '+')
+  addBreakButton.classList.add('inputBtn')
+  addBreakButton.classList.add('deleteBtn')
+  addBreakButton.onclick = (event) => {
+    addBreakEntry(event)
+  }
+  const deleteBreakButton = document.createElement('input')
+  deleteBreakButton.setAttribute('type', 'button')
+  deleteBreakButton.setAttribute('value', 'x')
+  deleteBreakButton.classList.add('inputBtn')
+  deleteBreakButton.classList.add('deleteBtn')
+  deleteBreakButton.onclick = (event) => {
+    deleteBreakEntry(event)
+  }
+  advancedEntryThree.appendChild(advancedOptionsFormLabelThree)
+  advancedEntryThree.appendChild(advancedOptionsFormInputThree)
+  advancedEntryThree.appendChild(advancedOptionsFormInputThreeExtra)
+  advancedEntryThree.appendChild(addBreakButton)
+  advancedEntryThree.appendChild(deleteBreakButton)
+  advancedOptionsForm.insertBefore(
+    advancedEntryThree,
+    advancedOptionsForm.childNodes[advancedOptionsForm.childNodes.length - 1]
+  )
+}
+const deleteBreakEntry = (e) => {
+  const breakEntry = e.target.parentNode
+  breakEntry.remove()
 }
 const generateSchedule = async (e) => {
   try {
@@ -186,7 +695,6 @@ const generateSchedule = async (e) => {
       body: JSON.stringify({ selectedCoursesArray }),
     })
     const data = await response.json()
-    // console.log(data)
     // if (data.status != '200') {
     //   throw new Error(data.message)
     // }
@@ -271,9 +779,59 @@ const generateScheduleDOM = async (e) => {
     ) {
       throw new Error('Please remove duplicate courses')
     }
-    selectedCoursesArray.push({ subject, code })
+    const sections = []
+    const formContainer = document.getElementById('form-container')
+    const editForm = formContainer.querySelector(
+      '.editForm[data-id="' + course.getAttribute('data-id') + '"]'
+    )
+    if (editForm) {
+      const sectionsSelect = editForm.querySelectorAll('.sectionSelect')
+      sectionsSelect.forEach((section) => {
+        if (section.value === 'Any') return
+        sections.push(section.value.split(' ')[0])
+      })
+      selectedCoursesArray.push({ subject, code, sections })
+    } else {
+      selectedCoursesArray.push({ subject, code, sections: ['Any'] })
+    }
   })
-
+  const advancedOptionsForm = document.getElementById('advancedOptions')
+  const breaks = []
+  if (advancedOptionsForm) {
+    const no8AM = advancedOptionsForm.querySelector('.no8AM').checked
+    const noMultipleLabs = //to do
+      advancedOptionsForm.querySelector('.noMultipleLabs').checked
+    const noClassesAfter5PM =
+      advancedOptionsForm.querySelector('.noClassesAfter5PM').checked
+    const breakBetweenSelect =
+      advancedOptionsForm.querySelectorAll('.breakBetween')
+    for (let i = 0; i < breakBetweenSelect.length; i += 2) {
+      if (
+        breakBetweenSelect[i].value === 'None' ||
+        breakBetweenSelect[i + 1].value === 'None' ||
+        breakBetweenSelect[i].value === breakBetweenSelect[i + 1].value ||
+        breakBetweenSelect[i].value > breakBetweenSelect[i + 1].value
+      ) {
+        continue
+      }
+      breaks.push({
+        startTime: breakBetweenSelect[i].value,
+        endTime: breakBetweenSelect[i + 1].value,
+      })
+    }
+    if (no8AM) {
+      breaks.push({
+        startTime: '08:00',
+        endTime: '09:00',
+      })
+    }
+    if (noClassesAfter5PM) {
+      breaks.push({
+        startTime: '17:00',
+        endTime: '22:00',
+      })
+    }
+  }
   if (selectedCoursesArray.length === 0) {
     throw new Error('Please add at least one course')
   }
@@ -282,7 +840,7 @@ const generateScheduleDOM = async (e) => {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ selectedCoursesArray }),
+    body: JSON.stringify({ selectedCoursesArray, breaks }),
   })
   const data = await response.json()
   schedules = data.schedules

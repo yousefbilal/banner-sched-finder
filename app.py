@@ -26,7 +26,9 @@ db = client.get_database('banner')
 # Get the collection
 collection = db.get_collection('subjects')
 coursesCollection = db.get_collection('courses')
-projection = {"_id": 0, "subject": 1, "code": 1}
+subjProjection = {"_id": 0, "subject": 1}
+projection = {"_id": 0, "subject": 1, "code": 1,
+              "section": 1, "instructor": 1}
 schedulesCollection = db.get_collection('schedules')
 schedulesProjection = {"_id": 0, "courses": 1, "schedules": 1}
 # end of mongo db
@@ -37,15 +39,17 @@ def generateHelper(selectedCoursesArray, breaks):
         lectures_list = []
         lectures_dict = dict()
         labs_dict = dict()
-        selectedCoursesArrayString = [f"{obj['subject']} {obj['code']}" for obj in selectedCoursesArray]
+        selectedCoursesArrayString = [
+            f"{obj['subject']} {obj['code']}" for obj in selectedCoursesArray]
         for dataCourse in selectedCoursesArray:
-            if dataCourse.has_key("section"):
-                courses = coursesCollection.find(
-                    {"code": dataCourse["code"], "subject": dataCourse["subject"], "section": dataCourse["section"]})
+            if dataCourse["sections"][0] != "Any":
+                for section in dataCourse["sections"]:
+                    courses = coursesCollection.find(
+                        {"code": dataCourse["code"], "subject": dataCourse["subject"], "section": section})
             else:
                 courses = coursesCollection.find(
                     {"code": dataCourse["code"], "subject": dataCourse["subject"]})
-            
+
             course_code = dataCourse["subject"] + ' ' + dataCourse["code"]
             for course in courses:
                 crn = course["crn"]
@@ -55,17 +59,18 @@ def generateHelper(selectedCoursesArray, breaks):
                 instructor_name = course["instructor"]
                 # isLab = course["isLab"]
                 if course["isLab"] and course_code[:-1] in selectedCoursesArrayString:
-                    labs_dict.setdefault(course_code[:-1], []).append(Lab(course_code, crn, section,time, days,
-                                                                     instructor_name, *Course.find_required_sections(course["full_name"])))
+                    labs_dict.setdefault(course_code[:-1], []).append(Lab(course_code, crn, section, time, days,
+                                                                          instructor_name, *Course.find_required_sections(course["full_name"])))
                 else:
                     lectures_dict.setdefault(course_code, []).append(Lecture.createLecture(course_code, crn, section, time, days,
-                                                                    instructor_name, selectedCoursesArrayString, *Course.find_required_sections(course["full_name"])))
+                                                                                           instructor_name, selectedCoursesArrayString, *Course.find_required_sections(course["full_name"])))
         for value in lectures_dict.values():
             lectures_list.append(value)
-        
+
         for _break in breaks:
-            lectures_list.append([Lecture.createBreak(_break["startTime"], _break["endTime"], _break.get("days", "MTWR"))])
-            
+            lectures_list.append([Lecture.createBreak(
+                _break["startTime"], _break["endTime"], _break.get("days", "MTWR"))])
+
         all_schedules = generate_scheds(lectures_list, labs_dict)
         # if (len(all_schedules) == 0):
         #     return all_schedules
@@ -91,10 +96,10 @@ def generatedom():
         data = request.get_json()
         print(data)
         selectedCoursesArray = data["selectedCoursesArray"]
-        breaks = data.get("breaks", [])
+        breaks = data["breaks"]
         # selectedCoursesArray is a list of objects (strings)
         # make it a list of strings
-        
+
         # all_schedules = schedulesCollection.find_one(
         #     {"courses": {"$all": selectedCoursesArrayString}}, schedulesProjection)
         # found = False
@@ -105,7 +110,7 @@ def generatedom():
         all_schedules = generateHelper(selectedCoursesArray, breaks)
         if (len(all_schedules) == 0):
             return jsonify({'message': 'no schedules found'}), 300
-        
+
         return jsonify({'schedules': all_schedules}), 200
 
 
@@ -118,7 +123,8 @@ def generate():
         selectedCoursesArray = data["selectedCoursesArray"]
         # selectedCoursesArray is a list of objects (strings)
         # make it a list of strings
-        selectedCoursesArrayString = [f"{obj['subject']} {obj['code']}" for obj in selectedCoursesArray]
+        selectedCoursesArrayString = [
+            f"{obj['subject']} {obj['code']}" for obj in selectedCoursesArray]
         # all_schedules = schedulesCollection.find_one(
         #     {"courses": {"$all": selectedCoursesArrayString}}, schedulesProjection)
         # found = False
@@ -126,8 +132,9 @@ def generate():
         #     found = True
         #     all_schedules = list(all_schedules)
         # if (found == False):
-        all_schedules = generateHelper(selectedCoursesArray, selectedCoursesArrayString)
-        
+        all_schedules = generateHelper(
+            selectedCoursesArray, selectedCoursesArrayString)
+
         if (len(all_schedules) == 0):
             return jsonify({'message': 'no schedules found'}), 300
 
@@ -158,13 +165,8 @@ def generate():
 @app.route('/getCourses', methods=['GET'])
 def getCourses():
     try:
-        subjects = list(collection.find())
+        subjects = list(collection.find({}, subjProjection))
         courses = list(coursesCollection.find({}, projection))
-        for subject in subjects:
-            subject['_id'] = str(subject['_id'])
-        # for course in courses:
-        #     course['_id'] = str(course['_id']) #dont send back the id for courses
-
         return jsonify({'subjects': subjects, 'courses': courses}), 200
     except Exception as e:
         print(e)
@@ -172,6 +174,6 @@ def getCourses():
 
 
 if __name__ == '__main__':
-    # app.run(debug=True, port=8080)
-    from waitress import serve
-    serve(app, host="0.0.0.0", port=8080)
+    app.run(debug=True, port=8080)
+    # from waitress import serve
+    # serve(app, host="0.0.0.0", port=8080)

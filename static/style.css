@@ -67,6 +67,7 @@ h1 {
 .deleteBtn {
   padding: 0.3rem 0.8rem;
   margin: 0;
+  margin-left: 0.5rem;
 }
 .entry {
   display: flex;
@@ -74,6 +75,24 @@ h1 {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 0.5rem;
+}
+.editEntry {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+.advancedEntry {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+.input[type='checkbox'] {
+  width: 1rem;
+  height: 1rem;
 }
 .fa-github {
   color: #fff;
@@ -242,3 +261,14 @@ a {
     font-size: 0.6rem;
   }
 }
+/* edit .editPanel {
+  width: 20rem;
+  padding: 2rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  background-color: #f9f9f9;
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+} */

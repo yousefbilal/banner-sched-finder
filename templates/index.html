@@ -70,7 +70,7 @@
     <h1 class="headerTitle">Banner Schedule Finder</h1>
     <br />
     <div class="form-container" id="form-container">
-      <form onsubmit="generateScheduleDOM(event)">
+      <form onsubmit="generateScheduleDOM(event)" id="form">
         <div class="entries" id="entries">
           <div class="entry">
             <label for="dropdown0" class="formLabel">Subject</label>
@@ -89,6 +89,12 @@
             ></select>
             <input
               type="button"
+              value="..."
+              class="inputBtn deleteBtn"
+              onclick="editEntry(event)"
+            />
+            <input
+              type="button"
               value="x"
               class="inputBtn deleteBtn"
               onclick="deleteEntry(event)"
@@ -102,6 +108,13 @@
           class="inputBtn addBtn"
           onclick="addEntry()"
         />
+        <input
+          type="button"
+          value="Advanced"
+          class="inputBtn addBtn"
+          onclick="displayAdvancedOptions()"
+        />
+
         <br />
         <input type="submit" value="Submit" class="inputBtn" id="submitBtn" />
       </form>
