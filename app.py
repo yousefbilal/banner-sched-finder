@@ -39,7 +39,7 @@ def generateHelper(selectedCoursesArray, breaks):
         labs_dict = dict()
         selectedCoursesArrayString = [f"{obj['subject']} {obj['code']}" for obj in selectedCoursesArray]
         for dataCourse in selectedCoursesArray:
-            if dataCourse.has_key("section"):
+            if "section" in dataCourse:
                 courses = coursesCollection.find(
                     {"code": dataCourse["code"], "subject": dataCourse["subject"], "section": dataCourse["section"]})
             else:
