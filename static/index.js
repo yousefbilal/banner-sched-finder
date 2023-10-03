@@ -199,7 +199,7 @@ const addEntry = (e) => {
   }
   const editButton = document.createElement('input')
   editButton.setAttribute('type', 'button')
-  editButton.setAttribute('value', '...')
+  editButton.setAttribute('value', 'Ξ')
   editButton.classList.add('inputBtn')
   editButton.classList.add('deleteBtn')
   editButton.onclick = (event) => {

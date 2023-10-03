@@ -105,7 +105,17 @@ h1 {
 .fa-github:hover {
   color: #8a2be2;
 }
-
+.footer-paragraph {
+  color: #fff;
+  font-size: 0.8rem;
+  transition: all 0.3s ease-in-out;
+}
+.footer-paragraph a {
+  color: #8a2be2;
+}
+.footer-paragraph a:hover {
+  color: #fff;
+}
 .alertBox {
   position: fixed;
   top: 1.25rem;

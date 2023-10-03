@@ -89,7 +89,7 @@
             ></select>
             <input
               type="button"
-              value="..."
+              value="Ξ"
               class="inputBtn deleteBtn"
               onclick="editEntry(event)"
             />
@@ -179,12 +179,23 @@
         align-items: center;
       "
     >
-      <p>
-        <!-- <a href="">
-          <i class="fab fa-github"></i>
-        </a> -->
+      <p class="footer-paragraph">
+        developed by
+        <a href="https://github.com/yousefbilal/">yousefbilal </a>
+        &
+        <a href="https://github.com/akvnn/">ak</a>
+        | &copy; 2023
+      </p>
+      <p class="footer-paragraph" style="margin: 0">
+        <a style="cursor: pointer" id="contact">contact us</a>
       </p>
     </footer>
+    <script>
+      const contactBtn = document.getElementById('contact')
+      contactBtn.addEventListener('click', () => {
+        window.open('mailto:akv3@outlook.com')
+      })
+    </script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script> -->
     <script src="/static/index.js"></script>
   </body>
