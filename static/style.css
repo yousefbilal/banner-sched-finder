@@ -35,7 +35,7 @@ h1 {
 
 .input {
   font-family: 'Montserrat', sans-serif;
-  width: 30%;
+  width: 20%;
   padding: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 0.25rem;
@@ -166,6 +166,11 @@ a {
 .schedule-header-item {
   margin-left: 1rem;
   margin-right: 1rem;
+  width: 5rem;
+  text-align: center;
+}
+.thurs {
+  margin-right: 2rem;
 }
 .schedule-time {
   font-size: 0.8rem;
@@ -203,10 +208,12 @@ a {
   color: #fff;
   font-size: 2rem;
   align-items: center;
+  justify-content: center;
 }
 .schedule-total-span {
   font-size: 1.5rem;
   text-align: center;
+  width: 10rem;
 }
 .fa-arrow-left {
   cursor: pointer;
@@ -232,15 +239,6 @@ a {
   background-color: #fff;
   color: #8a2be2;
 }
-.subject {
-  width: auto;
-}
-.code {
-  width: auto;
-}
-.breakBetween {
-  width: auto;
-}
 /* mobile screen sizes */
 @media (max-width: 600px) {
   * {
@@ -260,6 +258,10 @@ a {
   }
   .schedule-header-item {
     font-size: 0.8rem;
+    width: 3rem;
+  }
+  .thurs {
+    margin-right: 1.2rem;
   }
   .schedule-time-item {
     font-size: 0.8rem;
@@ -275,12 +277,6 @@ a {
   }
   .formLabel {
     font-size: 0.8rem;
-  }
-  .subject {
-    width: auto;
-  }
-  .code {
-    width: auto;
   }
 }
 @media (max-width: 500px) {

@@ -1246,13 +1246,18 @@ window.addEventListener('resize', () => {
     return
   }
   schedulediv.innerHTML = ''
-  // add first schedule
   // show relevant time items
   const timeItems = document.querySelectorAll('.schedule-time-item')
+  if (timeItems.length === 0) {
+    return
+  }
+
   let heightOfOneHourTimeSlot = 48
-  const currentSchedule = Number(
-    document.getElementById('schedule-total-span').innerHTML.split(' ')[1]
-  )
+  const scheduleTotalSpan = document.getElementById('schedule-total-span')
+  if (scheduleTotalSpan == null) {
+    return
+  }
+  const currentSchedule = Number(scheduleTotalSpan.innerHTML.split(' ')[1])
   timeItems.forEach((timeItem) => {
     if (
       Number(timeItem.getAttribute('data-time').split(':')[0]) >=
