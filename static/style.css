@@ -237,7 +237,7 @@ a {
     overflow-x: hidden;
   }
   .form-container {
-    width: 85vw;
+    width: 95vw;
   }
   .alertBox {
     width: 80%;
@@ -266,6 +266,12 @@ a {
   .formLabel {
     font-size: 0.8rem;
   }
+  .subject {
+    width: auto;
+  }
+  .code {
+    width: auto;
+  }
 }
 @media (max-width: 500px) {
   .schedule-header-item {
@@ -286,3 +292,19 @@ a {
   left: 50%;
   transform: translate(-50%, -50%);
 } */
+.daysOfBreak {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+footer {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}

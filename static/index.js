@@ -548,7 +548,7 @@ const displayAdvancedOptions = () => {
   const advancedEntryThree = document.createElement('div')
   advancedEntryThree.className = 'advancedEntry'
   const advancedOptionsFormLabelThree = document.createElement('label')
-  advancedOptionsFormLabelThree.innerHTML = 'Break Between '
+  advancedOptionsFormLabelThree.innerHTML = 'Break Time '
   advancedOptionsFormLabelThree.classList.add('formLabel')
   const advancedOptionsFormInputThree = document.createElement('select')
   advancedOptionsFormInputThree.setAttribute('name', 'breakBetween')
@@ -583,6 +583,29 @@ const displayAdvancedOptions = () => {
   deleteBreakButton.onclick = (event) => {
     deleteBreakEntry(event)
   }
+  // days of break
+  const daysOfBreak = document.createElement('div')
+  daysOfBreak.className = 'daysOfBreak'
+  const daysOfBreakLabel = document.createElement('label')
+  daysOfBreakLabel.innerHTML = 'Break Days'
+  daysOfBreakLabel.classList.add('formLabel')
+  daysOfBreak.appendChild(daysOfBreakLabel)
+  // add checkboxes for days
+  const days = ['M', 'T', 'W', 'R' /*, 'F'*/]
+  days.forEach((day) => {
+    const dayLabel = document.createElement('label')
+    dayLabel.innerHTML = day
+    dayLabel.classList.add('formLabel')
+    const dayInput = document.createElement('input')
+    dayInput.setAttribute('type', 'checkbox')
+    dayInput.setAttribute('name', 'day')
+    dayInput.classList.add('input')
+    dayInput.classList.add('day')
+    dayInput.value = day
+    daysOfBreak.appendChild(dayLabel)
+    daysOfBreak.appendChild(dayInput)
+  })
+
   const backButton = document.createElement('input')
   backButton.setAttribute('type', 'button')
   backButton.setAttribute('value', 'Back')
@@ -601,6 +624,7 @@ const displayAdvancedOptions = () => {
   advancedOptionsForm.appendChild(advancedEntryTwo)
   advancedOptionsForm.appendChild(advancedEntryFour)
   advancedOptionsForm.appendChild(advancedEntryThree)
+  advancedOptionsForm.appendChild(daysOfBreak)
   advancedOptionsForm.appendChild(backButton)
   formContainer.appendChild(advancedOptionsForm)
   form.style.display = 'none'
@@ -610,7 +634,7 @@ const addBreakEntry = (e) => {
   const advancedEntryThree = document.createElement('div')
   advancedEntryThree.className = 'advancedEntry'
   const advancedOptionsFormLabelThree = document.createElement('label')
-  advancedOptionsFormLabelThree.innerHTML = 'Break Between '
+  advancedOptionsFormLabelThree.innerHTML = 'Break Time '
   advancedOptionsFormLabelThree.classList.add('formLabel')
   const advancedOptionsFormInputThree = document.createElement('select')
   advancedOptionsFormInputThree.setAttribute('name', 'breakBetween')
@@ -645,6 +669,29 @@ const addBreakEntry = (e) => {
   deleteBreakButton.onclick = (event) => {
     deleteBreakEntry(event)
   }
+  // days of break
+  const daysOfBreak = document.createElement('div')
+  daysOfBreak.className = 'daysOfBreak'
+  const daysOfBreakLabel = document.createElement('label')
+  daysOfBreakLabel.innerHTML = 'Break Days'
+  daysOfBreakLabel.classList.add('formLabel')
+  daysOfBreak.appendChild(daysOfBreakLabel)
+  // add checkboxes for days
+  const days = ['M', 'T', 'W', 'R' /*, 'F'*/]
+  days.forEach((day) => {
+    const dayLabel = document.createElement('label')
+    dayLabel.innerHTML = day
+    dayLabel.classList.add('formLabel')
+    const dayInput = document.createElement('input')
+    dayInput.setAttribute('type', 'checkbox')
+    dayInput.setAttribute('name', 'day')
+    dayInput.classList.add('input')
+    dayInput.classList.add('day')
+    dayInput.value = day
+    daysOfBreak.appendChild(dayLabel)
+    daysOfBreak.appendChild(dayInput)
+  })
+
   advancedEntryThree.appendChild(advancedOptionsFormLabelThree)
   advancedEntryThree.appendChild(advancedOptionsFormInputThree)
   advancedEntryThree.appendChild(advancedOptionsFormInputThreeExtra)
@@ -654,19 +701,29 @@ const addBreakEntry = (e) => {
     advancedEntryThree,
     advancedOptionsForm.childNodes[advancedOptionsForm.childNodes.length - 1]
   )
+  advancedOptionsForm.insertBefore(
+    daysOfBreak,
+    advancedOptionsForm.childNodes[advancedOptionsForm.childNodes.length - 1]
+  )
 }
 const deleteBreakEntry = (e) => {
   const breakEntry = e.target.parentNode
   const advancedOptionsForm = breakEntry.parentNode
+  const daysOfBreak = breakEntry.nextSibling
   // if its the last breakEntry then just reset it
   if (advancedOptionsForm.querySelectorAll('.advancedEntry').length === 4) {
     const options = breakEntry.querySelectorAll('.breakBetween')
     options.forEach((option) => {
       option.value = 'None'
     })
+    const days = daysOfBreak.querySelectorAll('.day')
+    days.forEach((day) => {
+      day.checked = false
+    })
     return
   }
   breakEntry.remove()
+  daysOfBreak.remove()
 }
 const generateSchedule = async (e) => {
   try {
@@ -830,9 +887,24 @@ const generateScheduleDOM = async (e) => {
         ) {
           continue
         }
+        const days =
+          breakBetweenSelect[i].parentNode.parentNode.querySelector(
+            '.daysOfBreak'
+          )
+        let daysString = ''
+        const daysInput = days.querySelectorAll('.day')
+        daysInput.forEach((day) => {
+          if (day.checked) {
+            daysString += day.value
+          }
+        })
+        if (daysString === '') {
+          continue
+        }
         breaks.push({
           startTime: breakBetweenSelect[i].value,
           endTime: breakBetweenSelect[i + 1].value,
+          days: daysString,
         })
       }
       if (no8AM) {
