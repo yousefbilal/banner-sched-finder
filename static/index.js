@@ -1240,3 +1240,48 @@ const backToForm = () => {
   const scheduleTotalHeader = document.getElementById('schedule-total-header')
   scheduleTotalHeader.style.display = 'none'
 }
+window.addEventListener('resize', () => {
+  const schedulediv = document.getElementById('schedule-body')
+  if (schedulediv == null) {
+    return
+  }
+  schedulediv.innerHTML = ''
+  // add first schedule
+  // show relevant time items
+  const timeItems = document.querySelectorAll('.schedule-time-item')
+  let heightOfOneHourTimeSlot = 48
+  const currentSchedule = Number(
+    document.getElementById('schedule-total-span').innerHTML.split(' ')[1]
+  )
+  timeItems.forEach((timeItem) => {
+    if (
+      Number(timeItem.getAttribute('data-time').split(':')[0]) >=
+        Number(schedules[currentSchedule - 1].min_hour.split(':')[0]) &&
+      Number(timeItem.getAttribute('data-time').split(':')[0]) <=
+        Number(schedules[currentSchedule - 1].max_hour.split(':')[0])
+    ) {
+      timeItem.style.display = 'block'
+      if (
+        Number(timeItem.getAttribute('data-time').split(':')[0]) ==
+        Number(schedules[currentSchedule - 1].min_hour.split(':')[0]) + 1
+      ) {
+        heightOfOneHourTimeSlot =
+          timeItem.offsetTop - timeItem.previousElementSibling.offsetTop
+      }
+    } else {
+      timeItem.style.display = 'none'
+    }
+  })
+  let colorCount = 0
+  schedules[currentSchedule - 1].courses_list.forEach((scheduleEntry) => {
+    if (scheduleEntry.course_code === 'BREAK') {
+    } else {
+      createScheduleEntry(
+        scheduleEntry,
+        scheduleEntry.days.length,
+        colorCount++,
+        heightOfOneHourTimeSlot
+      )
+    }
+  })
+})
