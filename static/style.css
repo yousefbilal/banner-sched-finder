@@ -149,6 +149,7 @@ a {
   margin-top: 1rem;
   position: relative;
   overflow-y: hidden;
+  overflow-x: hidden;
 }
 .schedule-container {
   visibility: hidden;
@@ -231,6 +232,15 @@ a {
   background-color: #fff;
   color: #8a2be2;
 }
+.subject {
+  width: auto;
+}
+.code {
+  width: auto;
+}
+.breakBetween {
+  width: auto;
+}
 /* mobile screen sizes */
 @media (max-width: 600px) {
   * {
@@ -301,8 +311,11 @@ a {
 }
 footer {
   width: 100%;
-  position: fixed;
-  bottom: 0;
+  /* position: fixed;
+  bottom: 0; */
+  /* position down */
+  /* position: absolute;
+  bottom: 0; */
   display: flex;
   flex-direction: column;
   align-items: center;
