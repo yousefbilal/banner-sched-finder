@@ -24,8 +24,8 @@ except Exception as e:
 # Get the database
 db = client.get_database('banner')
 # Get the collection
-collection = db.get_collection('subjects')
-coursesCollection = db.get_collection('courses')
+collection = db.get_collection('subjectss24')
+coursesCollection = db.get_collection('coursess24')
 subjProjection = {"_id": 0, "subject": 1}
 projection = {"_id": 0, "subject": 1, "code": 1,
               "section": 1, "instructor": 1}
