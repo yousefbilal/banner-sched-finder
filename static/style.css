@@ -278,6 +278,9 @@ a {
   .formLabel {
     font-size: 0.8rem;
   }
+  .breakBetween {
+    width: 17%;
+  }
 }
 @media (max-width: 500px) {
   .schedule-header-item {
@@ -285,6 +288,9 @@ a {
   }
   .schedule-time-item {
     font-size: 0.6rem;
+  }
+  .breakBetween {
+    width: 15%;
   }
 }
 /* edit .editPanel {
@@ -305,6 +311,13 @@ a {
   justify-content: space-between;
   margin-bottom: 0.5rem;
 }
+.singleDayContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 footer {
   width: 100%;
   /* position: fixed;
