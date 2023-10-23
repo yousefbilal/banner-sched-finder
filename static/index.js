@@ -192,7 +192,7 @@ const fillCodes = async (courses, element) => {
     uniqueCoursesWithSubject.forEach((course) => {
       const option = document.createElement('option')
       option.value = course.code
-      option.innerHTML = course.code
+      option.innerHTML = course.code + ' - ' + course.full_name
       element.appendChild(option)
     })
   } catch (e) {
