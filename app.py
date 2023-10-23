@@ -166,8 +166,10 @@ def generate():
 @app.route('/getCourses', methods=['GET'])
 def getCourses():
     try:
-        subjects = list(collection.find({}, subjProjection))
-        courses = list(coursesCollection.find({}, projection))
+        subjects = list(collection.find(
+            {}, subjProjection).sort([("subject", 1)]))
+        courses = list(coursesCollection.find(
+            {}, projection).sort([("code", 1)]))
         return jsonify({'subjects': subjects, 'courses': courses}), 200
     except Exception as e:
         print(e)
