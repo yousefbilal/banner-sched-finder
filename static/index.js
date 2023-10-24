@@ -192,7 +192,12 @@ const fillCodes = async (courses, element) => {
     uniqueCoursesWithSubject.forEach((course) => {
       const option = document.createElement('option')
       option.value = course.code
-      option.innerHTML = course.code + ' - ' + course.full_name
+      if (course.full_name && course.full_name.includes('(Take it with')) {
+        option.innerHTML =
+          course.code + ' - ' + course.full_name.split('(Take')[0]
+      } else {
+        option.innerHTML = course.code + ' - ' + course.full_name
+      }
       element.appendChild(option)
     })
   } catch (e) {
