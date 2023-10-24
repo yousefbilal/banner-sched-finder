@@ -124,8 +124,38 @@ const checkEditForm = (courses, element) => {
   courses.forEach((course) => {
     if (course.subject === subject && course.code === code) {
       const option = document.createElement('option')
-      option.value = course.section + ' ' + course.instructor
-      option.innerHTML = course.section + ' ' + course.instructor
+      const startTime = new Date(course.time[0])
+      const endTime = new Date(course.time[1])
+      let startTimeFormatted =
+        startTime.getUTCHours() + ':' + startTime.getUTCMinutes()
+      let endTimeFormatted =
+        endTime.getUTCHours() + ':' + endTime.getUTCMinutes()
+      if (startTime.getUTCMinutes() === 0) {
+        startTimeFormatted += '0'
+      }
+      if (endTime.getUTCMinutes() === 0) {
+        endTimeFormatted += '0'
+      }
+      option.value =
+        course.section +
+        ' ' +
+        course.instructor +
+        ' ' +
+        course.days +
+        ' ' +
+        startTimeFormatted +
+        '-' +
+        endTimeFormatted
+      option.innerHTML =
+        course.section +
+        ' ' +
+        course.instructor +
+        ' ' +
+        course.days +
+        ' ' +
+        startTimeFormatted +
+        '-' +
+        endTimeFormatted
       editPanelSection.appendChild(option)
     }
   })

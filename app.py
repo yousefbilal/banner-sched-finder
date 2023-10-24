@@ -163,6 +163,119 @@ def generate():
         return jsonify({'schedules': images}), 200
 
 
+@app.route('/scrapebannernow', methods=['POST'])
+def scrapenow():
+    if request.method == 'POST':
+        print('requested')
+        data = request.get_json()
+        print(data["key"])
+        if data["key"] != 'akvn':
+            return jsonify({'message': 'unauthorized', 'status': False}), 301
+        else:
+            return jsonify({'message': 'done', 'status': True}), 200
+
+        course_codes = ['ACC', 'ANT', 'ARA', 'ARC', 'ART', 'BIO', 'BME', 'BSE', 'BPE', 'BUS', 'BIS', 'BLW', 'CHE', 'CHM', 'CVE', 'COE', 'CMP', 'CMT', 'DES', 'ECO', 'ELE', 'NGN', 'EGM', 'ESM', 'ENG', 'ELP', 'ELT', 'ENV', 'FLM', 'FIN', 'GEO',
+                        'HIS', 'INE', 'ISA', 'IEN', 'IDE', 'INS', 'KOR', 'MGT', 'MKT', 'MCM', 'MBA', 'MSE', 'MTH', 'MCE', 'MTR', 'MUM', 'MUS', 'PHI', 'PHY', 'POL', 'PSY', 'QBA', 'SOC', 'STA', 'ABRD', 'SCM', 'THE', 'TRA', 'UPL', 'VIS', 'WST', 'WRI']
+        from bs4 import BeautifulSoup
+        import requests
+
+        def scrape(semester_specifier):
+            try:
+                # request payload
+                payload = {
+                    "term_in": semester_specifier,
+                    "sel_day": "dummy",
+                    "sel_schd": "dummy",
+                    "sel_insm": "dummy",
+                    "sel_camp": "dummy",
+                    "sel_sess": "dummy",
+                    "sel_ptrm": "dummy",
+                    "sel_subj": ["dummy"] + course_codes,
+                    "sel_crse": "",
+                    "sel_title": "",
+                    "sel_from_cred": "",
+                    "sel_to_cred": "",
+                    "sel_levl": ["dummy", "%"],
+                    "sel_instr": ["dummy", "%"],
+                    "sel_attr": ["dummy", "%"],
+                    "begin_hh": "0",
+                    "begin_mi": "0",
+                    "begin_ap": "a",
+                    "end_hh": "0",
+                    "end_mi": "0",
+                    "end_ap": "a"
+                }
+
+                r = requests.post(url="https://banner.aus.edu/axp3b21h/owa/bwckschd.p_get_crse_unsec",
+                                  data=payload)
+
+                soup = BeautifulSoup(r.text, 'html.parser')
+
+                row_list = soup.find('table', class_='datadisplaytable').find_all(
+                    'tr', recursive=False)
+
+                for i in range(0, len(row_list), 2):
+                    # [full name, CRN, course code, section]
+                    *full_name, crn, course_code, section = row_list[i].get_text().rstrip().split(' - ')
+                    full_name = " ".join(full_name)
+                    subject = course_code.split()[0]
+                    course_code_number = course_code.split()[1]
+
+                    if (collection.count_documents({"subject": subject}) == 0):
+                        print('inserting ', subject)  # for debugging
+                        collection.insert_one({"subject": subject})
+                    if (coursesCollection.count_documents({'crn': crn}) != 0):
+                        print('duplicate found')
+                        # print(course_code)  # for debugging
+                        # compare all fields
+                        savedDocument = coursesCollection.find_one(
+                            {'crn': crn})
+                        if (savedDocument['full_name'] != full_name or savedDocument['section'] != section or savedDocument['code'] != course_code_number or savedDocument['subject'] != subject):
+                            print('duplicate found is different')
+                            coursesCollection.delete_one({'crn': crn})
+                            if course_code.endswith('L') or course_code.endswith('R'):
+                                coursesCollection.insert_one({"code": course_code_number, 'subject': subject, 'crn': crn, "fullCode": course_code, 'full_name': full_name,
+                                                              'time': time, 'days': days, 'section': section, 'instructor': instructor_name, 'isLab': True})
+                            else:
+                                coursesCollection.insert_one({"code": course_code_number, 'subject': subject, 'crn': crn, "fullCode": course_code, 'full_name': full_name,
+                                                              'time': time, 'days': days, 'section': section, 'instructor': instructor_name, 'isLab': False})
+                        else:
+                            continue
+                    else:
+                        try:
+                            print('inserting ', course_code)  # for debugging
+                            course_info = row_list[i+1].find('table', class_='datadisplaytable').find_all(
+                                'tr', recursive=False)[1].find_all('td')
+
+                        # contains [type, time, days, seats, where, date range, sched type, instructor]
+                            useful_info = [course_info[i].find(string=True, recursive=False) for i in [
+                                1, 2, -1]]  # contains [time, days, instructor]
+                            time = [datetime.strptime(time_str.upper(), '%I:%M %p')
+                                    for time_str in useful_info[0].split(' - ')]
+                            days = useful_info[1]
+                        # some instructor names have 3 spaces separating their names and others only have 2
+                        # removes ' (' at the end of instructor name
+                            instructor_name = useful_info[-1][:-2].replace(
+                                '   ', ' ') if useful_info[-1] else useful_info[-1]
+                            instructor_name = instructor_name.replace(
+                                '  ', ' ') if useful_info[-1] else "TBA"
+                        except Exception as e:
+                            print(e)
+                            continue
+                        if course_code.endswith('L') or course_code.endswith('R'):
+                            coursesCollection.insert_one({"code": course_code_number, 'subject': subject, 'crn': crn, "fullCode": course_code, 'full_name': full_name,
+                                                          'time': time, 'days': days, 'section': section, 'instructor': instructor_name, 'isLab': True})
+                        else:
+                            coursesCollection.insert_one({"code": course_code_number, 'subject': subject, 'crn': crn, "fullCode": course_code, 'full_name': full_name,
+                                                          'time': time, 'days': days, 'section': section, 'instructor': instructor_name, 'isLab': False})
+            except Exception as e:
+                print(e + ' - error scraping')
+                return jsonify({'message': 'error scraping banner', 'status': False}), 300
+
+        scrape('202420')
+        return jsonify({'message': 'banner scraping done', 'status': True}), 200
+
+
 @app.route('/getCourses', methods=['GET'])
 def getCourses():
     try:
