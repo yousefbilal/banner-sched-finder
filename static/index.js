@@ -914,8 +914,8 @@ const colors = [
 const generateScheduleDOM = async (e) => {
   try {
     e.preventDefault()
-    // const submitBtn = document.getElementById('submitBtn')
-    // submitBtn.disabled = true
+    const submitBtn = document.getElementById('submitBtn')
+    submitBtn.disabled = true
     const alertBox = document.getElementById('alertBox')
     alertBox.style.backgroundColor = '#ccc'
     alertBox.style.color = '#1a1a1a'
@@ -1069,7 +1069,7 @@ const generateScheduleDOM = async (e) => {
       ' <span class="schedule-total-span" id="schedule-total-span"> 1 of ' +
       schedules.length +
       ' </span><i class="fa-solid fa-arrow-right" onclick="goNextSchedule()"></i>'
-    // submitBtn.disabled = false
+    submitBtn.disabled = false
     setTimeout(() => {
       alertBox.innerHTML = ''
       alertBox.style.display = 'none'
