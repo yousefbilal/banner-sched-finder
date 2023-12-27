@@ -239,6 +239,11 @@ a {
   background-color: #fff;
   color: #8a2be2;
 }
+
+.downloadBtn {
+  margin-left: 0.5rem;
+  margin-right: 0;
+}
 /* mobile screen sizes */
 @media (max-width: 600px) {
   * {

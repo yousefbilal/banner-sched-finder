@@ -58,13 +58,15 @@ def generateHelper(selectedCoursesArray, breaks):
                 time = course["time"]
                 days = course["days"]
                 instructor_name = course["instructor"]
-                # isLab = course["isLab"]
+                #course is a lab and has a lecture
                 if course["isLab"] and course_code[:-1] in selectedCoursesArrayString:
                     labs_dict.setdefault(course_code[:-1], []).append(Lab(course_code, crn, section, time, days,
                                                                           instructor_name, *Course.find_required_sections(course["full_name"])))
+                #course is a lecture
                 else:
                     lectures_dict.setdefault(course_code, []).append(Lecture.createLecture(course_code, crn, section, time, days,
                                                                                            instructor_name, selectedCoursesArrayString, *Course.find_required_sections(course["full_name"])))
+
         for value in lectures_dict.values():
             lectures_list.append(value)
 
@@ -189,6 +191,6 @@ def getCourses():
 
 
 if __name__ == '__main__':
-    # app.run(debug=True, port=8080)
+    app.run(debug=True, port=8080)
     from waitress import serve
-    serve(app, host="0.0.0.0", port=8080, threads=100)
+    # serve(app, host="0.0.0.0", port=8080, threads=100)

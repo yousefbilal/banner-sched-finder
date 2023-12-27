@@ -1065,10 +1065,11 @@ const generateScheduleDOM = async (e) => {
     const scheduleTotalHeader = document.getElementById('schedule-total-header')
     scheduleTotalHeader.style.display = 'flex'
     scheduleTotalHeader.innerHTML =
-      '<input type="button" value="x" class="inputBtn backToFormBtn" onclick="backToForm()"/> <i class="fa-solid fa-arrow-left" onclick ="goPreviousSchedule()"></i> ' +
-      ' <span class="schedule-total-span" id="schedule-total-span"> 1 of ' +
-      schedules.length +
-      ' </span><i class="fa-solid fa-arrow-right" onclick="goNextSchedule()"></i>'
+    '<input type="button" value="x" class="inputBtn backToFormBtn" onclick="backToForm()"/> <i class="fa-solid fa-arrow-left" onclick ="goPreviousSchedule()"></i> ' +
+    ' <span class="schedule-total-span" id="schedule-total-span"> 1 of ' +
+    schedules.length +
+    ' </span><i class="fa-solid fa-arrow-right" onclick="goNextSchedule()"></i>'+
+    ' <input type="button" value="&#11123;" class="inputBtn backToFormBtn downloadBtn" onclick="downloadSchedule()" />'
     submitBtn.disabled = false
     setTimeout(() => {
       alertBox.innerHTML = ''
@@ -1375,3 +1376,21 @@ window.addEventListener('resize', () => {
     }
   })
 })
+
+const downloadSchedule = () => {
+  html2canvas(document.getElementById('schedule-container'), {
+    scale: 3.5,
+    backgroundColor: '#1a1a1a'
+  })
+    .then(canvas => {
+      const scheduleTotalSpan = document.getElementById('schedule-total-span')
+      const currentSchedule = Number(scheduleTotalSpan.innerHTML.split(' ')[1])
+      const b64img = canvas.toDataURL('image/png')
+      let anchor = document.createElement('a')
+      anchor.href = b64img
+      anchor.download = `schedule-${currentSchedule}.png`
+      anchor.click()
+      anchor.remove()
+      URL.revokeObjectURL(b64img)
+    })
+}
