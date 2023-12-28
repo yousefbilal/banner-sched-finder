@@ -1,4 +1,4 @@
-from Schedule import Schedule
+from schedule import Schedule
 from course import *
 from datetime import datetime
 

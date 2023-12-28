@@ -1,6 +1,6 @@
-beautifulsoup4==4.12.2
-matplotlib==3.7.2
-requests
+# beautifulsoup4==4.12.2
+# matplotlib==3.7.2
+# requests
 pymongo
 flask
 waitress
