@@ -184,6 +184,20 @@ a {
   font-size: 0.8rem;
   color: #8a2be2;
   margin-bottom: 0.5rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+}
+.schedule-professor {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+}
+.schedule-name {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+}
+.schedule-crn {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
 }
 .schedule-time-item {
   margin-left: 1rem;
