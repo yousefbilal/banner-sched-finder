@@ -64,7 +64,7 @@
         api_host: 'https://app.posthog.com',
       })
     </script>
-  <script src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   </head>
   <body>
     <div class="alertBox" id="alertBox"></div>
@@ -171,6 +171,22 @@
             </div>
           </div> -->
         </div>
+      </div>
+      <div class="schedule-extra" id="schedule-extra">
+        <button
+          type="button"
+          value=""
+          class="inputBtn backToFormBtn downloadBtn"
+          onclick="downloadSchedule()"
+        >
+          <i class="fa-solid fa-download"></i>
+        </button>
+        <button
+          class="inputBtn backToFormBtn downloadBtn copyCRNBtn"
+          onclick="copyCRNs()"
+        >
+          <i class="fa-solid fa-copy"></i>
+        </button>
       </div>
     </div>
     <footer>

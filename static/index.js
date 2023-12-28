@@ -1062,14 +1062,15 @@ const generateScheduleDOM = async (e) => {
     alertBox.innerHTML = 'Schedule(s) generated'
     const scheduleContainer = document.getElementById('schedule-container')
     scheduleContainer.style.visibility = 'visible'
+    const scheduleExtra = document.getElementById('schedule-extra')
+    scheduleExtra.style.visibility = 'visible'
     const scheduleTotalHeader = document.getElementById('schedule-total-header')
     scheduleTotalHeader.style.display = 'flex'
     scheduleTotalHeader.innerHTML =
-    '<input type="button" value="x" class="inputBtn backToFormBtn" onclick="backToForm()"/> <i class="fa-solid fa-arrow-left" onclick ="goPreviousSchedule()"></i> ' +
-    ' <span class="schedule-total-span" id="schedule-total-span"> 1 of ' +
-    schedules.length +
-    ' </span><i class="fa-solid fa-arrow-right" onclick="goNextSchedule()"></i>'+
-    ' <input type="button" value="&#11123;" class="inputBtn backToFormBtn downloadBtn" onclick="downloadSchedule()" />'
+      '<input type="button" value="x" class="inputBtn backToFormBtn" onclick="backToForm()"/> <i class="fa-solid fa-arrow-left" onclick ="goPreviousSchedule()"></i> ' +
+      ' <span class="schedule-total-span" id="schedule-total-span"> 1 of ' +
+      schedules.length +
+      ' </span><i class="fa-solid fa-arrow-right" onclick="goNextSchedule()"></i>'
     submitBtn.disabled = false
     setTimeout(() => {
       alertBox.innerHTML = ''
@@ -1260,6 +1261,8 @@ const goPreviousSchedule = () => {
   scheduleTotalSpan.innerHTML = ' ' + previousSchedule + ' of ' + totalSchedules
   const scheduleContainer = document.getElementById('schedule-container')
   scheduleContainer.style.visibility = 'visible'
+  const scheduleExtra = document.getElementById('schedule-extra')
+  scheduleExtra.style.visibility = 'visible'
 }
 const goNextSchedule = () => {
   //current schedule
@@ -1311,6 +1314,8 @@ const goNextSchedule = () => {
   scheduleTotalSpan.innerHTML = ' ' + nextSchedule + ' of ' + totalSchedules
   const scheduleContainer = document.getElementById('schedule-container')
   scheduleContainer.style.visibility = 'visible'
+  const scheduleExtra = document.getElementById('schedule-extra')
+  scheduleExtra.style.visibility = 'visible'
 }
 const backToForm = () => {
   const schedulediv = document.getElementById('schedule-body')
@@ -1323,6 +1328,8 @@ const backToForm = () => {
   })
   const scheduleContainer = document.getElementById('schedule-container')
   scheduleContainer.style.visibility = 'hidden'
+  const scheduleExtra = document.getElementById('schedule-extra')
+  scheduleExtra.style.visibility = 'hidden'
   const scheduleTotalHeader = document.getElementById('schedule-total-header')
   scheduleTotalHeader.style.display = 'none'
 }
@@ -1380,17 +1387,47 @@ window.addEventListener('resize', () => {
 const downloadSchedule = () => {
   html2canvas(document.getElementById('schedule-container'), {
     scale: 3.5,
-    backgroundColor: '#1a1a1a'
+    backgroundColor: '#1a1a1a',
+  }).then((canvas) => {
+    const scheduleTotalSpan = document.getElementById('schedule-total-span')
+    const currentSchedule = Number(scheduleTotalSpan.innerHTML.split(' ')[1])
+    const b64img = canvas.toDataURL('image/png')
+    let anchor = document.createElement('a')
+    anchor.href = b64img
+    anchor.download = `schedule-${currentSchedule}.png`
+    anchor.click()
+    anchor.remove()
+    URL.revokeObjectURL(b64img)
   })
-    .then(canvas => {
-      const scheduleTotalSpan = document.getElementById('schedule-total-span')
-      const currentSchedule = Number(scheduleTotalSpan.innerHTML.split(' ')[1])
-      const b64img = canvas.toDataURL('image/png')
-      let anchor = document.createElement('a')
-      anchor.href = b64img
-      anchor.download = `schedule-${currentSchedule}.png`
-      anchor.click()
-      anchor.remove()
-      URL.revokeObjectURL(b64img)
-    })
+  const alertBox = document.getElementById('alertBox')
+  alertBox.style.backgroundColor = '#ccc'
+  alertBox.style.color = '#1a1a1a'
+  alertBox.style.display = 'block'
+  alertBox.innerHTML = 'Schedule downloaded'
+  setTimeout(() => {
+    alertBox.innerHTML = ''
+    alertBox.style.display = 'none'
+  }, 5000)
+}
+const copyCRNs = () => {
+  const scheduleTotalSpan = document.getElementById('schedule-total-span')
+  const currentSchedule = Number(scheduleTotalSpan.innerHTML.split(' ')[1])
+  const crns = []
+  schedules[currentSchedule - 1].courses_list.forEach((scheduleEntry) => {
+    if (scheduleEntry.course_code === 'BREAK') {
+    } else {
+      crns.push(scheduleEntry.crn)
+    }
+  })
+  const crnsString = crns.join(', ')
+  navigator.clipboard.writeText(crnsString)
+  const alertBox = document.getElementById('alertBox')
+  alertBox.style.backgroundColor = '#ccc'
+  alertBox.style.color = '#1a1a1a'
+  alertBox.style.display = 'block'
+  alertBox.innerHTML = 'CRNs copied to clipboard'
+  setTimeout(() => {
+    alertBox.innerHTML = ''
+    alertBox.style.display = 'none'
+  }, 5000)
 }

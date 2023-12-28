@@ -169,6 +169,14 @@ a {
   width: 5rem;
   text-align: center;
 }
+.schedule-extra {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+  visibility: hidden;
+}
 .thurs {
   margin-right: 2rem;
 }
@@ -243,6 +251,7 @@ a {
 .downloadBtn {
   margin-left: 0.5rem;
   margin-right: 0;
+  width: 40px;
 }
 /* mobile screen sizes */
 @media (max-width: 600px) {
