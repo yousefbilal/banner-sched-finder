@@ -145,6 +145,10 @@ const buildScheduleFromHistory = async (element) => {
   //const noClosedCourses = element.constraints.noClosedCourses //to do
   const entries = document.getElementById('entries')
   entries.innerHTML = ''
+  const editForms = document.querySelectorAll('.editForm')
+  editForms.forEach((form) => {
+    form.remove()
+  })
   const addBtn = document.getElementById('addBtn')
   courses.forEach((course) => {
     addBtn.click()
@@ -188,8 +192,8 @@ const buildScheduleFromHistory = async (element) => {
   })
   const no8AM = document.getElementById('no8AM')
   no8AM.checked = false
-  // const noMultipleLabs = document.getElementById('noMultipleLabs') //to do change to noClosedCourses
-  // noMultipleLabs.checked = false
+  // // const noMultipleLabs = document.getElementById('noMultipleLabs') //to do change to noClosedCourses
+  // // noMultipleLabs.checked = false
   const noClassesAfter5PM = document.getElementById('noClassesAfter5PM')
   noClassesAfter5PM.checked = false
   let j = 0

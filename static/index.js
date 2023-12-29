@@ -518,7 +518,6 @@ const addSection = (e) => {
         endTimeFormatted += '0'
       }
       option.value = course.section
-      console.log(course.section)
       option.innerHTML =
         course.section +
         ' ' +

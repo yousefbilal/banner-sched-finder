@@ -181,6 +181,6 @@ def clearHistory(user_id):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=8080)
-    # from waitress import serve
-    # serve(app, host="0.0.0.0", port=8080, threads=100)
+    # app.run(debug=True, port=8080)
+    from waitress import serve
+    serve(app, host="0.0.0.0", port=8080, threads=100)
