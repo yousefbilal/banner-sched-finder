@@ -3,7 +3,9 @@ from utils import *
 import os
 import io
 import base64
-
+import jwt
+import uuid
+from functools import wraps
 from flask import Flask, jsonify, render_template, request
 # mongo db
 from pymongo.mongo_client import MongoClient
@@ -29,8 +31,11 @@ coursesCollection = db.get_collection('coursess24_backup')
 subjProjection = {"_id": 0, "subject": 1}
 projection = {"_id": 0, "full_name": 1, "subject": 1, "code": 1,
               "section": 1, "instructor": 1, "time": 1, "days": 1}
-schedulesCollection = db.get_collection('schedules')
-schedulesProjection = {"_id": 0, "courses": 1, "schedules": 1}
+# schedulesCollection = db.get_collection('schedules')
+# schedulesProjection = {"_id": 0, "courses": 1, "schedules": 1}
+userCollection = db.get_collection('users')
+historyCollection = db.get_collection('history')
+historyProjection = {"_id": 0, "courses": 1, "constraints": 1, "datetime": 1}
 # end of mongo db
 
 
@@ -93,23 +98,64 @@ def home():
     return render_template('index.html')
 
 
+secret_key = 'someSecretKey'
+
+
+def get_token(f):
+    @wraps(f)  # preserves the name of the function
+    def decorated(*args, **kwargs):
+        auth = request.headers.get('Authorization')
+        if auth == 'null':
+            return jsonify({'message': 'unexpected error'}), 401
+        auth = auth.split(' ')[1]
+        id = jwt.decode(auth, secret_key, algorithms=['HS256'])['id']
+        user = userCollection.find_one({'id': id})
+        if user == None:
+            return jsonify({'message': 'unexpected error'}), 401
+        return f(user['id'], *args, **kwargs)
+    return decorated
+
+
+@app.route('/getCourses', methods=['GET'])
+def getCourses():
+    try:
+        auth = request.headers.get('Authorization')
+        token = None
+        if auth == 'null':
+            # new user -> generate an id and token
+            id = str(uuid.uuid4())
+            token = jwt.encode({'id': id}, secret_key, algorithm='HS256')
+            # insert the id into the database
+            userCollection.insert_one(
+                {'id': id, 'datetime': datetime.utcnow()})
+        subjects = list(collection.find(
+            {}, subjProjection).sort([("subject", 1)]))
+        courses = list(coursesCollection.find(
+            {}, projection).sort([("code", 1)]))
+        return jsonify({'subjects': subjects, 'courses': courses, 'token': token}), 200
+    except Exception as e:
+        print(e)
+        return jsonify({'message': 'error'}), 500
+
+
 @app.route('/generateScheduleDOM', methods=['POST'])
-def generatedom():
+@get_token
+def generatedom(user_id):
     if request.method == 'POST':
         data = request.get_json()
         print(data)
         selectedCoursesArray = data["selectedCoursesArray"]
         breaks = data["breaks"]
-        # selectedCoursesArray is a list of objects (strings)
-        # make it a list of strings
-
-        # all_schedules = schedulesCollection.find_one(
-        #     {"courses": {"$all": selectedCoursesArrayString}}, schedulesProjection)
-        # found = False
-        # if (all_schedules != None):
-        #     found = True
-        #     all_sc hedules = list(all_schedules)
-        # if (found == False):
+        # history save
+        entry = historyCollection.find_one(
+            {'id': user_id, 'courses': selectedCoursesArray, 'constraints': {'breaks': breaks}})
+        if entry == None:
+            historyCollection.insert_one(
+                {'id': user_id, 'courses': selectedCoursesArray, 'constraints': {'breaks': breaks}, 'datetime': datetime.utcnow()})
+        else:
+            historyCollection.update_one(
+                {'id': user_id, 'courses': selectedCoursesArray, 'constraints': {'breaks': breaks}}, {'$set': {'datetime': datetime.utcnow()}})
+        # end of history save
         all_schedules = generateHelper(selectedCoursesArray, breaks)
         if (len(all_schedules) == 0):
             return jsonify({'message': 'no schedules found'}), 300
@@ -117,80 +163,24 @@ def generatedom():
         return jsonify({'schedules': all_schedules}), 200
 
 
-@app.route('/generateSchedule', methods=['POST'])
-def generate():
+@app.route('/getHistory', methods=['GET'])
+@get_token
+def getHistory(user_id):
+    if request.method == 'GET':
+        history = list(historyCollection.find(
+            {'id': user_id}, historyProjection).sort([("datetime", -1)]).limit(10))  # limited to 10
+        return jsonify({'history': history}), 200
+
+
+@app.route('/clearHistory', methods=['POST'])
+@get_token
+def clearHistory(user_id):
     if request.method == 'POST':
-        data = request.get_json()
-        print(data)
-
-        selectedCoursesArray = data["selectedCoursesArray"]
-        # selectedCoursesArray is a list of objects (strings)
-        # make it a list of strings
-        selectedCoursesArrayString = [
-            f"{obj['subject']} {obj['code']}" for obj in selectedCoursesArray]
-        # all_schedules = schedulesCollection.find_one(
-        #     {"courses": {"$all": selectedCoursesArrayString}}, schedulesProjection)
-        # found = False
-        # if (all_schedules != None):
-        #     found = True
-        #     all_schedules = list(all_schedules)
-        # if (found == False):
-        all_schedules = generateHelper(
-            selectedCoursesArray, selectedCoursesArrayString)
-
-        if (len(all_schedules) == 0):
-            return jsonify({'message': 'no schedules found'}), 300
-
-        images = []
-        # try:
-        #     rmtree('output', ignore_errors=True)
-        #     os.mkdir('output')
-        # except:
-        #     print("An unexpected error occured")
-        #     exit(-1)
-        for i in range(len(all_schedules)):
-
-            # # convert to base64
-            image = all_schedules[i].draw_schedule()
-            with io.BytesIO() as imgByte:
-                image.save(imgByte, format='PNG')
-                base64_image = base64.b64encode(
-                    imgByte.getvalue()).decode('utf-8')
-                images.append(base64_image)
-            # os.remove("output/schedule" + str(i) + ".png")
-        # rmtree('output', ignore_errors=True)
-        del all_schedules
-        # save the schedules to the database
-        # send back the schedules
-        return jsonify({'schedules': images}), 200
-
-
-# @app.route('/scrapebannernow', methods=['POST'])
-# def scrapenow():
-#     if request.method == 'POST':
-#         print('requested')
-#         data = request.get_json()
-#         print(data["key"])
-#         if data["key"] != 'akvn':
-#             return jsonify({'message': 'unauthorized', 'status': False}), 301
-#         else:
-#             return jsonify({'message': 'done', 'status': True}), 200
-
-
-@app.route('/getCourses', methods=['GET'])
-def getCourses():
-    try:
-        subjects = list(collection.find(
-            {}, subjProjection).sort([("subject", 1)]))
-        courses = list(coursesCollection.find(
-            {}, projection).sort([("code", 1)]))
-        return jsonify({'subjects': subjects, 'courses': courses}), 200
-    except Exception as e:
-        print(e)
-        return jsonify({'message': 'error'}), 500
+        db.get_collection('history').delete_many({'id': user_id})
+        return jsonify({'message': 'History Cleared'}), 200
 
 
 if __name__ == '__main__':
-    # app.run(debug=True, port=8080)
-    from waitress import serve
-    serve(app, host="0.0.0.0", port=8080, threads=100)
+    app.run(debug=True, port=8080)
+    # from waitress import serve
+    # serve(app, host="0.0.0.0", port=8080, threads=100)

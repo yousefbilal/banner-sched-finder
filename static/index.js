@@ -136,16 +136,7 @@ const checkEditForm = (courses, element) => {
       if (endTime.getUTCMinutes() === 0) {
         endTimeFormatted += '0'
       }
-      option.value =
-        course.section +
-        ' ' +
-        course.instructor +
-        ' ' +
-        course.days +
-        ' ' +
-        startTimeFormatted +
-        '-' +
-        endTimeFormatted
+      option.value = course.section
       option.innerHTML =
         course.section +
         ' ' +
@@ -252,13 +243,23 @@ subjectsElements.forEach((element) => {
 })
 const initalDisplayOfCourses = async () => {
   try {
+    let token = localStorage.getItem('token')
+    if (!token) {
+      token = 'null'
+    } else {
+      token = 'Bearer ' + token
+    }
     const response = await fetch('/getCourses', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: token,
       },
     })
     const data = await response.json()
+    if (token == 'null') {
+      localStorage.setItem('token', data.token)
+    }
     subjects = data.subjects
     courses = data.courses
     const dropdown = document.querySelector('.subject')
@@ -421,16 +422,7 @@ const editEntry = (e) => {
         if (endTime.getUTCMinutes() === 0) {
           endTimeFormatted += '0'
         }
-        option.value =
-          course.section +
-          ' ' +
-          course.instructor +
-          ' ' +
-          course.days +
-          ' ' +
-          startTimeFormatted +
-          '-' +
-          endTimeFormatted
+        option.value = course.section
         option.innerHTML =
           course.section +
           ' ' +
@@ -449,6 +441,7 @@ const editEntry = (e) => {
     addButton.setAttribute('value', '+')
     addButton.classList.add('inputBtn')
     addButton.classList.add('addBtn')
+    addButton.classList.add('addBtnEditForm')
     addButton.onclick = (event) => {
       addSection(event)
     }
@@ -469,6 +462,7 @@ const editEntry = (e) => {
     editFormSave.setAttribute('value', 'Back')
     editFormSave.classList.add('inputBtn')
     editFormSave.classList.add('deleteBtn')
+    editFormSave.classList.add('backBtnEditForm')
     editFormSave.onclick = (event) => {
       editForm.style.display = 'none'
       form.style.display = 'block'
@@ -523,16 +517,8 @@ const addSection = (e) => {
       if (endTime.getUTCMinutes() === 0) {
         endTimeFormatted += '0'
       }
-      option.value =
-        course.section +
-        ' ' +
-        course.instructor +
-        ' ' +
-        course.days +
-        ' ' +
-        startTimeFormatted +
-        '-' +
-        endTimeFormatted
+      option.value = course.section
+      console.log(course.section)
       option.innerHTML =
         course.section +
         ' ' +
@@ -589,6 +575,7 @@ const displayAdvancedOptions = () => {
   advancedOptionsFormInput.setAttribute('name', 'no8AM')
   advancedOptionsFormInput.classList.add('input')
   advancedOptionsFormInput.classList.add('no8AM')
+  advancedOptionsFormInput.id = 'no8AM'
   advancedEntry.appendChild(advancedOptionsFormLabel)
   advancedEntry.appendChild(advancedOptionsFormInput)
   const advancedEntryTwo = document.createElement('div')
@@ -602,6 +589,7 @@ const displayAdvancedOptions = () => {
   advancedOptionsFormInputTwo.disabled = true
   advancedOptionsFormInputTwo.classList.add('input')
   advancedOptionsFormInputTwo.classList.add('noMultipleLabs')
+  advancedOptionsFormInputTwo.id = 'noMultipleLabs'
   advancedEntryTwo.appendChild(advancedOptionsFormLabelTwo)
   advancedEntryTwo.appendChild(advancedOptionsFormInputTwo)
   const advancedEntryFour = document.createElement('div')
@@ -614,6 +602,7 @@ const displayAdvancedOptions = () => {
   advancedOptionsFormInputFour.setAttribute('name', 'noClassesAfter5PM')
   advancedOptionsFormInputFour.classList.add('input')
   advancedOptionsFormInputFour.classList.add('noClassesAfter5PM')
+  advancedOptionsFormInputFour.id = 'noClassesAfter5PM'
   advancedEntryFour.appendChild(advancedOptionsFormLabelFour)
   advancedEntryFour.appendChild(advancedOptionsFormInputFour)
   const advancedEntryThree = document.createElement('div')
@@ -643,6 +632,7 @@ const displayAdvancedOptions = () => {
   addBreakButton.setAttribute('value', '+')
   addBreakButton.classList.add('inputBtn')
   addBreakButton.classList.add('deleteBtn')
+  addBreakButton.classList.add('addBtnBreak')
   addBreakButton.onclick = (event) => {
     addBreakEntry(event)
   }
@@ -651,6 +641,7 @@ const displayAdvancedOptions = () => {
   deleteBreakButton.setAttribute('value', 'x')
   deleteBreakButton.classList.add('inputBtn')
   deleteBreakButton.classList.add('deleteBtn')
+  deleteBreakButton.classList.add('deleteBtnBreak')
   deleteBreakButton.onclick = (event) => {
     deleteBreakEntry(event)
   }
@@ -672,6 +663,7 @@ const displayAdvancedOptions = () => {
     dayInput.setAttribute('name', 'day')
     dayInput.classList.add('input')
     dayInput.classList.add('day')
+    dayInput.classList.add(day)
     dayInput.value = day
     const singleDayContainer = document.createElement('div')
     singleDayContainer.className = 'singleDayContainer'
@@ -687,6 +679,7 @@ const displayAdvancedOptions = () => {
   backButton.setAttribute('value', 'Back')
   backButton.classList.add('inputBtn')
   backButton.classList.add('backBtn')
+  backButton.id = 'backBtnAdvancedForm'
   backButton.onclick = (event) => {
     advancedOptionsForm.style.display = 'none'
     form.style.display = 'block'
@@ -810,90 +803,6 @@ const deleteBreakEntry = (e) => {
   breakEntry.remove()
   // daysOfBreak.remove()
 }
-const generateSchedule = async (e) => {
-  try {
-    e.preventDefault()
-    const submitBtn = document.getElementById('submitBtn')
-    submitBtn.disabled = true
-    const alertBox = document.getElementById('alertBox')
-    alertBox.style.backgroundColor = '#ccc'
-    alertBox.style.color = '#1a1a1a'
-    alertBox.style.display = 'block'
-    alertBox.innerHTML = 'Generating Schedules...'
-    const selectedCourses = document.querySelectorAll('.entry')
-    const selectedCoursesArray = []
-    selectedCourses.forEach((course) => {
-      const subject = course.querySelector('.subject').value
-      const code = course.querySelector('.code').value
-      if (
-        selectedCoursesArray.find(
-          (c) => c.code === code && c.subject === subject
-        )
-      ) {
-        throw new Error('Please remove duplicate courses')
-      }
-      selectedCoursesArray.push({ subject, code })
-    })
-
-    if (selectedCoursesArray.length === 0) {
-      throw new Error('Please add at least one course')
-    }
-    const response = await fetch('/generateSchedule', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ selectedCoursesArray }),
-    })
-    const data = await response.json()
-    // if (data.status != '200') {
-    //   throw new Error(data.message)
-    // }
-    const schedules = data.schedules
-    if (!schedules || schedules.length === 0) {
-      throw new Error('No schedules found')
-    }
-    // var zip = new JSZip() // commented in html file
-    // add the base 64 images to the zip
-    schedules.forEach((schedule, index) => {
-      zip.file(`schedule${index + 1}.png`, schedule, {
-        base64: true,
-      })
-    })
-    // generate the zip file
-    zip.generateAsync({ type: 'blob' }).then(function (content) {
-      var blob = new Blob([content], { type: 'application/zip' })
-      var link = document.createElement('a')
-      link.href = window.URL.createObjectURL(blob)
-      link.download = 'schedules.zip'
-      document.body.appendChild(link)
-      link.click()
-      window.URL.revokeObjectURL(link.href)
-      document.body.removeChild(link)
-    })
-
-    alertBox.innerHTML = 'Schedule(s) generated'
-    submitBtn.disabled = false
-
-    setTimeout(() => {
-      alertBox.innerHTML = ''
-      alertBox.style.display = 'none'
-    }, 5000)
-  } catch (e) {
-    console.log(e.message)
-    const submitBtn = document.getElementById('submitBtn')
-    submitBtn.disabled = false
-    const alertBox = document.getElementById('alertBox')
-    alertBox.innerHTML = e.message
-    alertBox.style.backgroundColor = '#ccc'
-    alertBox.style.color = '#1a1a1a'
-    alertBox.style.display = 'block'
-    setTimeout(() => {
-      alertBox.innerHTML = ''
-      alertBox.style.display = 'none'
-    }, 5000)
-  }
-}
 const colors = [
   '#FF6B6B', // Red
   '#7D3C98', // Purple
@@ -921,6 +830,8 @@ const generateScheduleDOM = async (e) => {
     alertBox.style.color = '#1a1a1a'
     alertBox.style.display = 'block'
     alertBox.innerHTML = 'Generating Schedules...'
+    const historyBtn = document.getElementById('historyBtn')
+    historyBtn.disabled = true
     const selectedCourses = document.querySelectorAll('.entry')
     const selectedCoursesArray = []
     selectedCourses.forEach((course) => {
@@ -945,7 +856,7 @@ const generateScheduleDOM = async (e) => {
             sections = ['Any']
             return
           }
-          sections.push(section.value.split(' ')[0])
+          sections.push(section.value)
         })
       }
       if (sections.length === 0) {
@@ -1012,6 +923,7 @@ const generateScheduleDOM = async (e) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('token'),
       },
       body: JSON.stringify({ selectedCoursesArray, breaks }),
     })
@@ -1072,6 +984,8 @@ const generateScheduleDOM = async (e) => {
       schedules.length +
       ' </span><i class="fa-solid fa-arrow-right" onclick="goNextSchedule()"></i>'
     submitBtn.disabled = false
+    historyBtn.style.display = 'none'
+    historyBtn.disabled = false
     setTimeout(() => {
       alertBox.innerHTML = ''
       alertBox.style.display = 'none'
@@ -1082,6 +996,9 @@ const generateScheduleDOM = async (e) => {
     submitBtn.disabled = false
     const alertBox = document.getElementById('alertBox')
     alertBox.innerHTML = e.message
+    const historyBtn = document.getElementById('historyBtn')
+    historyBtn.style.display = 'block'
+    historyBtn.disabled = false
     alertBox.style.backgroundColor = '#ccc'
     alertBox.style.color = '#1a1a1a'
     alertBox.style.display = 'block'
@@ -1332,6 +1249,8 @@ const backToForm = () => {
   scheduleExtra.style.visibility = 'hidden'
   const scheduleTotalHeader = document.getElementById('schedule-total-header')
   scheduleTotalHeader.style.display = 'none'
+  const historyBtn = document.getElementById('historyBtn')
+  historyBtn.style.display = 'block'
 }
 window.addEventListener('resize', () => {
   const schedulediv = document.getElementById('schedule-body')

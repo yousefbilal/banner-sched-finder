@@ -70,6 +70,18 @@
     <div class="alertBox" id="alertBox"></div>
     <h1 class="headerTitle">Banner Schedule Finder</h1>
     <br />
+    <div class="form-container history-container" id="history-container">
+      <div class="history-header">
+        <h1 class="history-header-item">History</h1>
+        <input
+          type="button"
+          value="Clear"
+          class="inputBtn clearHistoryBtn"
+          onclick="clearHistory()"
+        />
+      </div>
+      <table class="history-body" id="history-body"></table>
+    </div>
     <div class="form-container" id="form-container">
       <form onsubmit="generateScheduleDOM(event)" id="form">
         <div class="entries" id="entries">
@@ -107,12 +119,14 @@
           type="button"
           value="+"
           class="inputBtn addBtn"
+          id="addBtn"
           onclick="addEntry()"
         />
         <input
           type="button"
           value="Advanced"
           class="inputBtn addBtn"
+          id="advancedBtn"
           onclick="displayAdvancedOptions()"
         />
 
@@ -120,6 +134,14 @@
         <input type="submit" value="Submit" class="inputBtn" id="submitBtn" />
       </form>
       <!-- <a id="downloadLink" class="downloadLink">Download All Schedules</a> -->
+    </div>
+    <div class="history">
+      <input
+        type="button"
+        value="Search History"
+        class="inputBtn backToFormBtn historyBtn"
+        id="historyBtn"
+      />
     </div>
     <div class="schedule-total-header" id="schedule-total-header"></div>
     <div class="schedules">
@@ -215,5 +237,6 @@
       })
     </script>
     <script src="/static/index.js"></script>
+    <script src="/static/history.js"></script>
   </body>
 </html>
