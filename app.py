@@ -3,7 +3,7 @@ from utils import *
 import os
 import io
 import base64
-import jwt
+# import jwt
 import uuid
 from functools import wraps
 from flask import Flask, jsonify, render_template, request
@@ -98,21 +98,14 @@ def home():
     return render_template('index.html')
 
 
-secret_key = 'someSecretKey'
-
-
-def get_token(f):
+def get_id(f):
     @wraps(f)  # preserves the name of the function
     def decorated(*args, **kwargs):
         auth = request.headers.get('Authorization')
         if auth == 'null':
             return jsonify({'message': 'unexpected error'}), 401
-        auth = auth.split(' ')[1]
-        id = jwt.decode(auth, secret_key, algorithms=['HS256'])['id']
-        user = userCollection.find_one({'id': id})
-        if user == None:
-            return jsonify({'message': 'unexpected error'}), 401
-        return f(user['id'], *args, **kwargs)
+        auth = auth.split(' ')[1]  # equals to id
+        return (f(auth, *args, **kwargs))
     return decorated
 
 
@@ -120,11 +113,10 @@ def get_token(f):
 def getCourses():
     try:
         auth = request.headers.get('Authorization')
-        token = None
+        id = None
         if auth == 'null':
-            # new user -> generate an id and token
             id = str(uuid.uuid4())
-            token = jwt.encode({'id': id}, secret_key, algorithm='HS256')
+            # token = jwt.encode({'id': id}, secret_key, algorithm='HS256')
             # insert the id into the database
             userCollection.insert_one(
                 {'id': id, 'datetime': datetime.utcnow()})
@@ -132,14 +124,14 @@ def getCourses():
             {}, subjProjection).sort([("subject", 1)]))
         courses = list(coursesCollection.find(
             {}, projection).sort([("code", 1)]))
-        return jsonify({'subjects': subjects, 'courses': courses, 'token': token}), 200
+        return jsonify({'subjects': subjects, 'courses': courses, 'token': id}), 200
     except Exception as e:
         print(e)
         return jsonify({'message': 'error'}), 500
 
 
 @app.route('/generateScheduleDOM', methods=['POST'])
-@get_token
+@get_id
 def generatedom(user_id):
     if request.method == 'POST':
         data = request.get_json()
@@ -164,7 +156,7 @@ def generatedom(user_id):
 
 
 @app.route('/getHistory', methods=['GET'])
-@get_token
+@get_id
 def getHistory(user_id):
     if request.method == 'GET':
         history = list(historyCollection.find(
@@ -173,7 +165,7 @@ def getHistory(user_id):
 
 
 @app.route('/clearHistory', methods=['POST'])
-@get_token
+@get_id
 def clearHistory(user_id):
     if request.method == 'POST':
         db.get_collection('history').delete_many({'id': user_id})
@@ -181,6 +173,6 @@ def clearHistory(user_id):
 
 
 if __name__ == '__main__':
-    # app.run(debug=True, port=8080)
-    from waitress import serve
-    serve(app, host="0.0.0.0", port=8080, threads=100)
+    app.run(debug=True, port=8080)
+    # from waitress import serve
+    # serve(app, host="0.0.0.0", port=8080, threads=100)

@@ -244,7 +244,7 @@ subjectsElements.forEach((element) => {
 const initalDisplayOfCourses = async () => {
   try {
     let token = localStorage.getItem('token')
-    if (!token) {
+    if (!token || token == 'undefined') {
       token = 'null'
     } else {
       token = 'Bearer ' + token
