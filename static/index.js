@@ -1302,11 +1302,11 @@ window.addEventListener('resize', () => {
   })
 })
 
-const downloadSchedule = () => {
-  html2canvas(document.getElementById('schedule-container'), {
-    scale: 3.5,
-    backgroundColor: '#1a1a1a',
-  }).then((canvas) => {
+const downloadSchedule = async () => {
+  try {
+    const canvas = await html2canvas(document.getElementById('schedule-container'), 
+    { scale: 3.5, backgroundColor: '#1a1a1a' })
+  
     const scheduleTotalSpan = document.getElementById('schedule-total-span')
     const currentSchedule = Number(scheduleTotalSpan.innerHTML.split(' ')[1])
     const b64img = canvas.toDataURL('image/png')
@@ -1316,16 +1316,26 @@ const downloadSchedule = () => {
     anchor.click()
     anchor.remove()
     URL.revokeObjectURL(b64img)
-  })
-  const alertBox = document.getElementById('alertBox')
-  alertBox.style.backgroundColor = '#ccc'
-  alertBox.style.color = '#1a1a1a'
-  alertBox.style.display = 'block'
-  alertBox.innerHTML = 'Schedule downloaded'
-  setTimeout(() => {
-    alertBox.innerHTML = ''
-    alertBox.style.display = 'none'
-  }, 5000)
+    const alertBox = document.getElementById('alertBox')
+    alertBox.style.backgroundColor = '#ccc'
+    alertBox.style.color = '#1a1a1a'
+    alertBox.style.display = 'block'
+    alertBox.innerHTML = 'Schedule downloaded'
+    setTimeout(() => {
+      alertBox.innerHTML = ''
+      alertBox.style.display = 'none'
+    }, 5000)
+  } catch(err) {
+    const alertBox = document.getElementById('alertBox')
+    alertBox.style.backgroundColor = '#ccc'
+    alertBox.style.color = '#1a1a1a'
+    alertBox.style.display = 'block'
+    alertBox.innerHTML = 'Downloading failed, please try again later'
+    setTimeout(() => {
+      alertBox.innerHTML = ''
+      alertBox.style.display = 'none'
+    }, 5000)
+  }
 }
 const copyCRNs = () => {
   const scheduleTotalSpan = document.getElementById('schedule-total-span')
