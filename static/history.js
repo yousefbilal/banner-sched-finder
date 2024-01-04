@@ -149,7 +149,6 @@ const buildScheduleFromHistory = async (element) => {
   const courses = element.courses
   const breaks = element.constraints.breaks
   const noClosedCoursesF = element.constraints.noClosedCourses
-  console.log(noClosedCoursesF)
   const entries = document.getElementById('entries')
   entries.innerHTML = ''
   const editForms = document.querySelectorAll('.editForm')
@@ -170,23 +169,18 @@ const buildScheduleFromHistory = async (element) => {
     if (course.sections[0] != 'Any') {
       const editBtn = lastEntry.querySelector('input[type="button"]')
       editBtn.click()
-      let i = 0
-      course.sections.forEach((section) => {
-        let sectionEntry
-        if (i == 0) {
-          sectionEntry = document.querySelector('.editEntry')
-        } else {
-          const addBtn = document.querySelector('.addBtnEditForm')
+      for (let i = 0; i < course.sections.length; i++) {
+        if (i != 0) {
+          const addBtnAll = document.querySelectorAll('.addBtnEditForm')
+          const addBtn = addBtnAll[addBtnAll.length - 1]
           addBtn.click()
-          sectionEntry = document.querySelectorAll('.editEntry')
-          sectionEntry = sectionEntry[sectionEntry.length - 1]
         }
-        const sectionInput =
-          sectionEntry.getElementsByClassName('sectionSelect')[0]
-        sectionInput.value = section
-        i++
-      })
-      const closeBtn = document.querySelector('.backBtnEditForm')
+        const sectionInputAll = document.querySelectorAll('.sectionSelect')
+        const sectionInput = sectionInputAll[sectionInputAll.length - 1]
+        sectionInput.value = course.sections[i]
+      }
+      const closeBtnAll = document.querySelectorAll('.backBtnEditForm')
+      const closeBtn = closeBtnAll[closeBtnAll.length - 1]
       closeBtn.click()
     }
   })

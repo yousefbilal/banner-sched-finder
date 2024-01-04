@@ -1060,7 +1060,10 @@ const createScheduleEntry = (entry, count, color, heightOfOneHourTimeSlot) => {
     scheduleEntryInfo.appendChild(scheduleEntryInfoTime)
     scheduleEntry.appendChild(scheduleEntryInfo)
     positionScheduleEntry(scheduleEntry, heightOfOneHourTimeSlot)
-    if (scheduleEntry.scrollHeight > scheduleEntry.clientHeight) {
+    if (
+      scheduleEntry.scrollHeight > scheduleEntry.clientHeight &&
+      entry.instructor != 'TBA'
+    ) {
       const instructorArray = entry.instructor.split(' ')
       scheduleEntryInfoInstructor.innerHTML =
         instructorArray[0] + ' ' + instructorArray[instructorArray.length - 1]
