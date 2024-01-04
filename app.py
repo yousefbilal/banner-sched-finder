@@ -77,7 +77,6 @@ def generateHelper(selectedCoursesArray, breaks, noClosedCourses):
 
         for value in lectures_dict.values():
             lectures_list.append(value)
-
         for _break in breaks:
             lectures_list.append([Lecture.createBreak(
                 _break["startTime"], _break["endTime"], _break.get("days", "MTWR"))])
@@ -131,7 +130,7 @@ def getCourses():
         return jsonify({'subjects': subjects, 'courses': courses, 'token': id, 'last_updated': last_updated}), 200
     except Exception as e:
         print(e)
-        return jsonify({'message': 'error'}), 500
+        return jsonify({'message': 'error'}), 400
 
 
 @app.route('/generateScheduleDOM', methods=['POST'])
