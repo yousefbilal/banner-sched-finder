@@ -27,7 +27,7 @@ except Exception as e:
 db = client.get_database('banner')
 # Get the collection
 collection = db.get_collection('subjectss24')
-coursesCollection = db.get_collection('coursess24_backup')
+coursesCollection = db.get_collection('coursess24')
 subjProjection = {"_id": 0, "subject": 1}
 projection = {"_id": 0, "full_name": 1, "subject": 1, "code": 1,
               "section": 1, "instructor": 1, "time": 1, "days": 1}
@@ -36,25 +36,28 @@ projection = {"_id": 0, "full_name": 1, "subject": 1, "code": 1,
 userCollection = db.get_collection('users')
 historyCollection = db.get_collection('history')
 historyProjection = {"_id": 0, "courses": 1, "constraints": 1, "datetime": 1}
+adminCollection = db.get_collection('admin')
+adminProjection = {"_id": 0, "name": 1, "datetime": 1}
 # end of mongo db
 
 
-def generateHelper(selectedCoursesArray, breaks):
+def generateHelper(selectedCoursesArray, breaks, noClosedCourses):
     try:
         lectures_list = []
         lectures_dict = dict()
         labs_dict = dict()
         selectedCoursesArrayString = [
             f"{obj['subject']} {obj['code']}" for obj in selectedCoursesArray]
+        isAvailable = ['Y'] if noClosedCourses else ['Y', 'N']
         for dataCourse in selectedCoursesArray:
             courses = []
             if dataCourse["sections"][0] != "Any":
                 for section in dataCourse["sections"]:
                     courses += coursesCollection.find(
-                        {"code": dataCourse["code"], "subject": dataCourse["subject"], "section": section})
+                        {"code": dataCourse["code"], "subject": dataCourse["subject"], "section": section, "isAvailable": {"$in": isAvailable}})
             else:
                 courses = coursesCollection.find(
-                    {"code": dataCourse["code"], "subject": dataCourse["subject"]})
+                    {"code": dataCourse["code"], "subject": dataCourse["subject"], "isAvailable": {"$in": isAvailable}})
 
             course_code = dataCourse["subject"] + ' ' + dataCourse["code"]
             for course in courses:
@@ -78,7 +81,6 @@ def generateHelper(selectedCoursesArray, breaks):
         for _break in breaks:
             lectures_list.append([Lecture.createBreak(
                 _break["startTime"], _break["endTime"], _break.get("days", "MTWR"))])
-
         all_schedules = generate_scheds(lectures_list, labs_dict)
         # if (len(all_schedules) == 0):
         #     return all_schedules
@@ -124,7 +126,9 @@ def getCourses():
             {}, subjProjection).sort([("subject", 1)]))
         courses = list(coursesCollection.find(
             {}, projection).sort([("code", 1)]))
-        return jsonify({'subjects': subjects, 'courses': courses, 'token': id}), 200
+        last_updated = adminCollection.find_one(
+            {}, adminProjection)['datetime']
+        return jsonify({'subjects': subjects, 'courses': courses, 'token': id, 'last_updated': last_updated}), 200
     except Exception as e:
         print(e)
         return jsonify({'message': 'error'}), 500
@@ -138,19 +142,21 @@ def generatedom(user_id):
         print(data)
         selectedCoursesArray = data["selectedCoursesArray"]
         breaks = data["breaks"]
+        noClosedCourses = data["noClosedCourses"]
         # history save
         entry = historyCollection.find_one(
-            {'id': user_id, 'courses': selectedCoursesArray, 'constraints': {'breaks': breaks}})
+            {'id': user_id, 'courses': selectedCoursesArray, 'constraints': {'breaks': breaks, 'noClosedCourses': noClosedCourses}})
         if entry == None:
             historyCollection.insert_one(
-                {'id': user_id, 'courses': selectedCoursesArray, 'constraints': {'breaks': breaks}, 'datetime': datetime.utcnow()})
+                {'id': user_id, 'courses': selectedCoursesArray, 'constraints': {'breaks': breaks, 'noClosedCourses': noClosedCourses}, 'datetime': datetime.utcnow()})
         else:
             historyCollection.update_one(
-                {'id': user_id, 'courses': selectedCoursesArray, 'constraints': {'breaks': breaks}}, {'$set': {'datetime': datetime.utcnow()}})
+                {'id': user_id, 'courses': selectedCoursesArray, 'constraints': {'breaks': breaks, 'noClosedCourses': noClosedCourses}}, {'$set': {'datetime': datetime.utcnow()}})
         # end of history save
-        all_schedules = generateHelper(selectedCoursesArray, breaks)
+        all_schedules = generateHelper(
+            selectedCoursesArray, breaks, noClosedCourses)
         if (len(all_schedules) == 0):
-            return jsonify({'message': 'no schedules found'}), 300
+            return jsonify({'message': 'no schedules found'}), 400
 
         return jsonify({'schedules': all_schedules}), 200
 

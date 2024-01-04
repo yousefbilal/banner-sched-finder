@@ -76,7 +76,10 @@ const goToHistory = async (button) => {
             )
           })
           .join(', ')
-      if (element.constraints.breaks.length > 0) {
+      if (
+        element.constraints.breaks.length > 0 ||
+        element.constraints.noClosedCourses
+      ) {
         coursesData +=
           '\n' +
           'Constraints: ' +
@@ -91,7 +94,10 @@ const goToHistory = async (button) => {
                 (br.days ? br.days : 'MTWR')
               )
             })
-            .join('\n') //to do add noClosedCourses
+            .join('\n')
+        if (element.constraints.noClosedCourses) {
+          coursesData += '\n' + 'Only Open Courses'
+        }
       } else {
         coursesData += '\n' + 'Constraints: None'
       }
@@ -142,7 +148,8 @@ const buildScheduleFromHistory = async (element) => {
   historyBtn.value = 'Search History'
   const courses = element.courses
   const breaks = element.constraints.breaks
-  //const noClosedCourses = element.constraints.noClosedCourses //to do
+  const noClosedCoursesF = element.constraints.noClosedCourses
+  console.log(noClosedCoursesF)
   const entries = document.getElementById('entries')
   entries.innerHTML = ''
   const editForms = document.querySelectorAll('.editForm')
@@ -187,8 +194,8 @@ const buildScheduleFromHistory = async (element) => {
   })
   const no8AM = document.getElementById('no8AM')
   no8AM.checked = false
-  // // const noMultipleLabs = document.getElementById('noMultipleLabs') //to do change to noClosedCourses
-  // // noMultipleLabs.checked = false
+  const noClosedCourses = document.getElementById('noClosedCourses') //changed to noClosedCourses
+  noClosedCourses.checked = noClosedCoursesF
   const noClassesAfter5PM = document.getElementById('noClassesAfter5PM')
   noClassesAfter5PM.checked = false
   let j = 0

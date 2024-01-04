@@ -437,3 +437,10 @@ footer {
   font-weight: 500;
 }
 /* end of history */
+.last-updated {
+  font-size: 0.75rem;
+  color: #8a2be2;
+  font-weight: 700;
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+}

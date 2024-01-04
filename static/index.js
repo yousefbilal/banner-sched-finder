@@ -241,6 +241,12 @@ subjectsElements.forEach((element) => {
     fillCodes(courses, e.target.parentNode.querySelector('.code'))
   })
 })
+const updateTime = (time) => {
+  const lastUpdated = document.getElementById('last-updated')
+  lastUpdated.innerHTML = `*Courses last updated on ${time.split('T')[0]} ${
+    time.split('T')[1].split('.')[0]
+  } `
+}
 const initalDisplayOfCourses = async () => {
   try {
     let token = localStorage.getItem('token')
@@ -265,6 +271,7 @@ const initalDisplayOfCourses = async () => {
     const dropdown = document.querySelector('.subject')
     fillSubjects(subjects, dropdown)
     fillCodes(courses, document.querySelector('.code'))
+    updateTime(data.last_updated)
     // add change event listener to code dropdown
     const firstDropdown = document.getElementById('inputTextTwo0')
     firstDropdown.addEventListener('change', (e) => {
@@ -580,15 +587,15 @@ const displayAdvancedOptions = () => {
   const advancedEntryTwo = document.createElement('div')
   advancedEntryTwo.className = 'advancedEntry'
   const advancedOptionsFormLabelTwo = document.createElement('label')
-  advancedOptionsFormLabelTwo.innerHTML = 'No Multiple Labs on Same Day'
+  advancedOptionsFormLabelTwo.innerHTML = 'Only Open Sections'
   advancedOptionsFormLabelTwo.classList.add('formLabel')
   const advancedOptionsFormInputTwo = document.createElement('input')
   advancedOptionsFormInputTwo.setAttribute('type', 'checkbox')
-  advancedOptionsFormInputTwo.setAttribute('name', 'noMultipleLabs')
-  advancedOptionsFormInputTwo.disabled = true
+  advancedOptionsFormInputTwo.setAttribute('name', 'noClosedCourses')
+  // advancedOptionsFormInputTwo.disabled = false
   advancedOptionsFormInputTwo.classList.add('input')
-  advancedOptionsFormInputTwo.classList.add('noMultipleLabs')
-  advancedOptionsFormInputTwo.id = 'noMultipleLabs'
+  advancedOptionsFormInputTwo.classList.add('noClosedCourses')
+  advancedOptionsFormInputTwo.id = 'noClosedCourses'
   advancedEntryTwo.appendChild(advancedOptionsFormLabelTwo)
   advancedEntryTwo.appendChild(advancedOptionsFormInputTwo)
   const advancedEntryFour = document.createElement('div')
@@ -865,10 +872,11 @@ const generateScheduleDOM = async (e) => {
     })
     const advancedOptionsForm = document.getElementById('advancedOptions')
     const breaks = []
+    let noClosedCourses = false
     if (advancedOptionsForm) {
       const no8AM = advancedOptionsForm.querySelector('.no8AM').checked
-      const noMultipleLabs = //to do
-        advancedOptionsForm.querySelector('.noMultipleLabs').checked
+      noClosedCourses =
+        advancedOptionsForm.querySelector('.noClosedCourses').checked
       const noClassesAfter5PM =
         advancedOptionsForm.querySelector('.noClassesAfter5PM').checked
       const breakBetweenSelect =
@@ -924,7 +932,11 @@ const generateScheduleDOM = async (e) => {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + localStorage.getItem('token'),
       },
-      body: JSON.stringify({ selectedCoursesArray, breaks }),
+      body: JSON.stringify({
+        selectedCoursesArray,
+        breaks,
+        noClosedCourses: noClosedCourses,
+      }),
     })
     const data = await response.json()
     schedules = data.schedules
@@ -1304,9 +1316,11 @@ window.addEventListener('resize', () => {
 
 const downloadSchedule = async () => {
   try {
-    const canvas = await html2canvas(document.getElementById('schedule-container'), 
-    { scale: 3.5, backgroundColor: '#1a1a1a' })
-  
+    const canvas = await html2canvas(
+      document.getElementById('schedule-container'),
+      { scale: 3.5, backgroundColor: '#1a1a1a' }
+    )
+
     const scheduleTotalSpan = document.getElementById('schedule-total-span')
     const currentSchedule = Number(scheduleTotalSpan.innerHTML.split(' ')[1])
     const b64img = canvas.toDataURL('image/png')
@@ -1325,7 +1339,7 @@ const downloadSchedule = async () => {
       alertBox.innerHTML = ''
       alertBox.style.display = 'none'
     }, 5000)
-  } catch(err) {
+  } catch (err) {
     const alertBox = document.getElementById('alertBox')
     alertBox.style.backgroundColor = '#ccc'
     alertBox.style.color = '#1a1a1a'
