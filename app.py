@@ -53,13 +53,14 @@ def generateHelper(selectedCoursesArray, breaks, noClosedCourses):
             courses = []
             if dataCourse["sections"][0] != "Any":
                 for section in dataCourse["sections"]:
-                    courses += coursesCollection.find(
-                        {"code": dataCourse["code"], "subject": dataCourse["subject"], "section": section, "isAvailable": {"$in": isAvailable}})
+                    courses += list(coursesCollection.find(
+                        {"code": dataCourse["code"], "subject": dataCourse["subject"], "section": section, "isAvailable": {"$in": isAvailable}}))
             else:
-                courses = coursesCollection.find(
-                    {"code": dataCourse["code"], "subject": dataCourse["subject"], "isAvailable": {"$in": isAvailable}})
+                courses = list(coursesCollection.find(
+                    {"code": dataCourse["code"], "subject": dataCourse["subject"], "isAvailable": {"$in": isAvailable}}))
 
             course_code = dataCourse["subject"] + ' ' + dataCourse["code"]
+            courses.sort(key=lambda x: x["section"])  # not always necessary
             for course in courses:
                 crn = course["crn"]
                 section = course["section"]
@@ -77,7 +78,6 @@ def generateHelper(selectedCoursesArray, breaks, noClosedCourses):
 
         for value in lectures_dict.values():
             lectures_list.append(value)
-
         for _break in breaks:
             lectures_list.append([Lecture.createBreak(
                 _break["startTime"], _break["endTime"], _break.get("days", "MTWR"))])
@@ -125,13 +125,13 @@ def getCourses():
         subjects = list(collection.find(
             {}, subjProjection).sort([("subject", 1)]))
         courses = list(coursesCollection.find(
-            {}, projection).sort([("code", 1)]))
+            {}, projection).sort([("subject", 1), ("code", 1), ("section", 1)]))
         last_updated = adminCollection.find_one(
             {}, adminProjection)['datetime']
         return jsonify({'subjects': subjects, 'courses': courses, 'token': id, 'last_updated': last_updated}), 200
     except Exception as e:
         print(e)
-        return jsonify({'message': 'error'}), 500
+        return jsonify({'message': 'error'}), 400
 
 
 @app.route('/generateScheduleDOM', methods=['POST'])
