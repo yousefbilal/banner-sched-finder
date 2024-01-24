@@ -444,3 +444,17 @@ footer {
   margin-top: 0.5rem;
   margin-bottom: 0;
 }
+
+.form-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.credits {
+  margin-right: 0.8rem;
+  font-size: small;
+  color: #8a2be2;
+  font-weight: 700;
+  font-family: 'Montserrat', sans-serif;
+}

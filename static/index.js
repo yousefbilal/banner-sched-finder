@@ -213,6 +213,7 @@ const fillCodes = async (courses, element) => {
     uniqueCoursesWithSubject.forEach((course) => {
       const option = document.createElement('option')
       option.value = course.code
+      option.setAttribute('credits', course.credits)
       if (course.full_name && course.full_name.includes('(Take it with')) {
         option.innerHTML =
           course.code + ' - ' + course.full_name.split('(Take')[0]
@@ -239,6 +240,7 @@ subjectsElements.forEach((element) => {
   element.addEventListener('change', (e) => {
     e.stopPropagation()
     fillCodes(courses, e.target.parentNode.querySelector('.code'))
+    calculateCredits()
   })
 })
 const updateTime = (time) => {
@@ -274,10 +276,15 @@ const initalDisplayOfCourses = async () => {
     updateTime(data.last_updated)
     // add change event listener to code dropdown
     const firstDropdown = document.getElementById('inputTextTwo0')
+    const creditsSpan = document.getElementById('credit-hours')
+    creditsSpan.innerText = firstDropdown.options[firstDropdown.selectedIndex].getAttribute('credits')
     firstDropdown.addEventListener('change', (e) => {
       e.stopPropagation()
       checkEditForm(courses, e.target.parentNode)
+      calculateCredits()
     })
+
+
   } catch (e) {
     console.log(e.message)
     const alertBox = document.getElementById('alertBox')
@@ -291,6 +298,18 @@ const initalDisplayOfCourses = async () => {
     }, 5000)
   }
 }
+
+calculateCredits = () => {
+  const selectedCoursesEntries = Array.from(document.querySelectorAll('.entry'))
+  const sum = selectedCoursesEntries.reduce((sum, course) => {
+    const courseDropdown = course.querySelector('.code')
+    const credits = Number(courseDropdown.options[courseDropdown.selectedIndex].getAttribute('credits'))
+    return sum + credits
+  }, 0)
+  const creditsSpan = document.getElementById('credit-hours')
+  creditsSpan.innerText = sum
+}
+
 document.addEventListener('DOMContentLoaded', initalDisplayOfCourses)
 // ------------------------------
 const addEntry = (e) => {
@@ -342,13 +361,16 @@ const addEntry = (e) => {
   dropdownselect.addEventListener('change', (e) => {
     e.stopPropagation()
     fillCodes(courses, e.target.parentNode.querySelector('.code'))
+    calculateCredits()
   })
   dropdownselectTwo.addEventListener('change', (e) => {
     e.stopPropagation()
     checkEditForm(courses, e.target.parentNode)
+    calculateCredits()
   })
   fillSubjects(subjects, dropdownselect)
   fillCodes(courses, dropdownselectTwo)
+  calculateCredits()
 }
 const deleteEntry = (e) => {
   const entry = e.target.parentNode
@@ -362,6 +384,7 @@ const deleteEntry = (e) => {
     editForm.remove()
   }
   entry.remove()
+  calculateCredits()
 }
 const editEntry = (e) => {
   try {
