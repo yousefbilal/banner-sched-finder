@@ -1,1 +1,250 @@
-const _0x1aed8f=_0x2818;function _0x53c4(){const _0x222fda=['getDate','getMonth','.backBtnEditForm','Courses:\x20','add','days','history-datetime','history-container','.editForm','2413323fIHhYL','history-body','code','none','breakBetween','split','log','2YDadKF','531QKxBmM','height','GET','88337OqYtjg','message','courses','#1a1a1a','historyBtn','.sectionSelect','remove','color','no8AM','/clearHistory','Constraints:\x20','Bearer\x20','addBtn','11jKDrik','Search\x20History','block','MTWR','history-courses','history','change','dispatchEvent','No\x20history\x20found','addEventListener','233510DCmDlU','getItem','220XXtlvQ','display','.advancedEntry','getHours','subject','.entry','offsetHeight','Too\x20fast!','map','alertBox','createElement','application/json','auto','sections','forEach','endTime','.deleteBtnBreak','Any','appendChild','advancedBtn','querySelector','2719824BjEYDC','35ECFfbF','entries','value','backgroundColor','getMinutes','backBtnAdvancedForm','History\x20cleared','\x20(\x20','form-container','json','token','innerHTML','click','innerText','Break\x20','input[type=\x22button\x22]','POST','datetime','2830710jePgAl','Constraints:\x20None','querySelectorAll','#ccc','breaks','startTime','getElementsByClassName','style','checked','join','noClosedCourses','.addBtnEditForm','getElementById','history-entry','length','constraints','classList','234762gtJZQO'];_0x53c4=function(){return _0x222fda;};return _0x53c4();}(function(_0x30fe1d,_0x30a9af){const _0x2a742b=_0x2818,_0x459b53=_0x30fe1d();while(!![]){try{const _0x34722c=parseInt(_0x2a742b(0xaf))/0x1*(parseInt(_0x2a742b(0xab))/0x2)+-parseInt(_0x2a742b(0xac))/0x3*(-parseInt(_0x2a742b(0xc8))/0x4)+-parseInt(_0x2a742b(0xc6))/0x5+parseInt(_0x2a742b(0x9a))/0x6*(-parseInt(_0x2a742b(0xde))/0x7)+parseInt(_0x2a742b(0xdd))/0x8+parseInt(_0x2a742b(0xa4))/0x9+parseInt(_0x2a742b(0xf0))/0xa*(-parseInt(_0x2a742b(0xbc))/0xb);if(_0x34722c===_0x30a9af)break;else _0x459b53['push'](_0x459b53['shift']());}catch(_0x52bc2a){_0x459b53['push'](_0x459b53['shift']());}}}(_0x53c4,0x2c235));const historyBtn=document['getElementById']('historyBtn');historyBtn[_0x1aed8f(0xc5)]('click',()=>{const _0x4725e4=_0x1aed8f;historyBtn[_0x4725e4(0xe0)]===_0x4725e4(0xbd)?goToHistory(historyBtn):goToHome(historyBtn);});function _0x2818(_0x572aac,_0x2707c4){const _0x53c44a=_0x53c4();return _0x2818=function(_0x281839,_0x1d9f3f){_0x281839=_0x281839-0x95;let _0x5ed7df=_0x53c44a[_0x281839];return _0x5ed7df;},_0x2818(_0x572aac,_0x2707c4);}const goToHistory=async _0x1993f6=>{const _0x569742=_0x1aed8f;try{if(!courses)throw new Error(_0x569742(0xcf));_0x1993f6[_0x569742(0xe0)]='Back\x20to\x20Search';const _0x1f1280=document[_0x569742(0x95)](_0x569742(0xa2)),_0xc6925e=document['getElementById'](_0x569742(0xe6)),_0x4c85e1=_0xc6925e[_0x569742(0xce)];_0x1f1280['style'][_0x569742(0xc9)]=_0x569742(0xbe),_0xc6925e[_0x569742(0xf7)][_0x569742(0xc9)]=_0x569742(0xa7);_0x1f1280['offsetHeight']<_0x4c85e1&&(_0x1f1280['style']['height']=_0x4c85e1+'px');const _0x42294e=document[_0x569742(0x95)](_0x569742(0xa5));_0x42294e[_0x569742(0xe9)]=_0x569742(0xc4);const _0x2d125d=await fetch('/getHistory',{'method':_0x569742(0xae),'headers':{'Content-Type':_0x569742(0xd3),'Authorization':_0x569742(0xba)+localStorage[_0x569742(0xc7)]('token')}}),_0x33ed99=await _0x2d125d[_0x569742(0xe7)]();if(_0x33ed99[_0x569742(0xc1)][_0x569742(0x97)]===0x0){_0x42294e[_0x569742(0xe9)]=_0x569742(0xc4);return;}_0x42294e[_0x569742(0xe9)]='',_0x33ed99[_0x569742(0xc1)]['forEach'](_0x251ed1=>{const _0x2b10e8=_0x569742,_0x20b56e=document[_0x2b10e8(0xd2)]('tr');_0x20b56e[_0x2b10e8(0x99)][_0x2b10e8(0x9f)](_0x2b10e8(0x96));const _0x3e0a63=document[_0x2b10e8(0xd2)]('td');_0x3e0a63[_0x2b10e8(0x99)][_0x2b10e8(0x9f)](_0x2b10e8(0xa1));const _0xfe26e3=document['createElement']('td');_0xfe26e3[_0x2b10e8(0x99)][_0x2b10e8(0x9f)](_0x2b10e8(0xc0));const _0x2bb245=new Date(_0x251ed1[_0x2b10e8(0xef)])[_0x2b10e8(0x9c)]()+0x1,_0x5e73c4=new Date(_0x251ed1['datetime'])[_0x2b10e8(0x9b)](),_0x48795b=new Date(_0x251ed1[_0x2b10e8(0xef)])['getFullYear'](),_0x4c268f=new Date(_0x251ed1[_0x2b10e8(0xef)])[_0x2b10e8(0xcb)](),_0x13400e=new Date(_0x251ed1['datetime'])[_0x2b10e8(0xe2)]();_0x3e0a63[_0x2b10e8(0xeb)]=_0x2bb245+'/'+_0x5e73c4+'/'+_0x48795b+'\x20'+'\x0a'+_0x4c268f+':'+_0x13400e+'\x20'+(_0x4c268f>0xc?'PM':'AM');let _0xe5e39b=_0x2b10e8(0x9e)+_0x251ed1[_0x2b10e8(0xb1)]['map'](_0x53b3be=>{const _0x139344=_0x2b10e8;return _0x53b3be[_0x139344(0xcc)]+'\x20'+_0x53b3be['code']+_0x139344(0xe5)+_0x53b3be[_0x139344(0xd5)][_0x139344(0xf9)](',\x20')+'\x20)';})[_0x2b10e8(0xf9)](',\x20');_0x251ed1[_0x2b10e8(0x98)][_0x2b10e8(0xf4)][_0x2b10e8(0x97)]>0x0||_0x251ed1['constraints'][_0x2b10e8(0xfa)]?(_0xe5e39b+='\x0a'+_0x2b10e8(0xb9)+_0x251ed1['constraints'][_0x2b10e8(0xf4)][_0x2b10e8(0xd0)](_0x5467ff=>{const _0x522893=_0x2b10e8;return _0x522893(0xec)+_0x5467ff['startTime']+'\x20-\x20'+_0x5467ff['endTime']+'\x20'+(_0x5467ff[_0x522893(0xa0)]?_0x5467ff[_0x522893(0xa0)]:_0x522893(0xbf));})['join']('\x0a'),_0x251ed1[_0x2b10e8(0x98)]['noClosedCourses']&&(_0xe5e39b+='\x0a'+'Only\x20Open\x20Courses')):_0xe5e39b+='\x0a'+_0x2b10e8(0xf1),_0xfe26e3[_0x2b10e8(0xeb)]=_0xe5e39b,_0x20b56e[_0x2b10e8(0xda)](_0xfe26e3),_0x20b56e[_0x2b10e8(0xda)](_0x3e0a63),_0x20b56e[_0x2b10e8(0xc5)]('click',()=>{buildScheduleFromHistory(_0x251ed1);}),_0x42294e[_0x2b10e8(0xda)](_0x20b56e),_0x1f1280['offsetHeight']<_0x4c85e1?_0x1f1280['style']['height']=_0x4c85e1+'px':_0x1f1280['style'][_0x2b10e8(0xad)]=_0x2b10e8(0xd4);});}catch(_0x33e87e){console[_0x569742(0xaa)](_0x33e87e[_0x569742(0xb0)]);const _0x271673=document['getElementById']('alertBox');_0x271673[_0x569742(0xe9)]=_0x33e87e[_0x569742(0xb0)],_0x271673[_0x569742(0xf7)][_0x569742(0xe1)]=_0x569742(0xf3),_0x271673[_0x569742(0xf7)]['color']=_0x569742(0xb2),_0x271673['style'][_0x569742(0xc9)]=_0x569742(0xbe),setTimeout(()=>{const _0x58bfec=_0x569742;_0x271673['innerHTML']='',_0x271673[_0x58bfec(0xf7)][_0x58bfec(0xc9)]=_0x58bfec(0xa7);},0x1388);}},goToHome=_0xfa307f=>{const _0x1019d5=_0x1aed8f;_0xfa307f['value']='Search\x20History';const _0x50a82d=document[_0x1019d5(0x95)](_0x1019d5(0xa2)),_0x165e43=document[_0x1019d5(0x95)](_0x1019d5(0xe6));_0x165e43[_0x1019d5(0xf7)]['display']='block',_0x50a82d[_0x1019d5(0xf7)][_0x1019d5(0xad)]===_0x1019d5(0xd4)&&(_0x50a82d[_0x1019d5(0xf7)][_0x1019d5(0xad)]=_0x165e43[_0x1019d5(0xce)]+'px'),_0x50a82d[_0x1019d5(0xf7)][_0x1019d5(0xc9)]=_0x1019d5(0xa7);},buildScheduleFromHistory=async _0x4c06c7=>{const _0x4150d4=_0x1aed8f,_0x4e0c9b=document['getElementById'](_0x4150d4(0xa2)),_0x3baddf=document['getElementById'](_0x4150d4(0xe6));_0x3baddf[_0x4150d4(0xf7)][_0x4150d4(0xc9)]=_0x4150d4(0xbe),_0x4e0c9b[_0x4150d4(0xf7)][_0x4150d4(0xc9)]=_0x4150d4(0xa7);const _0x924be4=document[_0x4150d4(0x95)](_0x4150d4(0xb3));_0x924be4[_0x4150d4(0xe0)]=_0x4150d4(0xbd);const _0x4c5b8e=_0x4c06c7[_0x4150d4(0xb1)],_0x1e4d09=_0x4c06c7[_0x4150d4(0x98)][_0x4150d4(0xf4)],_0x3ce1b7=_0x4c06c7['constraints']['noClosedCourses'],_0x457dea=document[_0x4150d4(0x95)](_0x4150d4(0xdf));_0x457dea['innerHTML']='';const _0x1be7bb=document[_0x4150d4(0xf2)](_0x4150d4(0xa3));_0x1be7bb[_0x4150d4(0xd6)](_0x29aa51=>{const _0x87f649=_0x4150d4;_0x29aa51[_0x87f649(0xb5)]();});const _0x3af95e=document[_0x4150d4(0x95)](_0x4150d4(0xbb));_0x4c5b8e[_0x4150d4(0xd6)](_0x252dc0=>{const _0x3e3608=_0x4150d4;_0x3af95e['click']();let _0x6b2f6a=document[_0x3e3608(0xf2)](_0x3e3608(0xcd));_0x6b2f6a=_0x6b2f6a[_0x6b2f6a[_0x3e3608(0x97)]-0x1];const _0x120861=_0x6b2f6a[_0x3e3608(0xf6)](_0x3e3608(0xcc))[0x0],_0x557f09=_0x6b2f6a[_0x3e3608(0xf6)](_0x3e3608(0xa6))[0x0];_0x120861['value']=_0x252dc0[_0x3e3608(0xcc)],_0x120861[_0x3e3608(0xc3)](new Event('change')),_0x557f09[_0x3e3608(0xe0)]=_0x252dc0['code'],_0x557f09['dispatchEvent'](new Event(_0x3e3608(0xc2)));if(_0x252dc0[_0x3e3608(0xd5)][0x0]!=_0x3e3608(0xd9)){const _0x5761db=_0x6b2f6a[_0x3e3608(0xdc)](_0x3e3608(0xed));_0x5761db[_0x3e3608(0xea)]();for(let _0x51f203=0x0;_0x51f203<_0x252dc0[_0x3e3608(0xd5)]['length'];_0x51f203++){if(_0x51f203!=0x0){const _0x5a9b57=document['querySelectorAll'](_0x3e3608(0xfb)),_0x4c271d=_0x5a9b57[_0x5a9b57['length']-0x1];_0x4c271d[_0x3e3608(0xea)]();}const _0x4f0437=document[_0x3e3608(0xf2)](_0x3e3608(0xb4)),_0x1d1482=_0x4f0437[_0x4f0437[_0x3e3608(0x97)]-0x1];_0x1d1482['value']=_0x252dc0[_0x3e3608(0xd5)][_0x51f203];}const _0x75b183=document['querySelectorAll'](_0x3e3608(0x9d)),_0x498fec=_0x75b183[_0x75b183[_0x3e3608(0x97)]-0x1];_0x498fec[_0x3e3608(0xea)]();}});const _0x4e2008=document[_0x4150d4(0x95)](_0x4150d4(0xdb));_0x4e2008[_0x4150d4(0xea)]();const _0x3ffce0=document[_0x4150d4(0xf2)](_0x4150d4(0xd8));_0x3ffce0[_0x4150d4(0xd6)](_0x23a164=>{const _0x60a975=_0x4150d4;_0x23a164[_0x60a975(0xea)]();});const _0xbde53c=document[_0x4150d4(0x95)](_0x4150d4(0xb7));_0xbde53c[_0x4150d4(0xf8)]=![];const _0x44c49a=document[_0x4150d4(0x95)](_0x4150d4(0xfa));_0x44c49a[_0x4150d4(0xf8)]=_0x3ce1b7;const _0x3520ac=document[_0x4150d4(0x95)]('noClassesAfter5PM');_0x3520ac[_0x4150d4(0xf8)]=![];let _0x1181dd=0x0;_0x1e4d09[_0x4150d4(0xd6)](_0x410f9a=>{const _0x325a8a=_0x4150d4;let _0x5e36e1;if(_0x1181dd!=0x0){const _0x4f8e4c=document[_0x325a8a(0xdc)]('.addBtnBreak');_0x4f8e4c[_0x325a8a(0xea)]();}_0x5e36e1=document[_0x325a8a(0xf2)](_0x325a8a(0xca)),_0x5e36e1=_0x5e36e1[_0x5e36e1[_0x325a8a(0x97)]-0x1];const _0x331a12=_0x5e36e1[_0x325a8a(0xf6)]('breakBetween')[0x0],_0xfaffbd=_0x5e36e1[_0x325a8a(0xf6)](_0x325a8a(0xa8))[0x1];_0x331a12[_0x325a8a(0xe0)]=_0x410f9a[_0x325a8a(0xf5)],_0xfaffbd[_0x325a8a(0xe0)]=_0x410f9a[_0x325a8a(0xd7)],!_0x410f9a['days']&&(_0x410f9a['days']=_0x325a8a(0xbf)),_0x410f9a[_0x325a8a(0xa0)][_0x325a8a(0xa9)]('')[_0x325a8a(0xd6)](_0xfd6ee2=>{const _0x4f55ea=_0x325a8a,_0x5ec6a8=_0x5e36e1[_0x4f55ea(0xdc)]('.'+_0xfd6ee2);_0x5ec6a8[_0x4f55ea(0xf8)]=!![];}),_0x1181dd++;});const _0x1c15f5=document[_0x4150d4(0x95)](_0x4150d4(0xe3));_0x1c15f5['click']();},clearHistory=async()=>{const _0x23a5b5=_0x1aed8f;if(document[_0x23a5b5(0x95)](_0x23a5b5(0xa5))[_0x23a5b5(0xe9)]===_0x23a5b5(0xc4))return;const _0x3b3600=fetch(_0x23a5b5(0xb8),{'method':_0x23a5b5(0xee),'headers':{'Content-Type':_0x23a5b5(0xd3),'Authorization':_0x23a5b5(0xba)+localStorage[_0x23a5b5(0xc7)](_0x23a5b5(0xe8))}}),_0xbdebd=document[_0x23a5b5(0x95)]('history-body');_0xbdebd['innerHTML']=_0x23a5b5(0xc4);const _0x2c204d=document[_0x23a5b5(0x95)](_0x23a5b5(0xd1));_0x2c204d[_0x23a5b5(0xf7)]['backgroundColor']='#ccc',_0x2c204d['style'][_0x23a5b5(0xb6)]=_0x23a5b5(0xb2),_0x2c204d[_0x23a5b5(0xf7)][_0x23a5b5(0xc9)]=_0x23a5b5(0xbe),_0x2c204d['innerText']=_0x23a5b5(0xe4),setTimeout(()=>{const _0x23d51f=_0x23a5b5;_0x2c204d[_0x23d51f(0xf7)]['display']='none';},0xbb8);};
+const historyBtn = document.getElementById('historyBtn')
+historyBtn.addEventListener('click', () => {
+  if (historyBtn.value === 'Search History') {
+    goToHistory(historyBtn)
+  } else {
+    goToHome(historyBtn)
+  }
+})
+
+const goToHistory = async (button) => {
+  try {
+    if (!courses) {
+      throw new Error('Too fast!')
+    }
+    button.value = 'Back to Search'
+    const historyContainer = document.getElementById('history-container')
+    const formContainer = document.getElementById('form-container')
+    const formContainerOffsetHeight = formContainer.offsetHeight
+    historyContainer.style.display = 'block'
+    formContainer.style.display = 'none'
+    if (historyContainer.offsetHeight < formContainerOffsetHeight) {
+      historyContainer.style.height = formContainerOffsetHeight + 'px'
+    }
+
+    const historyBody = document.getElementById('history-body')
+    historyBody.innerHTML = 'No history found'
+    const response = await fetch('/getHistory', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('token'),
+      },
+    })
+    const data = await response.json()
+    if (data.history.length === 0) {
+      historyBody.innerHTML = 'No history found'
+      return
+    }
+    historyBody.innerHTML = ''
+    data.history.forEach((element) => {
+      const row = document.createElement('tr')
+      row.classList.add('history-entry')
+      const datetime = document.createElement('td')
+      datetime.classList.add('history-datetime')
+      const courses = document.createElement('td')
+      courses.classList.add('history-courses')
+      const month = new Date(element.datetime).getMonth() + 1
+      const day = new Date(element.datetime).getDate()
+      const year = new Date(element.datetime).getFullYear()
+      const hour = new Date(element.datetime).getHours()
+      const minute = new Date(element.datetime).getMinutes()
+      datetime.innerText =
+        month +
+        '/' +
+        day +
+        '/' +
+        year +
+        ' ' +
+        '\n' +
+        hour +
+        ':' +
+        minute +
+        ' ' +
+        (hour > 12 ? 'PM' : 'AM')
+      let coursesData =
+        'Courses: ' +
+        element.courses
+          .map((course) => {
+            return (
+              course.subject +
+              ' ' +
+              course.code +
+              ' ( ' +
+              course.sections.join(', ') +
+              ' )'
+            )
+          })
+          .join(', ')
+      if (
+        element.constraints.breaks.length > 0 ||
+        element.constraints.noClosedCourses
+      ) {
+        coursesData +=
+          '\n' +
+          'Constraints: ' +
+          element.constraints.breaks
+            .map((br) => {
+              return (
+                'Break ' +
+                br.startTime +
+                ' - ' +
+                br.endTime +
+                ' ' +
+                (br.days ? br.days : 'MTWR')
+              )
+            })
+            .join('\n')
+        if (element.constraints.noClosedCourses) {
+          coursesData += '\n' + 'Only Open Courses'
+        }
+      } else {
+        coursesData += '\n' + 'Constraints: None'
+      }
+      courses.innerText = coursesData
+      row.appendChild(courses)
+      row.appendChild(datetime)
+      row.addEventListener('click', () => {
+        buildScheduleFromHistory(element)
+      })
+      historyBody.appendChild(row)
+      if (historyContainer.offsetHeight < formContainerOffsetHeight) {
+        historyContainer.style.height = formContainerOffsetHeight + 'px'
+      } else {
+        historyContainer.style.height = 'auto'
+      }
+    })
+  } catch (e) {
+    console.log(e.message)
+    const alertBox = document.getElementById('alertBox')
+    alertBox.innerHTML = e.message
+    alertBox.style.backgroundColor = '#ccc'
+    alertBox.style.color = '#1a1a1a'
+    alertBox.style.display = 'block'
+    setTimeout(() => {
+      alertBox.innerHTML = ''
+      alertBox.style.display = 'none'
+    }, 5000)
+  }
+}
+
+const goToHome = (button) => {
+  button.value = 'Search History'
+  const historyContainer = document.getElementById('history-container')
+  const formContainer = document.getElementById('form-container')
+  formContainer.style.display = 'block'
+  if (historyContainer.style.height === 'auto') {
+    historyContainer.style.height = formContainer.offsetHeight + 'px'
+  }
+  historyContainer.style.display = 'none'
+}
+
+const buildScheduleFromHistory = async (element) => {
+  const historyContainer = document.getElementById('history-container')
+  const formContainer = document.getElementById('form-container')
+  formContainer.style.display = 'block'
+  historyContainer.style.display = 'none'
+  const historyBtn = document.getElementById('historyBtn')
+  historyBtn.value = 'Search History'
+  const courses = element.courses
+  const breaks = element.constraints.breaks
+  const noClosedCoursesF = element.constraints.noClosedCourses
+  const entries = document.getElementById('entries')
+  entries.innerHTML = ''
+  const editForms = document.querySelectorAll('.editForm')
+  editForms.forEach((form) => {
+    form.remove()
+  })
+  const addBtn = document.getElementById('addBtn')
+  courses.forEach((course) => {
+    addBtn.click()
+    let lastEntry = document.querySelectorAll('.entry')
+    lastEntry = lastEntry[lastEntry.length - 1]
+    const subject = lastEntry.getElementsByClassName('subject')[0]
+    const code = lastEntry.getElementsByClassName('code')[0]
+    subject.value = course.subject
+    subject.dispatchEvent(new Event('change'))
+    code.value = course.code
+    code.dispatchEvent(new Event('change'))
+    if (course.sections[0] != 'Any') {
+      const editBtn = lastEntry.querySelector('input[type="button"]')
+      editBtn.click()
+      for (let i = 0; i < course.sections.length; i++) {
+        if (i != 0) {
+          const addBtnAll = document.querySelectorAll('.addBtnEditForm')
+          const addBtn = addBtnAll[addBtnAll.length - 1]
+          addBtn.click()
+        }
+        const sectionInputAll = document.querySelectorAll('.sectionSelect')
+        const sectionInput = sectionInputAll[sectionInputAll.length - 1]
+        sectionInput.value = course.sections[i]
+      }
+      const closeBtnAll = document.querySelectorAll('.backBtnEditForm')
+      const closeBtn = closeBtnAll[closeBtnAll.length - 1]
+      closeBtn.click()
+    }
+  })
+  const advancedBtn = document.getElementById('advancedBtn')
+  advancedBtn.click()
+  // reset advanced form
+  const deleteBtns = document.querySelectorAll('.deleteBtnBreak')
+  deleteBtns.forEach((btn) => {
+    btn.click()
+  })
+  const no8AM = document.getElementById('no8AM')
+  no8AM.checked = false
+  const noClosedCourses = document.getElementById('noClosedCourses') //changed to noClosedCourses
+  noClosedCourses.checked = noClosedCoursesF
+  const noClassesAfter5PM = document.getElementById('noClassesAfter5PM')
+  noClassesAfter5PM.checked = false
+  let j = 0
+  breaks.forEach((breakTime) => {
+    let breakEntry
+    if (j != 0) {
+      const addBtn = document.querySelector('.addBtnBreak')
+      addBtn.click()
+    }
+    breakEntry = document.querySelectorAll('.advancedEntry')
+    breakEntry = breakEntry[breakEntry.length - 1]
+    const breakFromInput = breakEntry.getElementsByClassName('breakBetween')[0]
+    const breakToInput = breakEntry.getElementsByClassName('breakBetween')[1]
+    breakFromInput.value = breakTime.startTime
+    breakToInput.value = breakTime.endTime
+    if (!breakTime.days) {
+      breakTime.days = 'MTWR'
+    }
+    breakTime.days.split('').forEach((day) => {
+      const dayInput = breakEntry.querySelector(`.${day}`)
+      dayInput.checked = true
+    })
+    j++
+  })
+  const closeBtn = document.getElementById('backBtnAdvancedForm')
+  closeBtn.click()
+}
+const clearHistory = async () => {
+  if (
+    document.getElementById('history-body').innerHTML === 'No history found'
+  ) {
+    return
+  }
+  const response = fetch('/clearHistory', {
+    //await
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + localStorage.getItem('token'),
+    },
+  })
+  //   const data = await response.json()
+  const historyBody = document.getElementById('history-body')
+  historyBody.innerHTML = 'No history found'
+  const alertBox = document.getElementById('alertBox')
+  alertBox.style.backgroundColor = '#ccc'
+  alertBox.style.color = '#1a1a1a'
+  alertBox.style.display = 'block'
+  alertBox.innerText = 'History cleared'
+  setTimeout(() => {
+    alertBox.style.display = 'none'
+  }, 3000)
+}

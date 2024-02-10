@@ -1,1 +1,1401 @@
-const _0xd17fe3=_0x41e9;(function(_0x137c37,_0x2d59d5){const _0x1bbf16=_0x41e9,_0x12abb4=_0x137c37();while(!![]){try{const _0x1c0457=parseInt(_0x1bbf16(0x159))/0x1+-parseInt(_0x1bbf16(0xcb))/0x2*(parseInt(_0x1bbf16(0xe5))/0x3)+-parseInt(_0x1bbf16(0x188))/0x4+parseInt(_0x1bbf16(0xd7))/0x5*(parseInt(_0x1bbf16(0x137))/0x6)+-parseInt(_0x1bbf16(0x15b))/0x7*(-parseInt(_0x1bbf16(0x1bd))/0x8)+parseInt(_0x1bbf16(0x13f))/0x9*(parseInt(_0x1bbf16(0x10d))/0xa)+-parseInt(_0x1bbf16(0xd8))/0xb*(parseInt(_0x1bbf16(0x130))/0xc);if(_0x1c0457===_0x2d59d5)break;else _0x12abb4['push'](_0x12abb4['shift']());}catch(_0x2fd0e1){_0x12abb4['push'](_0x12abb4['shift']());}}}(_0x4a49,0xd4d72));let subjects,courses,coursesWithInfo,schedules;const timings=['None',_0xd17fe3(0x10a),_0xd17fe3(0x196),'08:30',_0xd17fe3(0x160),_0xd17fe3(0x15c),_0xd17fe3(0x147),_0xd17fe3(0x14b),_0xd17fe3(0x1af),_0xd17fe3(0x141),_0xd17fe3(0xc2),_0xd17fe3(0x171),_0xd17fe3(0xfe),_0xd17fe3(0x10f),_0xd17fe3(0x18b),_0xd17fe3(0x1bc),_0xd17fe3(0xba),_0xd17fe3(0x1a3),_0xd17fe3(0xfc),_0xd17fe3(0x197),_0xd17fe3(0x1ac),_0xd17fe3(0x1be),_0xd17fe3(0xe6),_0xd17fe3(0x17a),_0xd17fe3(0x15d),_0xd17fe3(0x1ab),_0xd17fe3(0xca),_0xd17fe3(0x154),_0xd17fe3(0x14c),_0xd17fe3(0x18a),'15:15',_0xd17fe3(0x158),'15:45',_0xd17fe3(0x1a9),_0xd17fe3(0xe4),_0xd17fe3(0x108),_0xd17fe3(0xf9),_0xd17fe3(0x16f),'17:15',_0xd17fe3(0xe3),_0xd17fe3(0xbd),_0xd17fe3(0x100),'18:15',_0xd17fe3(0x19d),'18:45','19:00',_0xd17fe3(0x156),'19:30',_0xd17fe3(0x1bb),'20:00',_0xd17fe3(0x151),'20:30','20:45',_0xd17fe3(0x12f),_0xd17fe3(0x120),'21:30',_0xd17fe3(0x1b7),_0xd17fe3(0xbc)],fillSubjects=async(_0x49f625,_0x1b3037)=>{const _0x157f73=_0xd17fe3;try{if(!_0x49f625){_0x1b3037[_0x157f73(0x17e)][_0x157f73(0x149)]();throw new Error(_0x157f73(0xf2));}_0x49f625['forEach'](_0x4fa972=>{const _0x3e656a=_0x157f73,_0x5a4bb4=document['createElement']('option');_0x5a4bb4[_0x3e656a(0x187)]=_0x4fa972[_0x3e656a(0x103)],_0x5a4bb4[_0x3e656a(0x13c)]=_0x4fa972[_0x3e656a(0x103)],_0x1b3037[_0x3e656a(0xe2)](_0x5a4bb4);});}catch(_0x5189f2){console[_0x157f73(0x1a6)](_0x5189f2[_0x157f73(0x16a)]);const _0x4c67dc=document[_0x157f73(0xfb)](_0x157f73(0xec));_0x4c67dc[_0x157f73(0x11d)]=_0x5189f2[_0x157f73(0x16a)],_0x4c67dc[_0x157f73(0xcd)][_0x157f73(0x123)]=_0x157f73(0x17f),_0x4c67dc[_0x157f73(0xcd)][_0x157f73(0x179)]=_0x157f73(0xf6),_0x4c67dc[_0x157f73(0xcd)]['display']=_0x157f73(0xd2),setTimeout(()=>{const _0x377cba=_0x157f73;_0x4c67dc['innerHTML']='',_0x4c67dc['style'][_0x377cba(0x169)]=_0x377cba(0x15a);},0x1388);}},checkEditForm=(_0x50a49d,_0x47e464)=>{const _0x1085f8=_0xd17fe3,_0x443237=document[_0x1085f8(0xfb)](_0x1085f8(0xf7)),_0x3a9b85=_0x443237[_0x1085f8(0x15f)]('.editForm[data-id=\x22'+_0x47e464[_0x1085f8(0x104)](_0x1085f8(0x168))+'\x22]');if(_0x3a9b85==null)return;_0x3a9b85&&_0x3a9b85[_0x1085f8(0x149)]();const _0x2ac5df=document[_0x1085f8(0x19e)](_0x1085f8(0xff));_0x2ac5df[_0x1085f8(0x134)]=_0x1085f8(0x150);const _0x2e6fee=_0x47e464['querySelector']('.subject')[_0x1085f8(0x187)],_0x52868a=_0x47e464['querySelector'](_0x1085f8(0x180))['value'];_0x2ac5df[_0x1085f8(0xdf)](_0x1085f8(0x168),_0x47e464[_0x1085f8(0x104)](_0x1085f8(0x168))),_0x2ac5df['setAttribute'](_0x1085f8(0x183),_0x2e6fee),_0x2ac5df[_0x1085f8(0xdf)](_0x1085f8(0x1b3),_0x52868a);const _0x2362db=document[_0x1085f8(0x19e)]('div');_0x2362db['className']=_0x1085f8(0xdd);const _0x5581bb=document[_0x1085f8(0x19e)]('label');_0x5581bb['innerHTML']=_0x1085f8(0x155),_0x5581bb[_0x1085f8(0x174)][_0x1085f8(0x122)](_0x1085f8(0x19b));const _0x3eb7a1=document[_0x1085f8(0x19e)](_0x1085f8(0x14e));_0x3eb7a1[_0x1085f8(0xdf)](_0x1085f8(0xdc),_0x1085f8(0xd9)),_0x3eb7a1['classList'][_0x1085f8(0x122)](_0x1085f8(0x16c)),_0x3eb7a1[_0x1085f8(0x174)][_0x1085f8(0x122)](_0x1085f8(0x101));const _0x1c3c15=document[_0x1085f8(0x19e)](_0x1085f8(0x1b2));_0x1c3c15['value']=_0x1085f8(0x12b),_0x1c3c15[_0x1085f8(0x11d)]=_0x1085f8(0x12b),_0x3eb7a1['appendChild'](_0x1c3c15),_0x50a49d['forEach'](_0x1fbc88=>{const _0x3ab2c7=_0x1085f8;if(_0x1fbc88[_0x3ab2c7(0x103)]===_0x2e6fee&&_0x1fbc88['code']===_0x52868a){const _0x2e2c94=document[_0x3ab2c7(0x19e)](_0x3ab2c7(0x1b2)),_0x481d33=new Date(_0x1fbc88[_0x3ab2c7(0xbf)][0x0]),_0x9535de=new Date(_0x1fbc88[_0x3ab2c7(0xbf)][0x1]);let _0x1702e2=_0x481d33[_0x3ab2c7(0x10e)]()+':'+_0x481d33[_0x3ab2c7(0x17b)](),_0x512509=_0x9535de[_0x3ab2c7(0x10e)]()+':'+_0x9535de['getUTCMinutes']();_0x481d33[_0x3ab2c7(0x17b)]()===0x0&&(_0x1702e2+='0'),_0x9535de[_0x3ab2c7(0x17b)]()===0x0&&(_0x512509+='0'),_0x2e2c94[_0x3ab2c7(0x187)]=_0x1fbc88[_0x3ab2c7(0xd9)],_0x2e2c94['innerHTML']=_0x1fbc88['section']+'\x20'+_0x1fbc88[_0x3ab2c7(0x199)]+'\x20'+_0x1fbc88[_0x3ab2c7(0xed)]+'\x20'+_0x1702e2+'-'+_0x512509,_0x3eb7a1[_0x3ab2c7(0xe2)](_0x2e2c94);}});const _0x510caf=document[_0x1085f8(0x19e)](_0x1085f8(0x16c));_0x510caf[_0x1085f8(0xdf)](_0x1085f8(0x185),_0x1085f8(0x1b6)),_0x510caf['setAttribute'](_0x1085f8(0x187),'+'),_0x510caf[_0x1085f8(0x174)][_0x1085f8(0x122)](_0x1085f8(0x114)),_0x510caf[_0x1085f8(0x174)]['add'](_0x1085f8(0x163)),_0x510caf['onclick']=_0x88b7cc=>{addSection(_0x88b7cc);};const _0x5e158e=document[_0x1085f8(0x19e)](_0x1085f8(0x16c));_0x5e158e[_0x1085f8(0xdf)](_0x1085f8(0x185),_0x1085f8(0x1b6)),_0x5e158e[_0x1085f8(0xdf)](_0x1085f8(0x187),'x'),_0x5e158e[_0x1085f8(0x174)][_0x1085f8(0x122)]('inputBtn'),_0x5e158e['classList'][_0x1085f8(0x122)](_0x1085f8(0x112)),_0x5e158e[_0x1085f8(0x145)]=_0xf36418=>{deleteSection(_0xf36418);},_0x2362db[_0x1085f8(0xe2)](_0x5581bb),_0x2362db['appendChild'](_0x3eb7a1),_0x2362db[_0x1085f8(0xe2)](_0x5e158e),_0x2ac5df[_0x1085f8(0xe2)](_0x2362db);const _0x40ac19=document[_0x1085f8(0x19e)](_0x1085f8(0x16c));_0x40ac19['setAttribute'](_0x1085f8(0x185),_0x1085f8(0x1b6)),_0x40ac19['setAttribute'](_0x1085f8(0x187),'Back'),_0x40ac19['classList'][_0x1085f8(0x122)](_0x1085f8(0x114)),_0x40ac19[_0x1085f8(0x174)][_0x1085f8(0x122)](_0x1085f8(0x112)),_0x40ac19[_0x1085f8(0x145)]=_0x3d2eb4=>{const _0x4a8ef1=_0x1085f8;_0x2ac5df[_0x4a8ef1(0xcd)][_0x4a8ef1(0x169)]=_0x4a8ef1(0x15a),form[_0x4a8ef1(0xcd)][_0x4a8ef1(0x169)]='block';},_0x2ac5df[_0x1085f8(0xe2)](_0x510caf),_0x2ac5df['appendChild'](_0x40ac19),_0x443237['appendChild'](_0x2ac5df),_0x2ac5df['style'][_0x1085f8(0x169)]=_0x1085f8(0x15a);},fillCodes=async(_0x371fa8,_0x662b2)=>{const _0x304e61=_0xd17fe3;try{if(!_0x371fa8){_0x662b2['parentNode'][_0x304e61(0x149)]();throw new Error('Too\x20fast!');}_0x662b2[_0x304e61(0x11d)]='';const _0x5e8cb7=_0x662b2[_0x304e61(0x17e)],_0x5bd136=document[_0x304e61(0xfb)]('form-container'),_0x48b818=_0x5bd136[_0x304e61(0x15f)](_0x304e61(0x10b)+_0x5e8cb7[_0x304e61(0x104)](_0x304e61(0x168))+'\x22]');_0x48b818&&_0x48b818[_0x304e61(0x149)]();const _0x52e859=_0x662b2[_0x304e61(0x17e)][_0x304e61(0x15f)](_0x304e61(0x190))[_0x304e61(0x187)],_0xd98c2=_0x371fa8['filter'](_0x594902=>{return _0x594902['subject']===_0x52e859;}),_0xa20da5=_0xd98c2['filter']((_0x42ca2f,_0x1e4d0d,_0xbd50aa)=>_0x1e4d0d===_0xbd50aa[_0x304e61(0x194)](_0xe32c13=>_0xe32c13[_0x304e61(0xe7)]===_0x42ca2f['code']));_0xa20da5[_0x304e61(0xc3)](_0x6ad2d7=>{const _0x4b6029=_0x304e61,_0x3f7b0e=document[_0x4b6029(0x19e)](_0x4b6029(0x1b2));_0x3f7b0e['value']=_0x6ad2d7['code'],_0x3f7b0e[_0x4b6029(0xdf)](_0x4b6029(0xd3),_0x6ad2d7[_0x4b6029(0xd3)]),_0x6ad2d7[_0x4b6029(0x11c)]&&_0x6ad2d7[_0x4b6029(0x11c)][_0x4b6029(0x13d)](_0x4b6029(0x198))?_0x3f7b0e[_0x4b6029(0x11d)]=_0x6ad2d7[_0x4b6029(0xe7)]+_0x4b6029(0x124)+_0x6ad2d7[_0x4b6029(0x11c)][_0x4b6029(0xcc)](_0x4b6029(0xe1))[0x0]:_0x3f7b0e[_0x4b6029(0x11d)]=_0x6ad2d7[_0x4b6029(0xe7)]+'\x20-\x20'+_0x6ad2d7['full_name'],_0x662b2['appendChild'](_0x3f7b0e);});}catch(_0x30ba76){console[_0x304e61(0x1a6)](_0x30ba76[_0x304e61(0x16a)]);const _0x3adef1=document[_0x304e61(0xfb)](_0x304e61(0xec));_0x3adef1[_0x304e61(0x11d)]=_0x30ba76[_0x304e61(0x16a)],_0x3adef1['style'][_0x304e61(0x123)]=_0x304e61(0x17f),_0x3adef1['style'][_0x304e61(0x179)]='#1a1a1a',_0x3adef1['style'][_0x304e61(0x169)]=_0x304e61(0xd2),setTimeout(()=>{const _0x2db6a3=_0x304e61;_0x3adef1['innerHTML']='',_0x3adef1[_0x2db6a3(0xcd)]['display']=_0x2db6a3(0x15a);},0x1388);}},subjectsElements=document[_0xd17fe3(0x139)](_0xd17fe3(0x190));function _0x41e9(_0x31640f,_0x5a2c53){const _0x4a498c=_0x4a49();return _0x41e9=function(_0x41e924,_0x557c56){_0x41e924=_0x41e924-0xba;let _0x89f5fb=_0x4a498c[_0x41e924];return _0x89f5fb;},_0x41e9(_0x31640f,_0x5a2c53);}function _0x4a49(){const _0x4ad011=['21:45','undefined','checked','toString','19:45','11:30','16KEZPDB','13:00','11:45','Subject','22:00','17:45','noClassesAfter5PM','time','.schedule-time-item[data-time=\x22','.sectionSelect','10:15','forEach','height','DOMContentLoaded','schedule-extra','submitBtn','insertBefore','max_hour','14:15','2CYempW','split','style','token','#7D3C98','Back','offsetTop','block','credits','#FF6B6B','#E74C3C','true','4928785kGigfC','35264449lyPgLM','section','image/png','schedule-time','name','editEntry','Please\x20add\x20at\x20least\x20one\x20course','setAttribute','.breakBetween','(Take','appendChild','17:30','16:15','1423638XMhoOv','13:15','code','Schedule(s)\x20generated','toDataURL','courses_list','schedule-body','alertBox','days','offsetLeft','schedule-container','preventDefault','schedule-total-span','Too\x20fast!','null','required','day','#1a1a1a','form-container','selectedIndex','16:45','label','getElementById','12:15','backBtn','10:45','form','18:00','sectionSelect','#8E44AD','subject','getAttribute','last_updated','clipboard','href','16:30','.schedule-time-item','08:00','.editForm[data-id=\x22','advancedEntry','319190jixoEI','getUTCHours','11:00','join','flex','deleteBtn','no8AM','inputBtn','crn','deleteBtnBreak','previousElementSibling','revokeObjectURL','course_code','.daysOfBreak','\x20of\x20','full_name','innerHTML','.schedule-entry-info','last-updated','21:15','historyBtn','add','backgroundColor','\x20-\x20','daysOfBreak','/getCourses','No\x20Classes\x20after\x205\x20PM','Code','options','/generateScheduleDOM','Any','#00A86B','from','#6F1E51','21:00','12cUtgve','#00B894','visible','div','className','target','hidden','6CGwsVF','No\x20schedules\x20found','querySelectorAll','find','entries','innerText','includes','schedule-professor','432HXMntt','data-end-time','10:00','credit-hours','schedule-','schedule-entry-info','onclick','breakBetween','09:15','Downloading\x20failed,\x20please\x20try\x20again\x20later','remove','*Courses\x20last\x20updated\x20on\x20','09:30','14:45','visibility','select','Please\x20remove\x20duplicate\x20courses','editForm','20:15','writeText','noClosedCourses','14:30','Section','19:15','change','15:30','750766PDUEWc','none','5187273oLWuJY','09:00','13:45','getItem','querySelector','08:45','schedule-entry','Generating\x20Schedules...','addBtn','checkbox','push','disabled','min_hour','data-id','display','message','<input\x20type=\x22button\x22\x20value=\x22x\x22\x20class=\x22inputBtn\x20backToFormBtn\x22\x20onclick=\x22backToForm()\x22/>\x20<i\x20class=\x22fa-solid\x20fa-arrow-left\x22\x20onclick\x20=\x22goPreviousSchedule()\x22></i>\x20','input','\x20</span><i\x20class=\x22fa-solid\x20fa-arrow-right\x22\x20onclick=\x22goNextSchedule()\x22></i>','substring','17:00','Bearer\x20','10:30','left','.entry','classList','addBtnBreak','scrollHeight','subjects','.png','color','13:30','getUTCMinutes','#2980B9','stopPropagation','parentNode','#ccc','.code','.schedule-header-item[data-day=\x22','.advancedEntry','data-entry-subject','json','type','#3498DB','value','794056pqXZjD','download','15:00','11:15','#1E90FF','None','No\x208\x20AM\x20Classes','singleDayContainer','.subject','backBtnAdvancedForm','schedules','courses','findIndex','width','08:15','12:30','(Take\x20it\x20with','instructor','data-time','formLabel','clientHeight','18:30','createElement','entry','length','slice','childNodes','12:00','cloneNode','stringify','log','BREAK','Schedule\x20downloaded','16:00','advancedOptions','14:00','12:45','inputTextTwo0','backBtnEditForm','09:45','POST','random','option','data-entry-code','data-start-time','addEventListener','button'];_0x4a49=function(){return _0x4ad011;};return _0x4a49();}subjectsElements[_0xd17fe3(0xc3)](_0x165e20=>{const _0x3ee41f=_0xd17fe3;_0x165e20[_0x3ee41f(0x1b5)]('change',_0x10a6db=>{const _0x5796c2=_0x3ee41f;_0x10a6db[_0x5796c2(0x17d)](),fillCodes(courses,_0x10a6db[_0x5796c2(0x135)][_0x5796c2(0x17e)]['querySelector'](_0x5796c2(0x180))),calculateCredits();});});const updateTime=_0x3d898e=>{const _0x53c3e6=_0xd17fe3,_0x2b47ad=document[_0x53c3e6(0xfb)](_0x53c3e6(0x11f));_0x2b47ad[_0x53c3e6(0x11d)]=_0x53c3e6(0x14a)+_0x3d898e['split']('T')[0x0]+'\x20'+_0x3d898e['split']('T')[0x1][_0x53c3e6(0xcc)]('.')[0x0]+'\x20';},initalDisplayOfCourses=async()=>{const _0x10366e=_0xd17fe3;try{let _0x4b6f85=localStorage[_0x10366e(0x15e)](_0x10366e(0xce));!_0x4b6f85||_0x4b6f85==_0x10366e(0x1b8)?_0x4b6f85=_0x10366e(0xf3):_0x4b6f85='Bearer\x20'+_0x4b6f85;const _0x2a579d=await fetch(_0x10366e(0x126),{'method':'GET','headers':{'Content-Type':'application/json','Authorization':_0x4b6f85}}),_0x1bb6f2=await _0x2a579d[_0x10366e(0x184)]();_0x4b6f85=='null'&&localStorage['setItem'](_0x10366e(0xce),_0x1bb6f2['token']);subjects=_0x1bb6f2[_0x10366e(0x177)],courses=_0x1bb6f2[_0x10366e(0x193)];const _0x4c5323=document[_0x10366e(0x15f)](_0x10366e(0x190));fillSubjects(subjects,_0x4c5323),fillCodes(courses,document['querySelector'](_0x10366e(0x180))),updateTime(_0x1bb6f2[_0x10366e(0x105)]);const _0x90e457=document[_0x10366e(0xfb)](_0x10366e(0x1ad)),_0x3cd54b=document[_0x10366e(0xfb)](_0x10366e(0x142));_0x3cd54b[_0x10366e(0x13c)]=_0x90e457['options'][_0x90e457[_0x10366e(0xf8)]]['getAttribute'](_0x10366e(0xd3)),_0x90e457['addEventListener']('change',_0x236b60=>{const _0x579bfe=_0x10366e;_0x236b60[_0x579bfe(0x17d)](),checkEditForm(courses,_0x236b60[_0x579bfe(0x135)][_0x579bfe(0x17e)]),calculateCredits();});}catch(_0x4298e2){console[_0x10366e(0x1a6)](_0x4298e2[_0x10366e(0x16a)]);const _0x59d49b=document[_0x10366e(0xfb)](_0x10366e(0xec));_0x59d49b[_0x10366e(0x11d)]=_0x4298e2[_0x10366e(0x16a)],_0x59d49b[_0x10366e(0xcd)][_0x10366e(0x123)]=_0x10366e(0x17f),_0x59d49b['style']['color']=_0x10366e(0xf6),_0x59d49b[_0x10366e(0xcd)]['display']=_0x10366e(0xd2),setTimeout(()=>{const _0x29a6a3=_0x10366e;_0x59d49b[_0x29a6a3(0x11d)]='',_0x59d49b[_0x29a6a3(0xcd)][_0x29a6a3(0x169)]=_0x29a6a3(0x15a);},0x1388);}};calculateCredits=()=>{const _0x5c55e8=_0xd17fe3,_0x2f2ede=Array[_0x5c55e8(0x12d)](document['querySelectorAll'](_0x5c55e8(0x173))),_0x5092a6=_0x2f2ede['reduce']((_0x1231ab,_0x18612e)=>{const _0x3181ad=_0x5c55e8,_0x3142e3=_0x18612e['querySelector'](_0x3181ad(0x180)),_0x4f0334=Number(_0x3142e3[_0x3181ad(0x129)][_0x3142e3[_0x3181ad(0xf8)]][_0x3181ad(0x104)](_0x3181ad(0xd3)));return _0x1231ab+_0x4f0334;},0x0),_0x5d82cb=document['getElementById'](_0x5c55e8(0x142));_0x5d82cb[_0x5c55e8(0x13c)]=_0x5092a6;},document['addEventListener'](_0xd17fe3(0xc5),initalDisplayOfCourses);const addEntry=_0x1975ea=>{const _0x447887=_0xd17fe3,_0x2e3ca9=document[_0x447887(0x19e)](_0x447887(0x133));_0x2e3ca9[_0x447887(0x134)]=_0x447887(0x19f);const _0x16567e=document[_0x447887(0x19e)](_0x447887(0xfa));_0x16567e['innerHTML']=_0x447887(0xbb),_0x16567e['classList'][_0x447887(0x122)]('formLabel');const _0x273e8d=document[_0x447887(0x19e)](_0x447887(0x14e));_0x273e8d[_0x447887(0xdf)]('name','subject'),_0x273e8d[_0x447887(0x174)][_0x447887(0x122)](_0x447887(0x16c)),_0x273e8d[_0x447887(0x174)]['add'](_0x447887(0x103)),_0x273e8d[_0x447887(0xdf)](_0x447887(0xf4),_0x447887(0xd6));const _0x43bf0f=document[_0x447887(0x19e)](_0x447887(0xfa));_0x43bf0f[_0x447887(0x11d)]=_0x447887(0x128),_0x43bf0f[_0x447887(0x174)][_0x447887(0x122)]('formLabel');const _0x23dd16=document[_0x447887(0x19e)](_0x447887(0x14e));_0x23dd16[_0x447887(0xdf)](_0x447887(0xdc),_0x447887(0xe7)),_0x23dd16[_0x447887(0x174)][_0x447887(0x122)]('input'),_0x23dd16[_0x447887(0x174)]['add'](_0x447887(0xe7)),_0x23dd16[_0x447887(0xdf)](_0x447887(0xf4),_0x447887(0xd6));const _0x53117c=document[_0x447887(0x19e)]('input');_0x53117c[_0x447887(0xdf)](_0x447887(0x185),_0x447887(0x1b6)),_0x53117c['setAttribute'](_0x447887(0x187),'x'),_0x53117c['classList'][_0x447887(0x122)](_0x447887(0x114)),_0x53117c['classList'][_0x447887(0x122)]('deleteBtn'),_0x53117c[_0x447887(0x145)]=_0x2ba687=>{deleteEntry(_0x2ba687);};const _0xf55ce6=document[_0x447887(0x19e)]('input');_0xf55ce6[_0x447887(0xdf)](_0x447887(0x185),_0x447887(0x1b6)),_0xf55ce6[_0x447887(0xdf)]('value','Ξ'),_0xf55ce6[_0x447887(0x174)][_0x447887(0x122)](_0x447887(0x114)),_0xf55ce6['classList'][_0x447887(0x122)](_0x447887(0x112)),_0xf55ce6['onclick']=_0x19ff16=>{editEntry(_0x19ff16);},_0x2e3ca9[_0x447887(0xe2)](_0x16567e),_0x2e3ca9[_0x447887(0xe2)](_0x273e8d),_0x2e3ca9[_0x447887(0xe2)](_0x43bf0f),_0x2e3ca9[_0x447887(0xe2)](_0x23dd16),_0x2e3ca9['appendChild'](_0xf55ce6),_0x2e3ca9[_0x447887(0xe2)](_0x53117c);const _0x1743a1=document[_0x447887(0xfb)](_0x447887(0x13b));_0x1743a1['appendChild'](_0x2e3ca9),_0x273e8d[_0x447887(0x1b5)]('change',_0x48d203=>{const _0x27dbeb=_0x447887;_0x48d203[_0x27dbeb(0x17d)](),fillCodes(courses,_0x48d203['target']['parentNode']['querySelector'](_0x27dbeb(0x180))),calculateCredits();}),_0x23dd16[_0x447887(0x1b5)](_0x447887(0x157),_0x1779cb=>{const _0x59802a=_0x447887;_0x1779cb['stopPropagation'](),checkEditForm(courses,_0x1779cb[_0x59802a(0x135)]['parentNode']),calculateCredits();}),fillSubjects(subjects,_0x273e8d),fillCodes(courses,_0x23dd16),calculateCredits();},deleteEntry=_0x554e2=>{const _0x4c345c=_0xd17fe3,_0x2aa338=_0x554e2[_0x4c345c(0x135)][_0x4c345c(0x17e)],_0xf39d2e=document['getElementById'](_0x4c345c(0xf7)),_0x383896=_0xf39d2e[_0x4c345c(0x15f)]('.editForm[data-id=\x22'+_0x2aa338['getAttribute'](_0x4c345c(0x168))+'\x22]');_0x383896&&_0x383896[_0x4c345c(0x149)](),_0x2aa338[_0x4c345c(0x149)](),calculateCredits();},editEntry=_0x3b0d57=>{const _0xbff9b5=_0xd17fe3;try{if(!subjects)throw new Error(_0xbff9b5(0xf2));const _0x1088d9=_0x3b0d57['target']['parentNode'],_0x566e87=_0x1088d9[_0xbff9b5(0x15f)](_0xbff9b5(0x190))[_0xbff9b5(0x187)],_0x5c66f9=_0x1088d9[_0xbff9b5(0x15f)](_0xbff9b5(0x180))[_0xbff9b5(0x187)],_0x236206=document[_0xbff9b5(0xfb)]('form-container'),_0x37f09a=document[_0xbff9b5(0xfb)](_0xbff9b5(0xff));if(_0x236206[_0xbff9b5(0x15f)](_0xbff9b5(0x10b)+_0x1088d9[_0xbff9b5(0x104)](_0xbff9b5(0x168))+'\x22]')){_0x236206['querySelector']('.editForm[data-id=\x22'+_0x1088d9[_0xbff9b5(0x104)]('data-id')+'\x22]')['style'][_0xbff9b5(0x169)]=_0xbff9b5(0xd2),_0x37f09a[_0xbff9b5(0xcd)][_0xbff9b5(0x169)]=_0xbff9b5(0x15a);return;}const _0x1e0a9a=document[_0xbff9b5(0x19e)](_0xbff9b5(0xff));let _0x16ec03=Math[_0xbff9b5(0x1b1)]()['toString'](0x24)[_0xbff9b5(0x16e)](0x7);while(_0x236206[_0xbff9b5(0x15f)](_0xbff9b5(0x10b)+_0x16ec03+'\x22]')){_0x16ec03=Math[_0xbff9b5(0x1b1)]()[_0xbff9b5(0x1ba)](0x24)[_0xbff9b5(0x16e)](0x7);}_0x1e0a9a[_0xbff9b5(0x134)]=_0xbff9b5(0x150),_0x1e0a9a[_0xbff9b5(0xdf)]('data-entry-subject',_0x566e87),_0x1e0a9a['setAttribute'](_0xbff9b5(0x1b3),_0x5c66f9),_0x1e0a9a[_0xbff9b5(0xdf)](_0xbff9b5(0x168),_0x16ec03),_0x1088d9[_0xbff9b5(0xdf)](_0xbff9b5(0x168),_0x16ec03),_0x37f09a['style']['display']=_0xbff9b5(0x15a);const _0x4428fd=document['createElement']('div');_0x4428fd[_0xbff9b5(0x134)]='editEntry';const _0x32c8f6=document['createElement'](_0xbff9b5(0xfa));_0x32c8f6[_0xbff9b5(0x11d)]=_0xbff9b5(0x155),_0x32c8f6[_0xbff9b5(0x174)][_0xbff9b5(0x122)](_0xbff9b5(0x19b));const _0x37c102=document[_0xbff9b5(0x19e)]('select');_0x37c102['setAttribute'](_0xbff9b5(0xdc),_0xbff9b5(0xd9)),_0x37c102[_0xbff9b5(0x174)][_0xbff9b5(0x122)](_0xbff9b5(0x16c)),_0x37c102[_0xbff9b5(0x174)][_0xbff9b5(0x122)](_0xbff9b5(0x101));const _0x5a549d=document[_0xbff9b5(0x19e)](_0xbff9b5(0x1b2));_0x5a549d[_0xbff9b5(0x187)]=_0xbff9b5(0x12b),_0x5a549d[_0xbff9b5(0x11d)]=_0xbff9b5(0x12b),_0x37c102[_0xbff9b5(0xe2)](_0x5a549d),courses[_0xbff9b5(0xc3)](_0x22b5df=>{const _0x5a33f1=_0xbff9b5;if(_0x22b5df['subject']===_0x566e87&&_0x22b5df['code']===_0x5c66f9){const _0x5eaa95=document['createElement'](_0x5a33f1(0x1b2)),_0x1c7cb0=new Date(_0x22b5df[_0x5a33f1(0xbf)][0x0]),_0x20e0d6=new Date(_0x22b5df[_0x5a33f1(0xbf)][0x1]);let _0xa378dc=_0x1c7cb0[_0x5a33f1(0x10e)]()+':'+_0x1c7cb0[_0x5a33f1(0x17b)](),_0x161cd2=_0x20e0d6['getUTCHours']()+':'+_0x20e0d6[_0x5a33f1(0x17b)]();_0x1c7cb0['getUTCMinutes']()===0x0&&(_0xa378dc+='0'),_0x20e0d6[_0x5a33f1(0x17b)]()===0x0&&(_0x161cd2+='0'),_0x5eaa95[_0x5a33f1(0x187)]=_0x22b5df[_0x5a33f1(0xd9)],_0x5eaa95[_0x5a33f1(0x11d)]=_0x22b5df[_0x5a33f1(0xd9)]+'\x20'+_0x22b5df[_0x5a33f1(0x199)]+'\x20'+_0x22b5df[_0x5a33f1(0xed)]+'\x20'+_0xa378dc+'-'+_0x161cd2,_0x37c102[_0x5a33f1(0xe2)](_0x5eaa95);}});const _0x5389c0=document[_0xbff9b5(0x19e)](_0xbff9b5(0x16c));_0x5389c0['setAttribute']('type',_0xbff9b5(0x1b6)),_0x5389c0[_0xbff9b5(0xdf)]('value','+'),_0x5389c0[_0xbff9b5(0x174)][_0xbff9b5(0x122)]('inputBtn'),_0x5389c0[_0xbff9b5(0x174)][_0xbff9b5(0x122)](_0xbff9b5(0x163)),_0x5389c0[_0xbff9b5(0x174)][_0xbff9b5(0x122)]('addBtnEditForm'),_0x5389c0['onclick']=_0x1eba5d=>{addSection(_0x1eba5d);};const _0x22b4dd=document[_0xbff9b5(0x19e)](_0xbff9b5(0x16c));_0x22b4dd[_0xbff9b5(0xdf)](_0xbff9b5(0x185),_0xbff9b5(0x1b6)),_0x22b4dd['setAttribute']('value','x'),_0x22b4dd[_0xbff9b5(0x174)]['add'](_0xbff9b5(0x114)),_0x22b4dd[_0xbff9b5(0x174)][_0xbff9b5(0x122)](_0xbff9b5(0x112)),_0x22b4dd[_0xbff9b5(0x145)]=_0x100433=>{deleteSection(_0x100433);},_0x4428fd['appendChild'](_0x32c8f6),_0x4428fd['appendChild'](_0x37c102),_0x4428fd[_0xbff9b5(0xe2)](_0x22b4dd),_0x1e0a9a[_0xbff9b5(0xe2)](_0x4428fd);const _0x1b3ea5=document[_0xbff9b5(0x19e)](_0xbff9b5(0x16c));_0x1b3ea5[_0xbff9b5(0xdf)](_0xbff9b5(0x185),'button'),_0x1b3ea5[_0xbff9b5(0xdf)](_0xbff9b5(0x187),_0xbff9b5(0xd0)),_0x1b3ea5['classList'][_0xbff9b5(0x122)](_0xbff9b5(0x114)),_0x1b3ea5[_0xbff9b5(0x174)][_0xbff9b5(0x122)](_0xbff9b5(0x112)),_0x1b3ea5['classList']['add'](_0xbff9b5(0x1ae)),_0x1b3ea5[_0xbff9b5(0x145)]=_0x57a012=>{const _0x4c3b3d=_0xbff9b5;_0x1e0a9a['style']['display']=_0x4c3b3d(0x15a),_0x37f09a[_0x4c3b3d(0xcd)][_0x4c3b3d(0x169)]=_0x4c3b3d(0xd2);},_0x1e0a9a[_0xbff9b5(0xe2)](_0x5389c0),_0x1e0a9a[_0xbff9b5(0xe2)](_0x1b3ea5),_0x236206[_0xbff9b5(0xe2)](_0x1e0a9a);}catch(_0x4cff9c){console['log'](_0x4cff9c[_0xbff9b5(0x16a)]);const _0x1f7773=document[_0xbff9b5(0xfb)]('alertBox');_0x1f7773['innerHTML']=_0x4cff9c[_0xbff9b5(0x16a)],_0x1f7773[_0xbff9b5(0xcd)][_0xbff9b5(0x123)]=_0xbff9b5(0x17f),_0x1f7773[_0xbff9b5(0xcd)][_0xbff9b5(0x179)]='#1a1a1a',_0x1f7773[_0xbff9b5(0xcd)][_0xbff9b5(0x169)]='block',setTimeout(()=>{const _0x4e8625=_0xbff9b5;_0x1f7773['innerHTML']='',_0x1f7773['style'][_0x4e8625(0x169)]=_0x4e8625(0x15a);},0x1388);}},addSection=_0x195527=>{const _0x15abaf=_0xd17fe3,_0x1d31b4=_0x195527[_0x15abaf(0x135)]['parentNode'],_0x304320=_0x1d31b4[_0x15abaf(0x104)]('data-entry-subject'),_0x2bda56=_0x1d31b4['getAttribute']('data-entry-code'),_0x3511bf=document[_0x15abaf(0x19e)](_0x15abaf(0x133));_0x3511bf['className']=_0x15abaf(0xdd);const _0x34cdfa=document[_0x15abaf(0x19e)](_0x15abaf(0xfa));_0x34cdfa['innerHTML']=_0x15abaf(0x155),_0x34cdfa[_0x15abaf(0x174)][_0x15abaf(0x122)](_0x15abaf(0x19b));const _0x68a670=document['createElement']('select');_0x68a670[_0x15abaf(0xdf)](_0x15abaf(0xdc),_0x15abaf(0xd9)),_0x68a670[_0x15abaf(0x174)][_0x15abaf(0x122)](_0x15abaf(0x16c)),_0x68a670['classList']['add'](_0x15abaf(0x101));const _0x313605=document[_0x15abaf(0x19e)]('option');_0x313605[_0x15abaf(0x187)]=_0x15abaf(0x12b),_0x313605['innerHTML']=_0x15abaf(0x12b),_0x68a670[_0x15abaf(0xe2)](_0x313605),courses[_0x15abaf(0xc3)](_0x3dbb53=>{const _0x3b723f=_0x15abaf;if(_0x3dbb53[_0x3b723f(0x103)]===_0x304320&&_0x3dbb53['code']===_0x2bda56){const _0x13bb21=document[_0x3b723f(0x19e)](_0x3b723f(0x1b2)),_0x360c2f=new Date(_0x3dbb53[_0x3b723f(0xbf)][0x0]),_0x3f549a=new Date(_0x3dbb53[_0x3b723f(0xbf)][0x1]);let _0x46fb83=_0x360c2f[_0x3b723f(0x10e)]()+':'+_0x360c2f[_0x3b723f(0x17b)](),_0x5936b0=_0x3f549a['getUTCHours']()+':'+_0x3f549a[_0x3b723f(0x17b)]();_0x360c2f[_0x3b723f(0x17b)]()===0x0&&(_0x46fb83+='0'),_0x3f549a['getUTCMinutes']()===0x0&&(_0x5936b0+='0'),_0x13bb21['value']=_0x3dbb53['section'],_0x13bb21['innerHTML']=_0x3dbb53[_0x3b723f(0xd9)]+'\x20'+_0x3dbb53[_0x3b723f(0x199)]+'\x20'+_0x3dbb53[_0x3b723f(0xed)]+'\x20'+_0x46fb83+'-'+_0x5936b0,_0x68a670['appendChild'](_0x13bb21);}});const _0x73ce0c=document['createElement'](_0x15abaf(0x16c));_0x73ce0c[_0x15abaf(0xdf)]('type',_0x15abaf(0x1b6)),_0x73ce0c[_0x15abaf(0xdf)](_0x15abaf(0x187),'x'),_0x73ce0c['classList'][_0x15abaf(0x122)](_0x15abaf(0x114)),_0x73ce0c[_0x15abaf(0x174)]['add'](_0x15abaf(0x112)),_0x73ce0c[_0x15abaf(0x145)]=_0x21bbd0=>{deleteSection(_0x21bbd0);},_0x3511bf[_0x15abaf(0xe2)](_0x34cdfa),_0x3511bf['appendChild'](_0x68a670),_0x3511bf[_0x15abaf(0xe2)](_0x73ce0c),_0x1d31b4[_0x15abaf(0xc8)](_0x3511bf,_0x1d31b4[_0x15abaf(0x1a2)][_0x1d31b4[_0x15abaf(0x1a2)][_0x15abaf(0x1a0)]-0x2]);},deleteSection=_0xe3d87b=>{const _0x7acf58=_0xd17fe3,_0x4a64dd=_0xe3d87b['target']['parentNode'];_0x4a64dd[_0x7acf58(0x149)]();},displayAdvancedOptions=()=>{const _0x36b0f9=_0xd17fe3,_0x221948=document[_0x36b0f9(0xfb)](_0x36b0f9(0xf7)),_0xa700fa=document[_0x36b0f9(0xfb)]('form'),_0x36a1f3=document[_0x36b0f9(0xfb)](_0x36b0f9(0x1aa));if(_0x36a1f3!=null){_0x36a1f3[_0x36b0f9(0xcd)][_0x36b0f9(0x169)]='block',_0xa700fa['style'][_0x36b0f9(0x169)]=_0x36b0f9(0x15a);return;}const _0x6dd867=document['createElement'](_0x36b0f9(0xff));_0x6dd867[_0x36b0f9(0x134)]=_0x36b0f9(0x1aa),_0x6dd867['id']=_0x36b0f9(0x1aa);const _0x5ed4ac=document[_0x36b0f9(0x19e)](_0x36b0f9(0x133));_0x5ed4ac[_0x36b0f9(0x134)]=_0x36b0f9(0x10c);const _0x22e0b5=document[_0x36b0f9(0x19e)](_0x36b0f9(0xfa));_0x22e0b5[_0x36b0f9(0x11d)]=_0x36b0f9(0x18e),_0x22e0b5[_0x36b0f9(0x174)][_0x36b0f9(0x122)](_0x36b0f9(0x19b));const _0xe4b20d=document[_0x36b0f9(0x19e)](_0x36b0f9(0x16c));_0xe4b20d[_0x36b0f9(0xdf)]('type',_0x36b0f9(0x164)),_0xe4b20d[_0x36b0f9(0xdf)](_0x36b0f9(0xdc),_0x36b0f9(0x113)),_0xe4b20d['classList'][_0x36b0f9(0x122)](_0x36b0f9(0x16c)),_0xe4b20d[_0x36b0f9(0x174)]['add'](_0x36b0f9(0x113)),_0xe4b20d['id']=_0x36b0f9(0x113),_0x5ed4ac[_0x36b0f9(0xe2)](_0x22e0b5),_0x5ed4ac['appendChild'](_0xe4b20d);const _0x28f7ec=document[_0x36b0f9(0x19e)]('div');_0x28f7ec[_0x36b0f9(0x134)]='advancedEntry';const _0x50e602=document[_0x36b0f9(0x19e)](_0x36b0f9(0xfa));_0x50e602[_0x36b0f9(0x11d)]='Only\x20Open\x20Sections',_0x50e602[_0x36b0f9(0x174)]['add'](_0x36b0f9(0x19b));const _0xa49793=document[_0x36b0f9(0x19e)](_0x36b0f9(0x16c));_0xa49793['setAttribute'](_0x36b0f9(0x185),'checkbox'),_0xa49793[_0x36b0f9(0xdf)](_0x36b0f9(0xdc),'noClosedCourses'),_0xa49793[_0x36b0f9(0x174)][_0x36b0f9(0x122)](_0x36b0f9(0x16c)),_0xa49793[_0x36b0f9(0x174)][_0x36b0f9(0x122)](_0x36b0f9(0x153)),_0xa49793['id']='noClosedCourses',_0x28f7ec[_0x36b0f9(0xe2)](_0x50e602),_0x28f7ec[_0x36b0f9(0xe2)](_0xa49793);const _0x2e0d8f=document[_0x36b0f9(0x19e)](_0x36b0f9(0x133));_0x2e0d8f[_0x36b0f9(0x134)]=_0x36b0f9(0x10c);const _0x2f5b97=document['createElement']('label');_0x2f5b97['innerHTML']=_0x36b0f9(0x127),_0x2f5b97[_0x36b0f9(0x174)][_0x36b0f9(0x122)](_0x36b0f9(0x19b));const _0x198942=document[_0x36b0f9(0x19e)]('input');_0x198942[_0x36b0f9(0xdf)](_0x36b0f9(0x185),_0x36b0f9(0x164)),_0x198942[_0x36b0f9(0xdf)](_0x36b0f9(0xdc),_0x36b0f9(0xbe)),_0x198942[_0x36b0f9(0x174)][_0x36b0f9(0x122)]('input'),_0x198942[_0x36b0f9(0x174)][_0x36b0f9(0x122)](_0x36b0f9(0xbe)),_0x198942['id']='noClassesAfter5PM',_0x2e0d8f[_0x36b0f9(0xe2)](_0x2f5b97),_0x2e0d8f['appendChild'](_0x198942);const _0x28b89f=document[_0x36b0f9(0x19e)]('div');_0x28b89f[_0x36b0f9(0x134)]=_0x36b0f9(0x10c);const _0x94a22e=document[_0x36b0f9(0x19e)]('label');_0x94a22e['innerHTML']='Break',_0x94a22e[_0x36b0f9(0x174)]['add'](_0x36b0f9(0x19b));const _0xcf31bb=document[_0x36b0f9(0x19e)](_0x36b0f9(0x14e));_0xcf31bb['setAttribute'](_0x36b0f9(0xdc),_0x36b0f9(0x146)),_0xcf31bb[_0x36b0f9(0x174)]['add']('input'),_0xcf31bb[_0x36b0f9(0x174)]['add'](_0x36b0f9(0x146));const _0x738bbd=document[_0x36b0f9(0x19e)](_0x36b0f9(0x14e));_0x738bbd[_0x36b0f9(0xdf)](_0x36b0f9(0xdc),_0x36b0f9(0x146)),_0x738bbd['classList']['add'](_0x36b0f9(0x16c)),_0x738bbd['classList'][_0x36b0f9(0x122)](_0x36b0f9(0x146)),timings[_0x36b0f9(0xc3)](_0x4da4db=>{const _0x3d62e6=_0x36b0f9,_0x1f0411=document['createElement'](_0x3d62e6(0x1b2));_0x1f0411['value']=_0x4da4db,_0x1f0411['innerHTML']=_0x4da4db,_0xcf31bb[_0x3d62e6(0xe2)](_0x1f0411),_0x738bbd[_0x3d62e6(0xe2)](_0x1f0411[_0x3d62e6(0x1a4)](!![]));});const _0x21ab19=document[_0x36b0f9(0x19e)]('input');_0x21ab19[_0x36b0f9(0xdf)](_0x36b0f9(0x185),'button'),_0x21ab19[_0x36b0f9(0xdf)](_0x36b0f9(0x187),'+'),_0x21ab19[_0x36b0f9(0x174)][_0x36b0f9(0x122)](_0x36b0f9(0x114)),_0x21ab19[_0x36b0f9(0x174)][_0x36b0f9(0x122)](_0x36b0f9(0x112)),_0x21ab19['classList'][_0x36b0f9(0x122)](_0x36b0f9(0x175)),_0x21ab19[_0x36b0f9(0x145)]=_0x4ee965=>{addBreakEntry(_0x4ee965);};const _0x415c17=document[_0x36b0f9(0x19e)](_0x36b0f9(0x16c));_0x415c17[_0x36b0f9(0xdf)]('type',_0x36b0f9(0x1b6)),_0x415c17[_0x36b0f9(0xdf)](_0x36b0f9(0x187),'x'),_0x415c17[_0x36b0f9(0x174)][_0x36b0f9(0x122)](_0x36b0f9(0x114)),_0x415c17[_0x36b0f9(0x174)][_0x36b0f9(0x122)](_0x36b0f9(0x112)),_0x415c17[_0x36b0f9(0x174)][_0x36b0f9(0x122)](_0x36b0f9(0x116)),_0x415c17[_0x36b0f9(0x145)]=_0x33a069=>{deleteBreakEntry(_0x33a069);};const _0x4004b0=document[_0x36b0f9(0x19e)](_0x36b0f9(0x133));_0x4004b0[_0x36b0f9(0x134)]=_0x36b0f9(0x125);const _0x21c2bc=document[_0x36b0f9(0x19e)](_0x36b0f9(0xfa));_0x21c2bc[_0x36b0f9(0x11d)]='',_0x21c2bc[_0x36b0f9(0x174)]['add'](_0x36b0f9(0x19b)),_0x4004b0[_0x36b0f9(0xe2)](_0x21c2bc);const _0x4a0f48=['M','T','W','R'];_0x4a0f48[_0x36b0f9(0xc3)](_0x25e02f=>{const _0x393ff5=_0x36b0f9,_0x140424=document[_0x393ff5(0x19e)]('label');_0x140424['innerHTML']=_0x25e02f,_0x140424[_0x393ff5(0x174)]['add'](_0x393ff5(0x19b));const _0x50345c=document[_0x393ff5(0x19e)]('input');_0x50345c['setAttribute'](_0x393ff5(0x185),_0x393ff5(0x164)),_0x50345c[_0x393ff5(0xdf)]('name','day'),_0x50345c['classList'][_0x393ff5(0x122)](_0x393ff5(0x16c)),_0x50345c[_0x393ff5(0x174)][_0x393ff5(0x122)](_0x393ff5(0xf5)),_0x50345c[_0x393ff5(0x174)][_0x393ff5(0x122)](_0x25e02f),_0x50345c[_0x393ff5(0x187)]=_0x25e02f;const _0x212c86=document['createElement'](_0x393ff5(0x133));_0x212c86['className']=_0x393ff5(0x18f),_0x212c86[_0x393ff5(0xe2)](_0x140424),_0x212c86[_0x393ff5(0xe2)](_0x50345c),_0x4004b0[_0x393ff5(0xe2)](_0x212c86);});const _0x56fb59=document['createElement'](_0x36b0f9(0x16c));_0x56fb59[_0x36b0f9(0xdf)](_0x36b0f9(0x185),_0x36b0f9(0x1b6)),_0x56fb59[_0x36b0f9(0xdf)]('value',_0x36b0f9(0xd0)),_0x56fb59[_0x36b0f9(0x174)][_0x36b0f9(0x122)](_0x36b0f9(0x114)),_0x56fb59['classList'][_0x36b0f9(0x122)](_0x36b0f9(0xfd)),_0x56fb59['id']=_0x36b0f9(0x191),_0x56fb59[_0x36b0f9(0x145)]=_0x239f7d=>{const _0x9266cf=_0x36b0f9;_0x6dd867[_0x9266cf(0xcd)][_0x9266cf(0x169)]=_0x9266cf(0x15a),_0xa700fa[_0x9266cf(0xcd)]['display']='block';},_0x28b89f[_0x36b0f9(0xe2)](_0x94a22e),_0x28b89f[_0x36b0f9(0xe2)](_0xcf31bb),_0x28b89f[_0x36b0f9(0xe2)](_0x738bbd),_0x6dd867[_0x36b0f9(0xe2)](_0x5ed4ac),_0x6dd867['appendChild'](_0x28f7ec),_0x6dd867['appendChild'](_0x2e0d8f),_0x4004b0[_0x36b0f9(0xe2)](_0x21ab19),_0x4004b0[_0x36b0f9(0xe2)](_0x415c17),_0x28b89f[_0x36b0f9(0xe2)](_0x4004b0),_0x6dd867[_0x36b0f9(0xe2)](_0x28b89f),_0x6dd867[_0x36b0f9(0xe2)](_0x56fb59),_0x221948['appendChild'](_0x6dd867),_0xa700fa[_0x36b0f9(0xcd)][_0x36b0f9(0x169)]=_0x36b0f9(0x15a);},addBreakEntry=_0x19641d=>{const _0x1edf74=_0xd17fe3,_0x4d9733=_0x19641d['target'][_0x1edf74(0x17e)][_0x1edf74(0x17e)][_0x1edf74(0x17e)],_0x5ec65d=document[_0x1edf74(0x19e)](_0x1edf74(0x133));_0x5ec65d[_0x1edf74(0x134)]='advancedEntry';const _0x4a4774=document[_0x1edf74(0x19e)]('label');_0x4a4774[_0x1edf74(0x11d)]='Break\x20',_0x4a4774[_0x1edf74(0x174)][_0x1edf74(0x122)](_0x1edf74(0x19b));const _0xa79318=document[_0x1edf74(0x19e)]('select');_0xa79318[_0x1edf74(0xdf)]('name',_0x1edf74(0x146)),_0xa79318[_0x1edf74(0x174)][_0x1edf74(0x122)](_0x1edf74(0x16c)),_0xa79318[_0x1edf74(0x174)][_0x1edf74(0x122)](_0x1edf74(0x146));const _0x31cf28=document['createElement'](_0x1edf74(0x14e));_0x31cf28[_0x1edf74(0xdf)]('name','breakBetween'),_0x31cf28[_0x1edf74(0x174)]['add'](_0x1edf74(0x16c)),_0x31cf28['classList'][_0x1edf74(0x122)](_0x1edf74(0x146)),timings[_0x1edf74(0xc3)](_0x1d9eee=>{const _0x5e517b=_0x1edf74,_0x34d792=document[_0x5e517b(0x19e)]('option');_0x34d792[_0x5e517b(0x187)]=_0x1d9eee,_0x34d792[_0x5e517b(0x11d)]=_0x1d9eee,_0xa79318[_0x5e517b(0xe2)](_0x34d792),_0x31cf28[_0x5e517b(0xe2)](_0x34d792[_0x5e517b(0x1a4)](!![]));});const _0x13aab2=document[_0x1edf74(0x19e)]('input');_0x13aab2[_0x1edf74(0xdf)](_0x1edf74(0x185),_0x1edf74(0x1b6)),_0x13aab2[_0x1edf74(0xdf)](_0x1edf74(0x187),'+'),_0x13aab2[_0x1edf74(0x174)][_0x1edf74(0x122)](_0x1edf74(0x114)),_0x13aab2[_0x1edf74(0x174)]['add']('deleteBtn'),_0x13aab2['onclick']=_0x8635d5=>{addBreakEntry(_0x8635d5);};const _0x1465b7=document['createElement']('input');_0x1465b7[_0x1edf74(0xdf)]('type',_0x1edf74(0x1b6)),_0x1465b7[_0x1edf74(0xdf)](_0x1edf74(0x187),'x'),_0x1465b7[_0x1edf74(0x174)]['add'](_0x1edf74(0x114)),_0x1465b7['classList'][_0x1edf74(0x122)](_0x1edf74(0x112)),_0x1465b7[_0x1edf74(0x145)]=_0x3b50a4=>{deleteBreakEntry(_0x3b50a4);};const _0x1f4a36=document[_0x1edf74(0x19e)](_0x1edf74(0x133));_0x1f4a36[_0x1edf74(0x134)]=_0x1edf74(0x125);const _0x539c25=document[_0x1edf74(0x19e)]('label');_0x539c25[_0x1edf74(0x11d)]='',_0x539c25[_0x1edf74(0x174)][_0x1edf74(0x122)](_0x1edf74(0x19b)),_0x1f4a36['appendChild'](_0x539c25);const _0x4cc645=['M','T','W','R'];_0x4cc645[_0x1edf74(0xc3)](_0x27cf1d=>{const _0x14ffe3=_0x1edf74,_0x4f0d07=document[_0x14ffe3(0x19e)]('label');_0x4f0d07[_0x14ffe3(0x11d)]=_0x27cf1d,_0x4f0d07['classList'][_0x14ffe3(0x122)](_0x14ffe3(0x19b));const _0x36011b=document[_0x14ffe3(0x19e)]('input');_0x36011b[_0x14ffe3(0xdf)](_0x14ffe3(0x185),'checkbox'),_0x36011b['setAttribute'](_0x14ffe3(0xdc),_0x14ffe3(0xf5)),_0x36011b[_0x14ffe3(0x174)][_0x14ffe3(0x122)](_0x14ffe3(0x16c)),_0x36011b[_0x14ffe3(0x174)]['add'](_0x14ffe3(0xf5)),_0x36011b[_0x14ffe3(0x187)]=_0x27cf1d;const _0x26ba4f=document[_0x14ffe3(0x19e)](_0x14ffe3(0x133));_0x26ba4f[_0x14ffe3(0x134)]=_0x14ffe3(0x18f),_0x26ba4f[_0x14ffe3(0xe2)](_0x4f0d07),_0x26ba4f[_0x14ffe3(0xe2)](_0x36011b),_0x1f4a36[_0x14ffe3(0xe2)](_0x26ba4f);}),_0x5ec65d['appendChild'](_0x4a4774),_0x5ec65d['appendChild'](_0xa79318),_0x5ec65d[_0x1edf74(0xe2)](_0x31cf28),_0x1f4a36[_0x1edf74(0xe2)](_0x13aab2),_0x1f4a36[_0x1edf74(0xe2)](_0x1465b7),_0x5ec65d[_0x1edf74(0xe2)](_0x1f4a36),_0x4d9733[_0x1edf74(0xc8)](_0x5ec65d,_0x4d9733['childNodes'][_0x4d9733[_0x1edf74(0x1a2)][_0x1edf74(0x1a0)]-0x1]);},deleteBreakEntry=_0x604305=>{const _0x364cb1=_0xd17fe3,_0x18db0b=_0x604305['target'][_0x364cb1(0x17e)][_0x364cb1(0x17e)],_0x5bc163=_0x18db0b[_0x364cb1(0x17e)];if(_0x5bc163[_0x364cb1(0x139)](_0x364cb1(0x182))[_0x364cb1(0x1a0)]===0x4){const _0x172fb2=_0x18db0b[_0x364cb1(0x139)](_0x364cb1(0xe0));_0x172fb2[_0x364cb1(0xc3)](_0x1be9d1=>{const _0x1bb961=_0x364cb1;_0x1be9d1[_0x1bb961(0x187)]=_0x1bb961(0x18d);});const _0x2c58de=_0x18db0b[_0x364cb1(0x139)]('.day');_0x2c58de[_0x364cb1(0xc3)](_0x41e860=>{const _0x2d6d06=_0x364cb1;_0x41e860[_0x2d6d06(0x1b9)]=![];});return;}_0x18db0b[_0x364cb1(0x149)]();},colors=[_0xd17fe3(0xd4),_0xd17fe3(0xcf),'#F9A825',_0xd17fe3(0x18c),_0xd17fe3(0x131),'#D63031',_0xd17fe3(0x12e),'#FBC02D',_0xd17fe3(0x186),_0xd17fe3(0x12c),_0xd17fe3(0xd5),_0xd17fe3(0x102),'#FDD835',_0xd17fe3(0x17c),'#27AE60'],generateScheduleDOM=async _0x35884d=>{const _0xeb40a5=_0xd17fe3;try{_0x35884d[_0xeb40a5(0xf0)]();const _0x5655f1=document['getElementById'](_0xeb40a5(0xc7));_0x5655f1['disabled']=!![];const _0x5b151a=document['getElementById'](_0xeb40a5(0xec));_0x5b151a[_0xeb40a5(0xcd)][_0xeb40a5(0x123)]=_0xeb40a5(0x17f),_0x5b151a[_0xeb40a5(0xcd)][_0xeb40a5(0x179)]=_0xeb40a5(0xf6),_0x5b151a[_0xeb40a5(0xcd)][_0xeb40a5(0x169)]=_0xeb40a5(0xd2),_0x5b151a[_0xeb40a5(0x11d)]=_0xeb40a5(0x162);const _0x4e5210=document['getElementById']('historyBtn');_0x4e5210['disabled']=!![];const _0x5c6877=document[_0xeb40a5(0x139)](_0xeb40a5(0x173)),_0x5b22f5=[];_0x5c6877['forEach'](_0x2b299c=>{const _0x43b57a=_0xeb40a5,_0x302d9f=_0x2b299c[_0x43b57a(0x15f)]('.subject')[_0x43b57a(0x187)],_0x341009=_0x2b299c[_0x43b57a(0x15f)](_0x43b57a(0x180))[_0x43b57a(0x187)];if(_0x5b22f5[_0x43b57a(0x13a)](_0x3064fa=>_0x3064fa[_0x43b57a(0xe7)]===_0x341009&&_0x3064fa[_0x43b57a(0x103)]===_0x302d9f))throw new Error(_0x43b57a(0x14f));let _0x5abaf7=[];const _0x2fff25=document[_0x43b57a(0xfb)](_0x43b57a(0xf7)),_0x1709a1=_0x2fff25[_0x43b57a(0x15f)](_0x43b57a(0x10b)+_0x2b299c[_0x43b57a(0x104)]('data-id')+'\x22]');if(_0x1709a1){const _0x52dc84=_0x1709a1[_0x43b57a(0x139)](_0x43b57a(0xc1));_0x52dc84[_0x43b57a(0xc3)](_0x3c75c9=>{const _0xeefef9=_0x43b57a;if(_0x3c75c9[_0xeefef9(0x187)]===_0xeefef9(0x12b)){_0x5abaf7=[_0xeefef9(0x12b)];return;}_0x5abaf7['push'](_0x3c75c9[_0xeefef9(0x187)]);});}_0x5abaf7[_0x43b57a(0x1a0)]===0x0&&(_0x5abaf7=['Any']),_0x5b22f5[_0x43b57a(0x165)]({'subject':_0x302d9f,'code':_0x341009,'sections':_0x5abaf7});});const _0x2f7b6a=document['getElementById']('advancedOptions'),_0x2e8a7b=[];let _0x32a7de=![];if(_0x2f7b6a){const _0x2e8308=_0x2f7b6a[_0xeb40a5(0x15f)]('.no8AM')[_0xeb40a5(0x1b9)];_0x32a7de=_0x2f7b6a[_0xeb40a5(0x15f)]('.noClosedCourses')[_0xeb40a5(0x1b9)];const _0x543dd3=_0x2f7b6a[_0xeb40a5(0x15f)]('.noClassesAfter5PM')[_0xeb40a5(0x1b9)],_0x57cbe=_0x2f7b6a[_0xeb40a5(0x139)](_0xeb40a5(0xe0));for(let _0x5bb688=0x0;_0x5bb688<_0x57cbe[_0xeb40a5(0x1a0)];_0x5bb688+=0x2){if(_0x57cbe[_0x5bb688][_0xeb40a5(0x187)]===_0xeb40a5(0x18d)||_0x57cbe[_0x5bb688+0x1][_0xeb40a5(0x187)]===_0xeb40a5(0x18d)||_0x57cbe[_0x5bb688][_0xeb40a5(0x187)]===_0x57cbe[_0x5bb688+0x1][_0xeb40a5(0x187)]||_0x57cbe[_0x5bb688][_0xeb40a5(0x187)]>_0x57cbe[_0x5bb688+0x1]['value'])continue;const _0x3656a7=_0x57cbe[_0x5bb688]['parentNode'][_0xeb40a5(0x17e)]['querySelector'](_0xeb40a5(0x11a));let _0x246583='';const _0x25bbf3=_0x3656a7['querySelectorAll']('.day');_0x25bbf3[_0xeb40a5(0xc3)](_0x194403=>{const _0x1c977f=_0xeb40a5;_0x194403[_0x1c977f(0x1b9)]&&(_0x246583+=_0x194403['value']);});if(_0x246583==='')continue;_0x2e8a7b[_0xeb40a5(0x165)]({'startTime':_0x57cbe[_0x5bb688][_0xeb40a5(0x187)],'endTime':_0x57cbe[_0x5bb688+0x1]['value'],'days':_0x246583});}_0x2e8308&&_0x2e8a7b[_0xeb40a5(0x165)]({'startTime':_0xeb40a5(0x10a),'endTime':'09:00'}),_0x543dd3&&_0x2e8a7b[_0xeb40a5(0x165)]({'startTime':_0xeb40a5(0x16f),'endTime':'22:00'});}if(_0x5b22f5[_0xeb40a5(0x1a0)]===0x0)throw new Error(_0xeb40a5(0xde));const _0x2df705=await fetch(_0xeb40a5(0x12a),{'method':_0xeb40a5(0x1b0),'headers':{'Content-Type':'application/json','Authorization':_0xeb40a5(0x170)+localStorage['getItem']('token')},'body':JSON[_0xeb40a5(0x1a5)]({'selectedCoursesArray':_0x5b22f5,'breaks':_0x2e8a7b,'noClosedCourses':_0x32a7de})}),_0x427240=await _0x2df705[_0xeb40a5(0x184)]();schedules=_0x427240[_0xeb40a5(0x192)];if(!schedules||schedules['length']===0x0)throw new Error(_0xeb40a5(0x138));const _0x4b9ce6=document[_0xeb40a5(0xfb)](_0xeb40a5(0xeb));_0x4b9ce6[_0xeb40a5(0x11d)]='';const _0x59d167=document['querySelectorAll'](_0xeb40a5(0x109));let _0x5461f8=0x30;_0x59d167[_0xeb40a5(0xc3)](_0x118de4=>{const _0x3dab26=_0xeb40a5;Number(_0x118de4['getAttribute'](_0x3dab26(0x19a))['split'](':')[0x0])>=Number(schedules[0x0][_0x3dab26(0x167)][_0x3dab26(0xcc)](':')[0x0])&&Number(_0x118de4[_0x3dab26(0x104)](_0x3dab26(0x19a))[_0x3dab26(0xcc)](':')[0x0])<=Number(schedules[0x0]['max_hour']['split'](':')[0x0])?(_0x118de4[_0x3dab26(0xcd)][_0x3dab26(0x169)]=_0x3dab26(0xd2),Number(_0x118de4['getAttribute'](_0x3dab26(0x19a))[_0x3dab26(0xcc)](':')[0x0])==Number(schedules[0x0][_0x3dab26(0x167)]['split'](':')[0x0])+0x1&&(_0x5461f8=_0x118de4[_0x3dab26(0xd1)]-_0x118de4[_0x3dab26(0x117)][_0x3dab26(0xd1)])):_0x118de4[_0x3dab26(0xcd)][_0x3dab26(0x169)]='none';});let _0x3595d4=0x0;schedules[0x0][_0xeb40a5(0xea)]['forEach'](_0x385c30=>{const _0x5ae122=_0xeb40a5;if(_0x385c30['course_code']===_0x5ae122(0x1a7)){}else createScheduleEntry(_0x385c30,_0x385c30['days']['length'],_0x3595d4++,_0x5461f8);});const _0x182586=document[_0xeb40a5(0xfb)](_0xeb40a5(0xf7));_0x182586['style'][_0xeb40a5(0x169)]=_0xeb40a5(0x15a),_0x5b151a['innerHTML']=_0xeb40a5(0xe8);const _0x1b96a0=document[_0xeb40a5(0xfb)]('schedule-container');_0x1b96a0[_0xeb40a5(0xcd)][_0xeb40a5(0x14d)]=_0xeb40a5(0x132);const _0x2b3a41=document[_0xeb40a5(0xfb)](_0xeb40a5(0xc6));_0x2b3a41[_0xeb40a5(0xcd)][_0xeb40a5(0x14d)]=_0xeb40a5(0x132);const _0x2bbd23=document[_0xeb40a5(0xfb)]('schedule-total-header');_0x2bbd23[_0xeb40a5(0xcd)][_0xeb40a5(0x169)]=_0xeb40a5(0x111),_0x2bbd23[_0xeb40a5(0x11d)]=_0xeb40a5(0x16b)+'\x20<span\x20class=\x22schedule-total-span\x22\x20id=\x22schedule-total-span\x22>\x201\x20of\x20'+schedules['length']+_0xeb40a5(0x16d),_0x5655f1[_0xeb40a5(0x166)]=![],_0x4e5210[_0xeb40a5(0xcd)]['display']=_0xeb40a5(0x15a),_0x4e5210[_0xeb40a5(0x166)]=![],setTimeout(()=>{const _0x4e0424=_0xeb40a5;_0x5b151a[_0x4e0424(0x11d)]='',_0x5b151a['style'][_0x4e0424(0x169)]=_0x4e0424(0x15a);},0x1388);}catch(_0x239efd){console[_0xeb40a5(0x1a6)](_0x239efd[_0xeb40a5(0x16a)]);const _0x3a6f6b=document[_0xeb40a5(0xfb)]('submitBtn');_0x3a6f6b[_0xeb40a5(0x166)]=![];const _0x55ab93=document[_0xeb40a5(0xfb)](_0xeb40a5(0xec));_0x55ab93['innerHTML']=_0x239efd[_0xeb40a5(0x16a)];const _0x107e1e=document[_0xeb40a5(0xfb)](_0xeb40a5(0x121));_0x107e1e[_0xeb40a5(0xcd)][_0xeb40a5(0x169)]=_0xeb40a5(0xd2),_0x107e1e['disabled']=![],_0x55ab93['style']['backgroundColor']=_0xeb40a5(0x17f),_0x55ab93[_0xeb40a5(0xcd)][_0xeb40a5(0x179)]=_0xeb40a5(0xf6),_0x55ab93[_0xeb40a5(0xcd)][_0xeb40a5(0x169)]=_0xeb40a5(0xd2),setTimeout(()=>{const _0x3ba055=_0xeb40a5;_0x55ab93[_0x3ba055(0x11d)]='',_0x55ab93[_0x3ba055(0xcd)][_0x3ba055(0x169)]='none';},0x1388);}},createScheduleEntry=(_0x3d5e0b,_0x159e41,_0x2a3003,_0x39e7f3)=>{const _0xa2e931=_0xd17fe3;for(let _0xbc5df6=0x0;_0xbc5df6<_0x159e41;_0xbc5df6++){const _0x333acd=document[_0xa2e931(0x19e)](_0xa2e931(0x133));_0x333acd[_0xa2e931(0x134)]=_0xa2e931(0x161),_0x333acd['style'][_0xa2e931(0x169)]='none',_0x333acd[_0xa2e931(0xcd)][_0xa2e931(0x123)]=colors[_0x2a3003];const _0x5f14ad=document[_0xa2e931(0x19e)](_0xa2e931(0x133));_0x5f14ad[_0xa2e931(0x134)]=_0xa2e931(0x144),_0x5f14ad['setAttribute']('data-day',_0x3d5e0b['days'][_0xbc5df6]);const _0x6f498d=new Date(_0x3d5e0b[_0xa2e931(0xbf)][0x0]),_0x2e93c3=new Date(_0x3d5e0b['time'][0x1]);let _0x1eff2a=_0x6f498d['getUTCHours']()+':'+_0x6f498d[_0xa2e931(0x17b)](),_0x2af677=_0x2e93c3['getUTCHours']()+':'+_0x2e93c3['getUTCMinutes']();_0x6f498d[_0xa2e931(0x17b)]()===0x0&&(_0x1eff2a=_0x1eff2a+'0');_0x2e93c3['getUTCMinutes']()===0x0&&(_0x2af677=_0x2af677+'0');_0x5f14ad['setAttribute'](_0xa2e931(0x1b4),_0x1eff2a),_0x5f14ad[_0xa2e931(0xdf)](_0xa2e931(0x140),_0x2af677);const _0x2b97a6=document[_0xa2e931(0x19e)]('h1');_0x2b97a6[_0xa2e931(0x134)]='schedule-name',_0x2b97a6[_0xa2e931(0x11d)]=_0x3d5e0b[_0xa2e931(0x119)]+'\x20'+_0x3d5e0b['section'];const _0x3da947=document[_0xa2e931(0x19e)]('h1');_0x3da947[_0xa2e931(0x134)]='schedule-crn',_0x3da947[_0xa2e931(0x11d)]=_0x3d5e0b[_0xa2e931(0x115)];const _0xa6af09=document[_0xa2e931(0x19e)]('h1');_0xa6af09[_0xa2e931(0x134)]=_0xa2e931(0x13e),_0xa6af09[_0xa2e931(0x11d)]=_0x3d5e0b[_0xa2e931(0x199)];const _0x24e901=document[_0xa2e931(0x19e)]('h1');_0x24e901['className']=_0xa2e931(0xdb),_0x24e901[_0xa2e931(0x11d)]=_0x1eff2a+_0xa2e931(0x124)+_0x2af677,_0x5f14ad[_0xa2e931(0xe2)](_0x2b97a6),_0x5f14ad[_0xa2e931(0xe2)](_0x3da947),_0x5f14ad['appendChild'](_0xa6af09),_0x5f14ad[_0xa2e931(0xe2)](_0x24e901),_0x333acd['appendChild'](_0x5f14ad),positionScheduleEntry(_0x333acd,_0x39e7f3);if(_0x333acd[_0xa2e931(0x176)]>_0x333acd[_0xa2e931(0x19c)]&&_0x3d5e0b['instructor']!='TBA'){const _0x3190a8=_0x3d5e0b[_0xa2e931(0x199)]['split']('\x20');_0xa6af09[_0xa2e931(0x11d)]=_0x3190a8[0x0]+'\x20'+_0x3190a8[_0x3190a8[_0xa2e931(0x1a0)]-0x1];}}},positionScheduleEntry=(_0x2b023a,_0x3e58c9)=>{const _0x5db907=_0xd17fe3;try{const _0x46c69e=_0x2b023a,_0xfbb4e3=_0x46c69e[_0x5db907(0x15f)](_0x5db907(0x11e))[_0x5db907(0x104)](_0x5db907(0x1b4)),_0x57aba4=_0x46c69e['querySelector'](_0x5db907(0x11e))['getAttribute'](_0x5db907(0x140));let _0x1bb5cd=_0x46c69e[_0x5db907(0x15f)](_0x5db907(0x11e))[_0x5db907(0x104)]('data-day'),_0x10afda=document['querySelector']('.schedule-time-item[data-time=\x22'+_0xfbb4e3+'\x22]'),_0x28379c=document[_0x5db907(0x15f)](_0x5db907(0xc0)+_0x57aba4+'\x22]'),_0x4050c8=0x0,_0x4e6c76=0x0;if(_0x10afda==null){_0x4050c8=Number(_0xfbb4e3[_0x5db907(0x1a1)](-0x2)),_0x4050c8=_0x4050c8/0x3c;const _0x29224d=_0xfbb4e3[_0x5db907(0x1a1)](0x0,-0x2)+'00';_0x10afda=document[_0x5db907(0x15f)](_0x5db907(0xc0)+_0x29224d+'\x22]');}if(_0x28379c==null){_0x4e6c76=Number(_0x57aba4[_0x5db907(0x1a1)](-0x2)),_0x4e6c76=_0x4e6c76/0x3c;const _0x4fe6c6=_0x57aba4['slice'](0x0,-0x2)+'00';_0x28379c=document['querySelector'](_0x5db907(0xc0)+_0x4fe6c6+'\x22]');}const _0x14bc54=_0x10afda['offsetTop'],_0x1246d3=_0x28379c[_0x5db907(0xd1)],_0x5d1b96=_0x1246d3-_0x14bc54+_0x4e6c76*_0x3e58c9-_0x4050c8*_0x3e58c9;_0x46c69e[_0x5db907(0xcd)][_0x5db907(0xc4)]=_0x5d1b96+'px',_0x46c69e[_0x5db907(0xcd)]['top']=_0x14bc54+0x1+_0x3e58c9*_0x4050c8+'px';const _0xc7a20b=document[_0x5db907(0x15f)]('.schedule-header-item[data-day=\x22'+_0x1bb5cd+'\x22]')[_0x5db907(0xee)],_0x18155c=0x20,_0xaec2d=document['querySelector'](_0x5db907(0x181)+_0x1bb5cd+'\x22]')['offsetWidth'];_0x46c69e[_0x5db907(0xcd)][_0x5db907(0x172)]=_0xc7a20b-_0x18155c/0x2+'px',_0x46c69e['style'][_0x5db907(0x195)]=_0xaec2d+_0x18155c+'px',_0x2b023a[_0x5db907(0xcd)][_0x5db907(0x169)]=_0x5db907(0x111);const _0x40a237=document[_0x5db907(0xfb)](_0x5db907(0xeb));_0x40a237[_0x5db907(0xe2)](_0x46c69e);}catch(_0xff64e3){console[_0x5db907(0x1a6)](_0xff64e3[_0x5db907(0x16a)]);}},goPreviousSchedule=()=>{const _0x15adf2=_0xd17fe3,_0x47cc9a=document['getElementById'](_0x15adf2(0xf1)),_0x1e774b=Number(_0x47cc9a[_0x15adf2(0x11d)][_0x15adf2(0xcc)]('\x20')[0x1]);let _0x1b57ee=_0x1e774b-0x1;const _0x268e58=schedules['length'];_0x1b57ee<0x1&&(_0x1b57ee=_0x268e58);const _0x22d9a0=document[_0x15adf2(0xfb)](_0x15adf2(0xeb));_0x22d9a0[_0x15adf2(0x11d)]='';const _0x28b4c2=document['querySelectorAll']('.schedule-time-item');let _0xc32bce=0x30;_0x28b4c2[_0x15adf2(0xc3)](_0x4f6c3f=>{const _0x473a1a=_0x15adf2;Number(_0x4f6c3f[_0x473a1a(0x104)](_0x473a1a(0x19a))[_0x473a1a(0xcc)](':')[0x0])>=Number(schedules[_0x1b57ee-0x1][_0x473a1a(0x167)][_0x473a1a(0xcc)](':')[0x0])&&Number(_0x4f6c3f[_0x473a1a(0x104)]('data-time')[_0x473a1a(0xcc)](':')[0x0])<=Number(schedules[_0x1b57ee-0x1][_0x473a1a(0xc9)][_0x473a1a(0xcc)](':')[0x0])?(_0x4f6c3f[_0x473a1a(0xcd)][_0x473a1a(0x169)]=_0x473a1a(0xd2),Number(_0x4f6c3f[_0x473a1a(0x104)](_0x473a1a(0x19a))[_0x473a1a(0xcc)](':')[0x0])==Number(schedules[_0x1b57ee-0x1]['min_hour'][_0x473a1a(0xcc)](':')[0x0])+0x1&&(_0xc32bce=_0x4f6c3f[_0x473a1a(0xd1)]-_0x4f6c3f[_0x473a1a(0x117)][_0x473a1a(0xd1)])):_0x4f6c3f[_0x473a1a(0xcd)][_0x473a1a(0x169)]=_0x473a1a(0x15a);});let _0xbae2e=0x0;schedules[_0x1b57ee-0x1][_0x15adf2(0xea)][_0x15adf2(0xc3)](_0x2e32fa=>{const _0x2b3e2a=_0x15adf2;if(_0x2e32fa['course_code']===_0x2b3e2a(0x1a7)){}else createScheduleEntry(_0x2e32fa,_0x2e32fa[_0x2b3e2a(0xed)]['length'],_0xbae2e++,_0xc32bce);}),_0x47cc9a[_0x15adf2(0x11d)]='\x20'+_0x1b57ee+'\x20of\x20'+_0x268e58;const _0x49c988=document[_0x15adf2(0xfb)]('schedule-container');_0x49c988[_0x15adf2(0xcd)][_0x15adf2(0x14d)]=_0x15adf2(0x132);const _0x350d85=document[_0x15adf2(0xfb)](_0x15adf2(0xc6));_0x350d85[_0x15adf2(0xcd)][_0x15adf2(0x14d)]=_0x15adf2(0x132);},goNextSchedule=()=>{const _0x1d868a=_0xd17fe3,_0xea7727=document[_0x1d868a(0xfb)]('schedule-total-span'),_0x3962d5=Number(_0xea7727[_0x1d868a(0x11d)]['split']('\x20')[0x1]);let _0x3a8624=_0x3962d5+0x1;const _0x5dea1b=schedules[_0x1d868a(0x1a0)];_0x3962d5>_0x5dea1b-0x1&&(_0x3a8624=0x1);const _0x1f812d=document[_0x1d868a(0xfb)](_0x1d868a(0xeb));_0x1f812d['innerHTML']='';const _0xc12903=document[_0x1d868a(0x139)](_0x1d868a(0x109));let _0x1da5d4=0x30;_0xc12903[_0x1d868a(0xc3)](_0x141351=>{const _0xbb4429=_0x1d868a;Number(_0x141351[_0xbb4429(0x104)](_0xbb4429(0x19a))[_0xbb4429(0xcc)](':')[0x0])>=Number(schedules[_0x3a8624-0x1][_0xbb4429(0x167)][_0xbb4429(0xcc)](':')[0x0])&&Number(_0x141351[_0xbb4429(0x104)]('data-time')['split'](':')[0x0])<=Number(schedules[_0x3a8624-0x1][_0xbb4429(0xc9)]['split'](':')[0x0])?(_0x141351[_0xbb4429(0xcd)][_0xbb4429(0x169)]='block',Number(_0x141351[_0xbb4429(0x104)](_0xbb4429(0x19a))[_0xbb4429(0xcc)](':')[0x0])==Number(schedules[_0x3a8624-0x1]['min_hour'][_0xbb4429(0xcc)](':')[0x0])+0x1&&(_0x1da5d4=_0x141351[_0xbb4429(0xd1)]-_0x141351[_0xbb4429(0x117)][_0xbb4429(0xd1)])):_0x141351[_0xbb4429(0xcd)]['display']=_0xbb4429(0x15a);});let _0x275f05=0x0;schedules[_0x3a8624-0x1][_0x1d868a(0xea)][_0x1d868a(0xc3)](_0x23aaec=>{const _0x4fd629=_0x1d868a;if(_0x23aaec['course_code']===_0x4fd629(0x1a7)){}else createScheduleEntry(_0x23aaec,_0x23aaec[_0x4fd629(0xed)][_0x4fd629(0x1a0)],_0x275f05++,_0x1da5d4);}),_0xea7727['innerHTML']='\x20'+_0x3a8624+_0x1d868a(0x11b)+_0x5dea1b;const _0x29b206=document[_0x1d868a(0xfb)](_0x1d868a(0xef));_0x29b206[_0x1d868a(0xcd)][_0x1d868a(0x14d)]=_0x1d868a(0x132);const _0x588e4e=document['getElementById'](_0x1d868a(0xc6));_0x588e4e[_0x1d868a(0xcd)][_0x1d868a(0x14d)]='visible';},backToForm=()=>{const _0xd56db8=_0xd17fe3,_0x6472e0=document[_0xd56db8(0xfb)]('schedule-body');_0x6472e0[_0xd56db8(0x11d)]='';const _0x3ff559=document['getElementById'](_0xd56db8(0xf7));_0x3ff559[_0xd56db8(0xcd)][_0xd56db8(0x169)]=_0xd56db8(0xd2);const _0x59c227=document[_0xd56db8(0x139)](_0xd56db8(0x109));_0x59c227[_0xd56db8(0xc3)](_0x30ae1f=>{const _0x3a1147=_0xd56db8;_0x30ae1f['style'][_0x3a1147(0x169)]=_0x3a1147(0x15a);});const _0x571558=document[_0xd56db8(0xfb)](_0xd56db8(0xef));_0x571558['style'][_0xd56db8(0x14d)]=_0xd56db8(0x136);const _0x1820c8=document[_0xd56db8(0xfb)](_0xd56db8(0xc6));_0x1820c8[_0xd56db8(0xcd)][_0xd56db8(0x14d)]='hidden';const _0x1607cf=document[_0xd56db8(0xfb)]('schedule-total-header');_0x1607cf[_0xd56db8(0xcd)][_0xd56db8(0x169)]=_0xd56db8(0x15a);const _0x346cc6=document[_0xd56db8(0xfb)](_0xd56db8(0x121));_0x346cc6[_0xd56db8(0xcd)][_0xd56db8(0x169)]=_0xd56db8(0xd2);};window[_0xd17fe3(0x1b5)]('resize',()=>{const _0xa45fcc=_0xd17fe3,_0x293b91=document[_0xa45fcc(0xfb)](_0xa45fcc(0xeb));if(_0x293b91==null)return;_0x293b91['innerHTML']='';const _0x2a0350=document[_0xa45fcc(0x139)](_0xa45fcc(0x109));if(_0x2a0350[_0xa45fcc(0x1a0)]===0x0)return;let _0x5b82d3=0x30;const _0x53887a=document[_0xa45fcc(0xfb)](_0xa45fcc(0xf1));if(_0x53887a==null)return;const _0x1ddef2=Number(_0x53887a[_0xa45fcc(0x11d)][_0xa45fcc(0xcc)]('\x20')[0x1]);_0x2a0350[_0xa45fcc(0xc3)](_0xb4b99b=>{const _0x144f2a=_0xa45fcc;Number(_0xb4b99b[_0x144f2a(0x104)]('data-time')['split'](':')[0x0])>=Number(schedules[_0x1ddef2-0x1][_0x144f2a(0x167)][_0x144f2a(0xcc)](':')[0x0])&&Number(_0xb4b99b['getAttribute'](_0x144f2a(0x19a))[_0x144f2a(0xcc)](':')[0x0])<=Number(schedules[_0x1ddef2-0x1][_0x144f2a(0xc9)][_0x144f2a(0xcc)](':')[0x0])?(_0xb4b99b[_0x144f2a(0xcd)][_0x144f2a(0x169)]=_0x144f2a(0xd2),Number(_0xb4b99b[_0x144f2a(0x104)](_0x144f2a(0x19a))[_0x144f2a(0xcc)](':')[0x0])==Number(schedules[_0x1ddef2-0x1][_0x144f2a(0x167)][_0x144f2a(0xcc)](':')[0x0])+0x1&&(_0x5b82d3=_0xb4b99b[_0x144f2a(0xd1)]-_0xb4b99b['previousElementSibling']['offsetTop'])):_0xb4b99b['style'][_0x144f2a(0x169)]=_0x144f2a(0x15a);});let _0x2fdfce=0x0;schedules[_0x1ddef2-0x1][_0xa45fcc(0xea)][_0xa45fcc(0xc3)](_0x5d254e=>{const _0x523cd0=_0xa45fcc;if(_0x5d254e[_0x523cd0(0x119)]===_0x523cd0(0x1a7)){}else createScheduleEntry(_0x5d254e,_0x5d254e['days'][_0x523cd0(0x1a0)],_0x2fdfce++,_0x5b82d3);});});const downloadSchedule=async()=>{const _0x56bf47=_0xd17fe3;try{const _0x12c25f=await html2canvas(document[_0x56bf47(0xfb)](_0x56bf47(0xef)),{'scale':3.5,'backgroundColor':'#1a1a1a'}),_0x138f56=document['getElementById'](_0x56bf47(0xf1)),_0x5b799e=Number(_0x138f56[_0x56bf47(0x11d)][_0x56bf47(0xcc)]('\x20')[0x1]),_0x4bad2e=_0x12c25f[_0x56bf47(0xe9)](_0x56bf47(0xda));let _0x535e1b=document[_0x56bf47(0x19e)]('a');_0x535e1b[_0x56bf47(0x107)]=_0x4bad2e,_0x535e1b[_0x56bf47(0x189)]=_0x56bf47(0x143)+_0x5b799e+_0x56bf47(0x178),_0x535e1b['click'](),_0x535e1b[_0x56bf47(0x149)](),URL[_0x56bf47(0x118)](_0x4bad2e);const _0x1fb6e0=document[_0x56bf47(0xfb)](_0x56bf47(0xec));_0x1fb6e0[_0x56bf47(0xcd)][_0x56bf47(0x123)]=_0x56bf47(0x17f),_0x1fb6e0[_0x56bf47(0xcd)][_0x56bf47(0x179)]=_0x56bf47(0xf6),_0x1fb6e0[_0x56bf47(0xcd)][_0x56bf47(0x169)]='block',_0x1fb6e0[_0x56bf47(0x11d)]=_0x56bf47(0x1a8),setTimeout(()=>{const _0x619b7d=_0x56bf47;_0x1fb6e0['innerHTML']='',_0x1fb6e0['style']['display']=_0x619b7d(0x15a);},0x1388);}catch(_0x5b29fd){const _0x134858=document['getElementById'](_0x56bf47(0xec));_0x134858[_0x56bf47(0xcd)][_0x56bf47(0x123)]=_0x56bf47(0x17f),_0x134858[_0x56bf47(0xcd)][_0x56bf47(0x179)]=_0x56bf47(0xf6),_0x134858[_0x56bf47(0xcd)][_0x56bf47(0x169)]=_0x56bf47(0xd2),_0x134858[_0x56bf47(0x11d)]=_0x56bf47(0x148),setTimeout(()=>{const _0x4f5de4=_0x56bf47;_0x134858[_0x4f5de4(0x11d)]='',_0x134858[_0x4f5de4(0xcd)][_0x4f5de4(0x169)]='none';},0x1388);}},copyCRNs=()=>{const _0x57ec1d=_0xd17fe3,_0x22c019=document[_0x57ec1d(0xfb)](_0x57ec1d(0xf1)),_0x53f521=Number(_0x22c019[_0x57ec1d(0x11d)][_0x57ec1d(0xcc)]('\x20')[0x1]),_0x482bd0=[];schedules[_0x53f521-0x1][_0x57ec1d(0xea)][_0x57ec1d(0xc3)](_0x571ed6=>{const _0x180eef=_0x57ec1d;if(_0x571ed6[_0x180eef(0x119)]===_0x180eef(0x1a7)){}else _0x482bd0[_0x180eef(0x165)](_0x571ed6[_0x180eef(0x115)]);});const _0x3ff754=_0x482bd0[_0x57ec1d(0x110)](',\x20');navigator[_0x57ec1d(0x106)][_0x57ec1d(0x152)](_0x3ff754);const _0x2c02ba=document[_0x57ec1d(0xfb)](_0x57ec1d(0xec));_0x2c02ba[_0x57ec1d(0xcd)][_0x57ec1d(0x123)]=_0x57ec1d(0x17f),_0x2c02ba[_0x57ec1d(0xcd)]['color']=_0x57ec1d(0xf6),_0x2c02ba['style'][_0x57ec1d(0x169)]=_0x57ec1d(0xd2),_0x2c02ba[_0x57ec1d(0x11d)]='CRNs\x20copied\x20to\x20clipboard',setTimeout(()=>{const _0x1e7091=_0x57ec1d;_0x2c02ba[_0x1e7091(0x11d)]='',_0x2c02ba[_0x1e7091(0xcd)][_0x1e7091(0x169)]=_0x1e7091(0x15a);},0x1388);};
+let subjects
+let courses
+let coursesWithInfo
+let schedules
+const timings = [
+  'None',
+  '08:00',
+  '08:15',
+  '08:30',
+  '08:45',
+  '09:00',
+  '09:15',
+  '09:30',
+  '09:45',
+  '10:00',
+  '10:15',
+  '10:30',
+  '10:45',
+  '11:00',
+  '11:15',
+  '11:30',
+  '11:45',
+  '12:00',
+  '12:15',
+  '12:30',
+  '12:45',
+  '13:00',
+  '13:15',
+  '13:30',
+  '13:45',
+  '14:00',
+  '14:15',
+  '14:30',
+  '14:45',
+  '15:00',
+  '15:15',
+  '15:30',
+  '15:45',
+  '16:00',
+  '16:15',
+  '16:30',
+  '16:45',
+  '17:00',
+  '17:15',
+  '17:30',
+  '17:45',
+  '18:00',
+  '18:15',
+  '18:30',
+  '18:45',
+  '19:00',
+  '19:15',
+  '19:30',
+  '19:45',
+  '20:00',
+  '20:15',
+  '20:30',
+  '20:45',
+  '21:00',
+  '21:15',
+  '21:30',
+  '21:45',
+  '22:00',
+]
+const fillSubjects = async (subjects, element) => {
+  try {
+    if (!subjects) {
+      element.parentNode.remove()
+      throw new Error('Too fast!')
+    }
+    subjects.forEach((subject) => {
+      const option = document.createElement('option')
+      option.value = subject.subject
+      option.innerText = subject.subject
+      element.appendChild(option)
+    })
+  } catch (e) {
+    console.log(e.message)
+    const alertBox = document.getElementById('alertBox')
+    alertBox.innerHTML = e.message
+    alertBox.style.backgroundColor = '#ccc'
+    alertBox.style.color = '#1a1a1a'
+    alertBox.style.display = 'block'
+    setTimeout(() => {
+      alertBox.innerHTML = ''
+      alertBox.style.display = 'none'
+    }, 5000)
+  }
+}
+const checkEditForm = (courses, element) => {
+  const formContainer = document.getElementById('form-container')
+  const editForm = formContainer.querySelector(
+    '.editForm[data-id="' + element.getAttribute('data-id') + '"]'
+  )
+  if (editForm == null) {
+    return
+  }
+  if (editForm) {
+    editForm.remove()
+  }
+  // add edit form
+  const editFormNew = document.createElement('form')
+  editFormNew.className = 'editForm'
+  const subject = element.querySelector('.subject').value
+  const code = element.querySelector('.code').value
+  editFormNew.setAttribute('data-id', element.getAttribute('data-id'))
+  editFormNew.setAttribute('data-entry-subject', subject)
+  editFormNew.setAttribute('data-entry-code', code)
+  const editEntry = document.createElement('div')
+  editEntry.className = 'editEntry'
+  const editPanelSectionLabel = document.createElement('label')
+  editPanelSectionLabel.innerHTML = 'Section'
+  editPanelSectionLabel.classList.add('formLabel')
+  const editPanelSection = document.createElement('select')
+  editPanelSection.setAttribute('name', 'section')
+  editPanelSection.classList.add('input')
+  editPanelSection.classList.add('sectionSelect')
+  // any
+  const optionAny = document.createElement('option')
+  optionAny.value = 'Any'
+  optionAny.innerHTML = 'Any'
+  editPanelSection.appendChild(optionAny)
+
+  courses.forEach((course) => {
+    if (course.subject === subject && course.code === code) {
+      const option = document.createElement('option')
+      const startTime = new Date(course.time[0])
+      const endTime = new Date(course.time[1])
+      let startTimeFormatted =
+        startTime.getUTCHours() + ':' + startTime.getUTCMinutes()
+      let endTimeFormatted =
+        endTime.getUTCHours() + ':' + endTime.getUTCMinutes()
+      if (startTime.getUTCMinutes() === 0) {
+        startTimeFormatted += '0'
+      }
+      if (endTime.getUTCMinutes() === 0) {
+        endTimeFormatted += '0'
+      }
+      option.value = course.section
+      option.innerHTML =
+        course.section +
+        ' ' +
+        course.instructor +
+        ' ' +
+        course.days +
+        ' ' +
+        startTimeFormatted +
+        '-' +
+        endTimeFormatted
+      editPanelSection.appendChild(option)
+    }
+  })
+  const addButton = document.createElement('input')
+  addButton.setAttribute('type', 'button')
+  addButton.setAttribute('value', '+')
+  addButton.classList.add('inputBtn')
+  addButton.classList.add('addBtn')
+  addButton.onclick = (event) => {
+    addSection(event)
+  }
+  const deleteButton = document.createElement('input')
+  deleteButton.setAttribute('type', 'button')
+  deleteButton.setAttribute('value', 'x')
+  deleteButton.classList.add('inputBtn')
+  deleteButton.classList.add('deleteBtn')
+  deleteButton.onclick = (event) => {
+    deleteSection(event)
+  }
+  editEntry.appendChild(editPanelSectionLabel)
+  editEntry.appendChild(editPanelSection)
+  editEntry.appendChild(deleteButton)
+  editFormNew.appendChild(editEntry)
+  const editFormSave = document.createElement('input')
+  editFormSave.setAttribute('type', 'button')
+  editFormSave.setAttribute('value', 'Back')
+  editFormSave.classList.add('inputBtn')
+  editFormSave.classList.add('deleteBtn')
+  editFormSave.onclick = (event) => {
+    editFormNew.style.display = 'none'
+    form.style.display = 'block'
+  }
+  editFormNew.appendChild(addButton)
+  editFormNew.appendChild(editFormSave)
+  formContainer.appendChild(editFormNew)
+  editFormNew.style.display = 'none'
+}
+const fillCodes = async (courses, element) => {
+  try {
+    if (!courses) {
+      element.parentNode.remove()
+      throw new Error('Too fast!')
+    }
+    //reset options
+    element.innerHTML = ''
+    // remove edit form for previous subject
+    const entry = element.parentNode
+    const formContainer = document.getElementById('form-container')
+    const editForm = formContainer.querySelector(
+      '.editForm[data-id="' + entry.getAttribute('data-id') + '"]'
+    )
+    if (editForm) {
+      editForm.remove()
+    }
+    //get selected subject
+    const subject = element.parentNode.querySelector('.subject').value
+    const coursesWithSubject = courses.filter((course) => {
+      return course.subject === subject
+    })
+    const uniqueCoursesWithSubject = coursesWithSubject.filter(
+      (course, index, self) =>
+        index === self.findIndex((c) => c.code === course.code)
+    ) //filter out duplicates
+    uniqueCoursesWithSubject.forEach((course) => {
+      const option = document.createElement('option')
+      option.value = course.code
+      option.setAttribute('credits', course.credits)
+      if (course.full_name && course.full_name.includes('(Take it with')) {
+        option.innerHTML =
+          course.code + ' - ' + course.full_name.split('(Take')[0]
+      } else {
+        option.innerHTML = course.code + ' - ' + course.full_name
+      }
+      element.appendChild(option)
+    })
+  } catch (e) {
+    console.log(e.message)
+    const alertBox = document.getElementById('alertBox')
+    alertBox.innerHTML = e.message
+    alertBox.style.backgroundColor = '#ccc'
+    alertBox.style.color = '#1a1a1a'
+    alertBox.style.display = 'block'
+    setTimeout(() => {
+      alertBox.innerHTML = ''
+      alertBox.style.display = 'none'
+    }, 5000)
+  }
+}
+const subjectsElements = document.querySelectorAll('.subject')
+subjectsElements.forEach((element) => {
+  element.addEventListener('change', (e) => {
+    e.stopPropagation()
+    fillCodes(courses, e.target.parentNode.querySelector('.code'))
+    calculateCredits()
+  })
+})
+const updateTime = (time) => {
+  const lastUpdated = document.getElementById('last-updated')
+  lastUpdated.innerHTML = `*Courses last updated on ${time.split('T')[0]} ${
+    time.split('T')[1].split('.')[0]
+  } `
+}
+const initalDisplayOfCourses = async () => {
+  try {
+    let token = localStorage.getItem('token')
+    if (!token || token == 'undefined') {
+      token = 'null'
+    } else {
+      token = 'Bearer ' + token
+    }
+    const response = await fetch('/getCourses', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+    })
+    const data = await response.json()
+    if (token == 'null') {
+      localStorage.setItem('token', data.token)
+    }
+    subjects = data.subjects
+    courses = data.courses
+    const dropdown = document.querySelector('.subject')
+    fillSubjects(subjects, dropdown)
+    fillCodes(courses, document.querySelector('.code'))
+    updateTime(data.last_updated)
+    // add change event listener to code dropdown
+    const firstDropdown = document.getElementById('inputTextTwo0')
+    const creditsSpan = document.getElementById('credit-hours')
+    creditsSpan.innerText = firstDropdown.options[firstDropdown.selectedIndex].getAttribute('credits')
+    firstDropdown.addEventListener('change', (e) => {
+      e.stopPropagation()
+      checkEditForm(courses, e.target.parentNode)
+      calculateCredits()
+    })
+
+
+  } catch (e) {
+    console.log(e.message)
+    const alertBox = document.getElementById('alertBox')
+    alertBox.innerHTML = e.message
+    alertBox.style.backgroundColor = '#ccc'
+    alertBox.style.color = '#1a1a1a'
+    alertBox.style.display = 'block'
+    setTimeout(() => {
+      alertBox.innerHTML = ''
+      alertBox.style.display = 'none'
+    }, 5000)
+  }
+}
+
+calculateCredits = () => {
+  const selectedCoursesEntries = Array.from(document.querySelectorAll('.entry'))
+  const sum = selectedCoursesEntries.reduce((sum, course) => {
+    const courseDropdown = course.querySelector('.code')
+    const credits = Number(courseDropdown.options[courseDropdown.selectedIndex].getAttribute('credits'))
+    return sum + credits
+  }, 0)
+  const creditsSpan = document.getElementById('credit-hours')
+  creditsSpan.innerText = sum
+}
+
+document.addEventListener('DOMContentLoaded', initalDisplayOfCourses)
+// ------------------------------
+const addEntry = (e) => {
+  const entry = document.createElement('div')
+  entry.className = 'entry'
+  const dropdownlabel = document.createElement('label')
+  // dropdownlabel.setAttribute('for', 'subject')
+  dropdownlabel.innerHTML = 'Subject'
+  dropdownlabel.classList.add('formLabel')
+  const dropdownselect = document.createElement('select')
+  dropdownselect.setAttribute('name', 'subject')
+  dropdownselect.classList.add('input')
+  dropdownselect.classList.add('subject')
+  dropdownselect.setAttribute('required', 'true')
+  const dropdownlabelTwo = document.createElement('label')
+  // dropdownlabelTwo.setAttribute('for', 'code')
+  dropdownlabelTwo.innerHTML = 'Code'
+  dropdownlabelTwo.classList.add('formLabel')
+  const dropdownselectTwo = document.createElement('select')
+  dropdownselectTwo.setAttribute('name', 'code')
+  dropdownselectTwo.classList.add('input')
+  dropdownselectTwo.classList.add('code')
+  dropdownselectTwo.setAttribute('required', 'true')
+  const deleteButton = document.createElement('input')
+  deleteButton.setAttribute('type', 'button')
+  deleteButton.setAttribute('value', 'x')
+  deleteButton.classList.add('inputBtn')
+  deleteButton.classList.add('deleteBtn')
+  deleteButton.onclick = (event) => {
+    deleteEntry(event)
+  }
+  const editButton = document.createElement('input')
+  editButton.setAttribute('type', 'button')
+  editButton.setAttribute('value', 'Ξ')
+  editButton.classList.add('inputBtn')
+  editButton.classList.add('deleteBtn')
+  editButton.onclick = (event) => {
+    editEntry(event)
+  }
+  entry.appendChild(dropdownlabel)
+  entry.appendChild(dropdownselect)
+
+  entry.appendChild(dropdownlabelTwo)
+  entry.appendChild(dropdownselectTwo)
+  entry.appendChild(editButton)
+  entry.appendChild(deleteButton)
+  const entries = document.getElementById('entries')
+  entries.appendChild(entry)
+  dropdownselect.addEventListener('change', (e) => {
+    e.stopPropagation()
+    fillCodes(courses, e.target.parentNode.querySelector('.code'))
+    calculateCredits()
+  })
+  dropdownselectTwo.addEventListener('change', (e) => {
+    e.stopPropagation()
+    checkEditForm(courses, e.target.parentNode)
+    calculateCredits()
+  })
+  fillSubjects(subjects, dropdownselect)
+  fillCodes(courses, dropdownselectTwo)
+  calculateCredits()
+}
+const deleteEntry = (e) => {
+  const entry = e.target.parentNode
+  // const subject = entry.querySelector('.subject').value
+  // const code = entry.querySelector('.code').value
+  const formContainer = document.getElementById('form-container')
+  const editForm = formContainer.querySelector(
+    '.editForm[data-id="' + entry.getAttribute('data-id') + '"]'
+  )
+  if (editForm) {
+    editForm.remove()
+  }
+  entry.remove()
+  calculateCredits()
+}
+const editEntry = (e) => {
+  try {
+    if (!subjects) {
+      throw new Error('Too fast!')
+    }
+    const entry = e.target.parentNode
+    const subject = entry.querySelector('.subject').value
+    const code = entry.querySelector('.code').value
+    const formContainer = document.getElementById('form-container')
+    const form = document.getElementById('form')
+    if (
+      formContainer.querySelector(
+        '.editForm[data-id="' + entry.getAttribute('data-id') + '"]'
+      )
+    ) {
+      // if edit form already exists show it
+      formContainer.querySelector(
+        '.editForm[data-id="' + entry.getAttribute('data-id') + '"]'
+      ).style.display = 'block'
+      form.style.display = 'none'
+      return
+    }
+    // create edit panel
+    const editForm = document.createElement('form')
+    let randomid = Math.random().toString(36).substring(7)
+    // make sure its unique
+    while (
+      formContainer.querySelector('.editForm[data-id="' + randomid + '"]')
+    ) {
+      randomid = Math.random().toString(36).substring(7)
+    }
+    editForm.className = 'editForm'
+    editForm.setAttribute('data-entry-subject', subject)
+    editForm.setAttribute('data-entry-code', code)
+    editForm.setAttribute('data-id', randomid)
+    entry.setAttribute('data-id', randomid)
+    form.style.display = 'none'
+    const editEntry = document.createElement('div')
+    editEntry.className = 'editEntry'
+    const editPanelSectionLabel = document.createElement('label')
+    editPanelSectionLabel.innerHTML = 'Section'
+    editPanelSectionLabel.classList.add('formLabel')
+    const editPanelSection = document.createElement('select')
+    editPanelSection.setAttribute('name', 'section')
+    editPanelSection.classList.add('input')
+    editPanelSection.classList.add('sectionSelect')
+    // any
+    const optionAny = document.createElement('option')
+    optionAny.value = 'Any'
+    optionAny.innerHTML = 'Any'
+    editPanelSection.appendChild(optionAny)
+    courses.forEach((course) => {
+      if (course.subject === subject && course.code === code) {
+        const option = document.createElement('option')
+        const startTime = new Date(course.time[0])
+        const endTime = new Date(course.time[1])
+        let startTimeFormatted =
+          startTime.getUTCHours() + ':' + startTime.getUTCMinutes()
+        let endTimeFormatted =
+          endTime.getUTCHours() + ':' + endTime.getUTCMinutes()
+        if (startTime.getUTCMinutes() === 0) {
+          startTimeFormatted += '0'
+        }
+        if (endTime.getUTCMinutes() === 0) {
+          endTimeFormatted += '0'
+        }
+        option.value = course.section
+        option.innerHTML =
+          course.section +
+          ' ' +
+          course.instructor +
+          ' ' +
+          course.days +
+          ' ' +
+          startTimeFormatted +
+          '-' +
+          endTimeFormatted
+        editPanelSection.appendChild(option)
+      }
+    })
+    const addButton = document.createElement('input')
+    addButton.setAttribute('type', 'button')
+    addButton.setAttribute('value', '+')
+    addButton.classList.add('inputBtn')
+    addButton.classList.add('addBtn')
+    addButton.classList.add('addBtnEditForm')
+    addButton.onclick = (event) => {
+      addSection(event)
+    }
+    const deleteButton = document.createElement('input')
+    deleteButton.setAttribute('type', 'button')
+    deleteButton.setAttribute('value', 'x')
+    deleteButton.classList.add('inputBtn')
+    deleteButton.classList.add('deleteBtn')
+    deleteButton.onclick = (event) => {
+      deleteSection(event)
+    }
+    editEntry.appendChild(editPanelSectionLabel)
+    editEntry.appendChild(editPanelSection)
+    editEntry.appendChild(deleteButton)
+    editForm.appendChild(editEntry)
+    const editFormSave = document.createElement('input')
+    editFormSave.setAttribute('type', 'button')
+    editFormSave.setAttribute('value', 'Back')
+    editFormSave.classList.add('inputBtn')
+    editFormSave.classList.add('deleteBtn')
+    editFormSave.classList.add('backBtnEditForm')
+    editFormSave.onclick = (event) => {
+      editForm.style.display = 'none'
+      form.style.display = 'block'
+    }
+    editForm.appendChild(addButton)
+    editForm.appendChild(editFormSave)
+    formContainer.appendChild(editForm)
+  } catch (e) {
+    console.log(e.message)
+    const alertBox = document.getElementById('alertBox')
+    alertBox.innerHTML = e.message
+    alertBox.style.backgroundColor = '#ccc'
+    alertBox.style.color = '#1a1a1a'
+    alertBox.style.display = 'block'
+    setTimeout(() => {
+      alertBox.innerHTML = ''
+      alertBox.style.display = 'none'
+    }, 5000)
+  }
+}
+const addSection = (e) => {
+  const formContainer = e.target.parentNode
+  const subject = formContainer.getAttribute('data-entry-subject')
+  const code = formContainer.getAttribute('data-entry-code')
+  // add section entry
+  const editEntry = document.createElement('div')
+  editEntry.className = 'editEntry'
+  const editPanelSectionLabel = document.createElement('label')
+  editPanelSectionLabel.innerHTML = 'Section'
+  editPanelSectionLabel.classList.add('formLabel')
+  const editPanelSection = document.createElement('select')
+  editPanelSection.setAttribute('name', 'section')
+  editPanelSection.classList.add('input')
+  editPanelSection.classList.add('sectionSelect')
+  // any
+  const optionAny = document.createElement('option')
+  optionAny.value = 'Any'
+  optionAny.innerHTML = 'Any'
+  editPanelSection.appendChild(optionAny)
+  courses.forEach((course) => {
+    if (course.subject === subject && course.code === code) {
+      const option = document.createElement('option')
+      const startTime = new Date(course.time[0])
+      const endTime = new Date(course.time[1])
+      let startTimeFormatted =
+        startTime.getUTCHours() + ':' + startTime.getUTCMinutes()
+      let endTimeFormatted =
+        endTime.getUTCHours() + ':' + endTime.getUTCMinutes()
+      if (startTime.getUTCMinutes() === 0) {
+        startTimeFormatted += '0'
+      }
+      if (endTime.getUTCMinutes() === 0) {
+        endTimeFormatted += '0'
+      }
+      option.value = course.section
+      option.innerHTML =
+        course.section +
+        ' ' +
+        course.instructor +
+        ' ' +
+        course.days +
+        ' ' +
+        startTimeFormatted +
+        '-' +
+        endTimeFormatted
+      editPanelSection.appendChild(option)
+    }
+  })
+  const deleteButton = document.createElement('input')
+  deleteButton.setAttribute('type', 'button')
+  deleteButton.setAttribute('value', 'x')
+  deleteButton.classList.add('inputBtn')
+  deleteButton.classList.add('deleteBtn')
+  deleteButton.onclick = (event) => {
+    deleteSection(event)
+  }
+  editEntry.appendChild(editPanelSectionLabel)
+  editEntry.appendChild(editPanelSection)
+  editEntry.appendChild(deleteButton)
+  // add it third to last child
+  formContainer.insertBefore(
+    editEntry,
+    formContainer.childNodes[formContainer.childNodes.length - 2]
+  )
+}
+const deleteSection = (e) => {
+  const sectionEntry = e.target.parentNode
+  sectionEntry.remove()
+}
+const displayAdvancedOptions = () => {
+  const formContainer = document.getElementById('form-container')
+  const form = document.getElementById('form')
+  const advancedOptions = document.getElementById('advancedOptions')
+  if (advancedOptions != null) {
+    advancedOptions.style.display = 'block'
+    form.style.display = 'none'
+    return
+  }
+  const advancedOptionsForm = document.createElement('form')
+  advancedOptionsForm.className = 'advancedOptions'
+  advancedOptionsForm.id = 'advancedOptions'
+  const advancedEntry = document.createElement('div')
+  advancedEntry.className = 'advancedEntry'
+  const advancedOptionsFormLabel = document.createElement('label')
+  advancedOptionsFormLabel.innerHTML = 'No 8 AM Classes'
+  advancedOptionsFormLabel.classList.add('formLabel')
+  const advancedOptionsFormInput = document.createElement('input')
+  advancedOptionsFormInput.setAttribute('type', 'checkbox')
+  advancedOptionsFormInput.setAttribute('name', 'no8AM')
+  advancedOptionsFormInput.classList.add('input')
+  advancedOptionsFormInput.classList.add('no8AM')
+  advancedOptionsFormInput.id = 'no8AM'
+  advancedEntry.appendChild(advancedOptionsFormLabel)
+  advancedEntry.appendChild(advancedOptionsFormInput)
+  const advancedEntryTwo = document.createElement('div')
+  advancedEntryTwo.className = 'advancedEntry'
+  const advancedOptionsFormLabelTwo = document.createElement('label')
+  advancedOptionsFormLabelTwo.innerHTML = 'Only Open Sections'
+  advancedOptionsFormLabelTwo.classList.add('formLabel')
+  const advancedOptionsFormInputTwo = document.createElement('input')
+  advancedOptionsFormInputTwo.setAttribute('type', 'checkbox')
+  advancedOptionsFormInputTwo.setAttribute('name', 'noClosedCourses')
+  // advancedOptionsFormInputTwo.disabled = false
+  advancedOptionsFormInputTwo.classList.add('input')
+  advancedOptionsFormInputTwo.classList.add('noClosedCourses')
+  advancedOptionsFormInputTwo.id = 'noClosedCourses'
+  advancedEntryTwo.appendChild(advancedOptionsFormLabelTwo)
+  advancedEntryTwo.appendChild(advancedOptionsFormInputTwo)
+  const advancedEntryFour = document.createElement('div')
+  advancedEntryFour.className = 'advancedEntry'
+  const advancedOptionsFormLabelFour = document.createElement('label')
+  advancedOptionsFormLabelFour.innerHTML = 'No Classes after 5 PM'
+  advancedOptionsFormLabelFour.classList.add('formLabel')
+  const advancedOptionsFormInputFour = document.createElement('input')
+  advancedOptionsFormInputFour.setAttribute('type', 'checkbox')
+  advancedOptionsFormInputFour.setAttribute('name', 'noClassesAfter5PM')
+  advancedOptionsFormInputFour.classList.add('input')
+  advancedOptionsFormInputFour.classList.add('noClassesAfter5PM')
+  advancedOptionsFormInputFour.id = 'noClassesAfter5PM'
+  advancedEntryFour.appendChild(advancedOptionsFormLabelFour)
+  advancedEntryFour.appendChild(advancedOptionsFormInputFour)
+  const advancedEntryThree = document.createElement('div')
+  advancedEntryThree.className = 'advancedEntry'
+  const advancedOptionsFormLabelThree = document.createElement('label')
+  advancedOptionsFormLabelThree.innerHTML = 'Break'
+  advancedOptionsFormLabelThree.classList.add('formLabel')
+  const advancedOptionsFormInputThree = document.createElement('select')
+  advancedOptionsFormInputThree.setAttribute('name', 'breakBetween')
+  advancedOptionsFormInputThree.classList.add('input')
+  advancedOptionsFormInputThree.classList.add('breakBetween')
+  // advancedOptionsFormInputThree.setAttribute('placeholder', 'Start Time')
+  const advancedOptionsFormInputThreeExtra = document.createElement('select')
+  advancedOptionsFormInputThreeExtra.setAttribute('name', 'breakBetween')
+  advancedOptionsFormInputThreeExtra.classList.add('input')
+  advancedOptionsFormInputThreeExtra.classList.add('breakBetween')
+  // advancedOptionsFormInputThreeExtra.setAttribute('placeholder', 'End Time')
+  timings.forEach((time) => {
+    const option = document.createElement('option')
+    option.value = time
+    option.innerHTML = time
+    advancedOptionsFormInputThree.appendChild(option)
+    advancedOptionsFormInputThreeExtra.appendChild(option.cloneNode(true))
+  })
+  const addBreakButton = document.createElement('input')
+  addBreakButton.setAttribute('type', 'button')
+  addBreakButton.setAttribute('value', '+')
+  addBreakButton.classList.add('inputBtn')
+  addBreakButton.classList.add('deleteBtn')
+  addBreakButton.classList.add('addBtnBreak')
+  addBreakButton.onclick = (event) => {
+    addBreakEntry(event)
+  }
+  const deleteBreakButton = document.createElement('input')
+  deleteBreakButton.setAttribute('type', 'button')
+  deleteBreakButton.setAttribute('value', 'x')
+  deleteBreakButton.classList.add('inputBtn')
+  deleteBreakButton.classList.add('deleteBtn')
+  deleteBreakButton.classList.add('deleteBtnBreak')
+  deleteBreakButton.onclick = (event) => {
+    deleteBreakEntry(event)
+  }
+  // days of break
+  const daysOfBreak = document.createElement('div')
+  daysOfBreak.className = 'daysOfBreak'
+  const daysOfBreakLabel = document.createElement('label')
+  daysOfBreakLabel.innerHTML = ''
+  daysOfBreakLabel.classList.add('formLabel')
+  daysOfBreak.appendChild(daysOfBreakLabel)
+  // add checkboxes for days
+  const days = ['M', 'T', 'W', 'R' /*, 'F'*/]
+  days.forEach((day) => {
+    const dayLabel = document.createElement('label')
+    dayLabel.innerHTML = day
+    dayLabel.classList.add('formLabel')
+    const dayInput = document.createElement('input')
+    dayInput.setAttribute('type', 'checkbox')
+    dayInput.setAttribute('name', 'day')
+    dayInput.classList.add('input')
+    dayInput.classList.add('day')
+    dayInput.classList.add(day)
+    dayInput.value = day
+    const singleDayContainer = document.createElement('div')
+    singleDayContainer.className = 'singleDayContainer'
+    singleDayContainer.appendChild(dayLabel)
+    singleDayContainer.appendChild(dayInput)
+    daysOfBreak.appendChild(singleDayContainer)
+    // daysOfBreak.appendChild(dayLabel)
+    // daysOfBreak.appendChild(dayInput)
+  })
+
+  const backButton = document.createElement('input')
+  backButton.setAttribute('type', 'button')
+  backButton.setAttribute('value', 'Back')
+  backButton.classList.add('inputBtn')
+  backButton.classList.add('backBtn')
+  backButton.id = 'backBtnAdvancedForm'
+  backButton.onclick = (event) => {
+    advancedOptionsForm.style.display = 'none'
+    form.style.display = 'block'
+  }
+  advancedEntryThree.appendChild(advancedOptionsFormLabelThree)
+  advancedEntryThree.appendChild(advancedOptionsFormInputThree)
+  advancedEntryThree.appendChild(advancedOptionsFormInputThreeExtra)
+
+  advancedOptionsForm.appendChild(advancedEntry)
+  advancedOptionsForm.appendChild(advancedEntryTwo)
+  advancedOptionsForm.appendChild(advancedEntryFour)
+  daysOfBreak.appendChild(addBreakButton)
+  daysOfBreak.appendChild(deleteBreakButton)
+  advancedEntryThree.appendChild(daysOfBreak)
+  advancedOptionsForm.appendChild(advancedEntryThree)
+  advancedOptionsForm.appendChild(backButton)
+  formContainer.appendChild(advancedOptionsForm)
+  form.style.display = 'none'
+}
+const addBreakEntry = (e) => {
+  const advancedOptionsForm = e.target.parentNode.parentNode.parentNode
+  const advancedEntryThree = document.createElement('div')
+  advancedEntryThree.className = 'advancedEntry'
+  const advancedOptionsFormLabelThree = document.createElement('label')
+  advancedOptionsFormLabelThree.innerHTML = 'Break '
+  advancedOptionsFormLabelThree.classList.add('formLabel')
+  const advancedOptionsFormInputThree = document.createElement('select')
+  advancedOptionsFormInputThree.setAttribute('name', 'breakBetween')
+  advancedOptionsFormInputThree.classList.add('input')
+  advancedOptionsFormInputThree.classList.add('breakBetween')
+  // advancedOptionsFormInputThree.setAttribute('placeholder', 'Start Time')
+  const advancedOptionsFormInputThreeExtra = document.createElement('select')
+  advancedOptionsFormInputThreeExtra.setAttribute('name', 'breakBetween')
+  advancedOptionsFormInputThreeExtra.classList.add('input')
+  advancedOptionsFormInputThreeExtra.classList.add('breakBetween')
+  // advancedOptionsFormInputThreeExtra.setAttribute('placeholder', 'End Time')
+  timings.forEach((time) => {
+    const option = document.createElement('option')
+    option.value = time
+    option.innerHTML = time
+    advancedOptionsFormInputThree.appendChild(option)
+    advancedOptionsFormInputThreeExtra.appendChild(option.cloneNode(true))
+  })
+  const addBreakButton = document.createElement('input')
+  addBreakButton.setAttribute('type', 'button')
+  addBreakButton.setAttribute('value', '+')
+  addBreakButton.classList.add('inputBtn')
+  addBreakButton.classList.add('deleteBtn')
+  addBreakButton.onclick = (event) => {
+    addBreakEntry(event)
+  }
+  const deleteBreakButton = document.createElement('input')
+  deleteBreakButton.setAttribute('type', 'button')
+  deleteBreakButton.setAttribute('value', 'x')
+  deleteBreakButton.classList.add('inputBtn')
+  deleteBreakButton.classList.add('deleteBtn')
+  deleteBreakButton.onclick = (event) => {
+    deleteBreakEntry(event)
+  }
+  // days of break
+  const daysOfBreak = document.createElement('div')
+  daysOfBreak.className = 'daysOfBreak'
+  const daysOfBreakLabel = document.createElement('label')
+  daysOfBreakLabel.innerHTML = ''
+  daysOfBreakLabel.classList.add('formLabel')
+  daysOfBreak.appendChild(daysOfBreakLabel)
+  // add checkboxes for days
+  const days = ['M', 'T', 'W', 'R' /*, 'F'*/]
+  days.forEach((day) => {
+    const dayLabel = document.createElement('label')
+    dayLabel.innerHTML = day
+    dayLabel.classList.add('formLabel')
+    const dayInput = document.createElement('input')
+    dayInput.setAttribute('type', 'checkbox')
+    dayInput.setAttribute('name', 'day')
+    dayInput.classList.add('input')
+    dayInput.classList.add('day')
+    dayInput.value = day
+    const singleDayContainer = document.createElement('div')
+    singleDayContainer.className = 'singleDayContainer'
+    singleDayContainer.appendChild(dayLabel)
+    singleDayContainer.appendChild(dayInput)
+    daysOfBreak.appendChild(singleDayContainer)
+    // daysOfBreak.appendChild(dayLabel)
+    // daysOfBreak.appendChild(dayInput)
+  })
+
+  advancedEntryThree.appendChild(advancedOptionsFormLabelThree)
+  advancedEntryThree.appendChild(advancedOptionsFormInputThree)
+  advancedEntryThree.appendChild(advancedOptionsFormInputThreeExtra)
+  daysOfBreak.appendChild(addBreakButton)
+  daysOfBreak.appendChild(deleteBreakButton)
+  advancedEntryThree.appendChild(daysOfBreak)
+  // advancedOptionsForm.appendChild(advancedEntryThree)
+  advancedOptionsForm.insertBefore(
+    advancedEntryThree,
+    advancedOptionsForm.childNodes[advancedOptionsForm.childNodes.length - 1]
+  )
+  // advancedOptionsForm.insertBefore(
+  //   daysOfBreak,
+  //   advancedOptionsForm.childNodes[advancedOptionsForm.childNodes.length - 1]
+  // )
+}
+const deleteBreakEntry = (e) => {
+  const breakEntry = e.target.parentNode.parentNode
+  const advancedOptionsForm = breakEntry.parentNode
+  // const daysOfBreak = breakEntry.nextSibling
+  // if its the last breakEntry then just reset it
+
+  if (advancedOptionsForm.querySelectorAll('.advancedEntry').length === 4) {
+    const options = breakEntry.querySelectorAll('.breakBetween')
+    options.forEach((option) => {
+      option.value = 'None'
+    })
+    const days = breakEntry.querySelectorAll('.day')
+    days.forEach((day) => {
+      day.checked = false
+    })
+    return
+  }
+  breakEntry.remove()
+  // daysOfBreak.remove()
+}
+const colors = [
+  '#FF6B6B', // Red
+  '#7D3C98', // Purple
+  '#F9A825', // Yellow
+  '#1E90FF', // Blue
+  '#00B894', // Green
+  '#D63031', // Dark Red
+  '#6F1E51', // Dark Purple
+  '#FBC02D', // Amber
+  '#3498DB', // Dark Blue
+  '#00A86B', // Dark Green
+  '#E74C3C', // Light Red
+  '#8E44AD', // Light Purple
+  '#FDD835', // Light Yellow
+  '#2980B9', // Light Blue
+  '#27AE60', // Light Green
+]
+const generateScheduleDOM = async (e) => {
+  try {
+    e.preventDefault()
+    const submitBtn = document.getElementById('submitBtn')
+    submitBtn.disabled = true
+    const alertBox = document.getElementById('alertBox')
+    alertBox.style.backgroundColor = '#ccc'
+    alertBox.style.color = '#1a1a1a'
+    alertBox.style.display = 'block'
+    alertBox.innerHTML = 'Generating Schedules...'
+    const historyBtn = document.getElementById('historyBtn')
+    historyBtn.disabled = true
+    const selectedCourses = document.querySelectorAll('.entry')
+    const selectedCoursesArray = []
+    selectedCourses.forEach((course) => {
+      const subject = course.querySelector('.subject').value
+      const code = course.querySelector('.code').value
+      if (
+        selectedCoursesArray.find(
+          (c) => c.code === code && c.subject === subject
+        )
+      ) {
+        throw new Error('Please remove duplicate courses')
+      }
+      let sections = []
+      const formContainer = document.getElementById('form-container')
+      const editForm = formContainer.querySelector(
+        '.editForm[data-id="' + course.getAttribute('data-id') + '"]'
+      )
+      if (editForm) {
+        const sectionsSelect = editForm.querySelectorAll('.sectionSelect')
+        sectionsSelect.forEach((section) => {
+          if (section.value === 'Any') {
+            sections = ['Any']
+            return
+          }
+          sections.push(section.value)
+        })
+      }
+      if (sections.length === 0) {
+        sections = ['Any']
+      }
+      selectedCoursesArray.push({ subject, code, sections })
+    })
+    const advancedOptionsForm = document.getElementById('advancedOptions')
+    const breaks = []
+    let noClosedCourses = false
+    if (advancedOptionsForm) {
+      const no8AM = advancedOptionsForm.querySelector('.no8AM').checked
+      noClosedCourses =
+        advancedOptionsForm.querySelector('.noClosedCourses').checked
+      const noClassesAfter5PM =
+        advancedOptionsForm.querySelector('.noClassesAfter5PM').checked
+      const breakBetweenSelect =
+        advancedOptionsForm.querySelectorAll('.breakBetween')
+      for (let i = 0; i < breakBetweenSelect.length; i += 2) {
+        if (
+          breakBetweenSelect[i].value === 'None' ||
+          breakBetweenSelect[i + 1].value === 'None' ||
+          breakBetweenSelect[i].value === breakBetweenSelect[i + 1].value ||
+          breakBetweenSelect[i].value > breakBetweenSelect[i + 1].value
+        ) {
+          continue
+        }
+        const days =
+          breakBetweenSelect[i].parentNode.parentNode.querySelector(
+            '.daysOfBreak'
+          )
+        let daysString = ''
+        const daysInput = days.querySelectorAll('.day')
+        daysInput.forEach((day) => {
+          if (day.checked) {
+            daysString += day.value
+          }
+        })
+        if (daysString === '') {
+          continue
+        }
+        breaks.push({
+          startTime: breakBetweenSelect[i].value,
+          endTime: breakBetweenSelect[i + 1].value,
+          days: daysString,
+        })
+      }
+      if (no8AM) {
+        breaks.push({
+          startTime: '08:00',
+          endTime: '09:00',
+        })
+      }
+      if (noClassesAfter5PM) {
+        breaks.push({
+          startTime: '17:00',
+          endTime: '22:00',
+        })
+      }
+    }
+    if (selectedCoursesArray.length === 0) {
+      throw new Error('Please add at least one course')
+    }
+    const response = await fetch('/generateScheduleDOM', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('token'),
+      },
+      body: JSON.stringify({
+        selectedCoursesArray,
+        breaks,
+        noClosedCourses: noClosedCourses,
+      }),
+    })
+    const data = await response.json()
+    schedules = data.schedules
+    if (!schedules || schedules.length === 0) {
+      throw new Error('No schedules found')
+    }
+    const schedulediv = document.getElementById('schedule-body')
+    schedulediv.innerHTML = ''
+    // add first schedule
+    // show relevant time items
+    const timeItems = document.querySelectorAll('.schedule-time-item')
+    let heightOfOneHourTimeSlot = 48
+    timeItems.forEach((timeItem) => {
+      if (
+        Number(timeItem.getAttribute('data-time').split(':')[0]) >=
+          Number(schedules[0].min_hour.split(':')[0]) &&
+        Number(timeItem.getAttribute('data-time').split(':')[0]) <=
+          Number(schedules[0].max_hour.split(':')[0])
+      ) {
+        timeItem.style.display = 'block'
+        if (
+          Number(timeItem.getAttribute('data-time').split(':')[0]) ==
+          Number(schedules[0].min_hour.split(':')[0]) + 1
+        ) {
+          heightOfOneHourTimeSlot =
+            timeItem.offsetTop - timeItem.previousElementSibling.offsetTop
+        }
+      } else {
+        timeItem.style.display = 'none'
+      }
+    })
+    let colorCount = 0
+    schedules[0].courses_list.forEach((scheduleEntry) => {
+      if (scheduleEntry.course_code === 'BREAK') {
+      } else {
+        createScheduleEntry(
+          scheduleEntry,
+          scheduleEntry.days.length,
+          colorCount++,
+          heightOfOneHourTimeSlot
+        )
+      }
+    })
+    const formContainer = document.getElementById('form-container')
+    formContainer.style.display = 'none'
+    alertBox.innerHTML = 'Schedule(s) generated'
+    const scheduleContainer = document.getElementById('schedule-container')
+    scheduleContainer.style.visibility = 'visible'
+    const scheduleExtra = document.getElementById('schedule-extra')
+    scheduleExtra.style.visibility = 'visible'
+    const scheduleTotalHeader = document.getElementById('schedule-total-header')
+    scheduleTotalHeader.style.display = 'flex'
+    scheduleTotalHeader.innerHTML =
+      '<input type="button" value="x" class="inputBtn backToFormBtn" onclick="backToForm()"/> <i class="fa-solid fa-arrow-left" onclick ="goPreviousSchedule()"></i> ' +
+      ' <span class="schedule-total-span" id="schedule-total-span"> 1 of ' +
+      schedules.length +
+      ' </span><i class="fa-solid fa-arrow-right" onclick="goNextSchedule()"></i>'
+    submitBtn.disabled = false
+    historyBtn.style.display = 'none'
+    historyBtn.disabled = false
+    setTimeout(() => {
+      alertBox.innerHTML = ''
+      alertBox.style.display = 'none'
+    }, 5000)
+  } catch (e) {
+    console.log(e.message)
+    const submitBtn = document.getElementById('submitBtn')
+    submitBtn.disabled = false
+    const alertBox = document.getElementById('alertBox')
+    alertBox.innerHTML = e.message
+    const historyBtn = document.getElementById('historyBtn')
+    historyBtn.style.display = 'block'
+    historyBtn.disabled = false
+    alertBox.style.backgroundColor = '#ccc'
+    alertBox.style.color = '#1a1a1a'
+    alertBox.style.display = 'block'
+    setTimeout(() => {
+      alertBox.innerHTML = ''
+      alertBox.style.display = 'none'
+    }, 5000)
+  }
+}
+const createScheduleEntry = (entry, count, color, heightOfOneHourTimeSlot) => {
+  for (let i = 0; i < count; i++) {
+    const scheduleEntry = document.createElement('div')
+    scheduleEntry.className = 'schedule-entry'
+    scheduleEntry.style.display = 'none'
+    scheduleEntry.style.backgroundColor = colors[color]
+    const scheduleEntryInfo = document.createElement('div')
+    scheduleEntryInfo.className = 'schedule-entry-info'
+    scheduleEntryInfo.setAttribute('data-day', entry.days[i])
+    const startTime = new Date(entry.time[0])
+    const endTime = new Date(entry.time[1])
+    let startTimeFormatted =
+      startTime.getUTCHours() + ':' + startTime.getUTCMinutes()
+    let endTimeFormatted = endTime.getUTCHours() + ':' + endTime.getUTCMinutes()
+    if (startTime.getUTCMinutes() === 0) {
+      startTimeFormatted = startTimeFormatted + '0'
+    }
+    if (endTime.getUTCMinutes() === 0) {
+      endTimeFormatted = endTimeFormatted + '0'
+    }
+    scheduleEntryInfo.setAttribute('data-start-time', startTimeFormatted)
+    scheduleEntryInfo.setAttribute('data-end-time', endTimeFormatted)
+    const scheduleEntryInfoSubject = document.createElement('h1')
+    scheduleEntryInfoSubject.className = 'schedule-name'
+    scheduleEntryInfoSubject.innerHTML = entry.course_code + ' ' + entry.section
+    const scheduleEntryInfoCode = document.createElement('h1')
+    scheduleEntryInfoCode.className = 'schedule-crn'
+    scheduleEntryInfoCode.innerHTML = entry.crn
+    const scheduleEntryInfoInstructor = document.createElement('h1')
+    scheduleEntryInfoInstructor.className = 'schedule-professor'
+    scheduleEntryInfoInstructor.innerHTML = entry.instructor
+    const scheduleEntryInfoTime = document.createElement('h1')
+    scheduleEntryInfoTime.className = 'schedule-time'
+    scheduleEntryInfoTime.innerHTML =
+      startTimeFormatted + ' - ' + endTimeFormatted
+    scheduleEntryInfo.appendChild(scheduleEntryInfoSubject)
+    scheduleEntryInfo.appendChild(scheduleEntryInfoCode)
+    scheduleEntryInfo.appendChild(scheduleEntryInfoInstructor)
+    scheduleEntryInfo.appendChild(scheduleEntryInfoTime)
+    scheduleEntry.appendChild(scheduleEntryInfo)
+    positionScheduleEntry(scheduleEntry, heightOfOneHourTimeSlot)
+    if (
+      scheduleEntry.scrollHeight > scheduleEntry.clientHeight &&
+      entry.instructor != 'TBA'
+    ) {
+      const instructorArray = entry.instructor.split(' ')
+      scheduleEntryInfoInstructor.innerHTML =
+        instructorArray[0] + ' ' + instructorArray[instructorArray.length - 1]
+    }
+  }
+}
+// schedule
+const positionScheduleEntry = (element, heightOfOneHourTimeSlot) => {
+  try {
+    const scheduleEntry = element
+    const startTime = scheduleEntry
+      .querySelector('.schedule-entry-info')
+      .getAttribute('data-start-time')
+    const endTime = scheduleEntry
+      .querySelector('.schedule-entry-info')
+      .getAttribute('data-end-time')
+    let day = scheduleEntry
+      .querySelector('.schedule-entry-info')
+      .getAttribute('data-day')
+    // position the schedule entry (y axis)
+    let scheduleEntryTopElement = document.querySelector(
+      '.schedule-time-item[data-time="' + startTime + '"]'
+    )
+    let scheduleEntryBottomElement = document.querySelector(
+      '.schedule-time-item[data-time="' + endTime + '"]'
+    )
+    let startMinutes = 0
+    let endMinutes = 0
+    if (scheduleEntryTopElement == null) {
+      startMinutes = Number(startTime.slice(-2))
+      startMinutes = startMinutes / 60
+      const newTime = startTime.slice(0, -2) + '00'
+      scheduleEntryTopElement = document.querySelector(
+        '.schedule-time-item[data-time="' + newTime + '"]'
+      )
+    }
+    if (scheduleEntryBottomElement == null) {
+      endMinutes = Number(endTime.slice(-2))
+      endMinutes = endMinutes / 60
+      const newTime = endTime.slice(0, -2) + '00'
+      scheduleEntryBottomElement = document.querySelector(
+        '.schedule-time-item[data-time="' + newTime + '"]'
+      )
+    }
+    //calculations
+    const scheduleEntryTop = scheduleEntryTopElement.offsetTop
+    const scheduleEntryBottom = scheduleEntryBottomElement.offsetTop
+    const scheduleEntryHeight = //calculate height based on start and end time
+      scheduleEntryBottom -
+      scheduleEntryTop +
+      endMinutes * heightOfOneHourTimeSlot -
+      startMinutes * heightOfOneHourTimeSlot
+    // endMinutes * scheduleEntryBottom -
+    // endMinutes * scheduleEntryTop -
+    // (startMinutes * scheduleEntryBottom - startMinutes * scheduleEntryTop)
+    scheduleEntry.style.height = scheduleEntryHeight + 'px'
+    scheduleEntry.style.top =
+      scheduleEntryTop +
+      1 +
+      heightOfOneHourTimeSlot * startMinutes + //calculate top based on start and end time
+      'px' // 1 is to compensate for the border
+    // position the schedule entry (x axis)
+    const scheduleEntryLeft = document.querySelector(
+      '.schedule-header-item[data-day="' + day + '"]'
+    ).offsetLeft
+    const margin = 32 //to compensate for margin left/right
+    const scheduleEntryWidth = document.querySelector(
+      '.schedule-header-item[data-day="' + day + '"]'
+    ).offsetWidth
+    scheduleEntry.style.left = scheduleEntryLeft - margin / 2 + 'px'
+    scheduleEntry.style.width = scheduleEntryWidth + margin + 'px'
+    element.style.display = 'flex'
+    const schedulediv = document.getElementById('schedule-body')
+    schedulediv.appendChild(scheduleEntry)
+  } catch (e) {
+    console.log(e.message)
+  }
+}
+const goPreviousSchedule = () => {
+  //current schedule
+  const scheduleTotalSpan = document.getElementById('schedule-total-span')
+  const currentSchedule = Number(scheduleTotalSpan.innerHTML.split(' ')[1])
+  let previousSchedule = currentSchedule - 1
+  const totalSchedules = schedules.length
+  if (previousSchedule < 1) {
+    previousSchedule = totalSchedules
+  }
+  //remove current schedule
+  const schedulediv = document.getElementById('schedule-body')
+  schedulediv.innerHTML = ''
+  // add previous schedule
+  // show relevant time items
+  const timeItems = document.querySelectorAll('.schedule-time-item')
+  let heightOfOneHourTimeSlot = 48
+  timeItems.forEach((timeItem) => {
+    if (
+      Number(timeItem.getAttribute('data-time').split(':')[0]) >=
+        Number(schedules[previousSchedule - 1].min_hour.split(':')[0]) &&
+      Number(timeItem.getAttribute('data-time').split(':')[0]) <=
+        Number(schedules[previousSchedule - 1].max_hour.split(':')[0])
+    ) {
+      timeItem.style.display = 'block'
+      if (
+        Number(timeItem.getAttribute('data-time').split(':')[0]) ==
+        Number(schedules[previousSchedule - 1].min_hour.split(':')[0]) + 1
+      ) {
+        heightOfOneHourTimeSlot =
+          timeItem.offsetTop - timeItem.previousElementSibling.offsetTop
+      }
+    } else {
+      timeItem.style.display = 'none'
+    }
+  })
+  let colorCount = 0
+  schedules[previousSchedule - 1].courses_list.forEach((scheduleEntry) => {
+    if (scheduleEntry.course_code === 'BREAK') {
+    } else {
+      createScheduleEntry(
+        scheduleEntry,
+        scheduleEntry.days.length,
+        colorCount++,
+        heightOfOneHourTimeSlot
+      )
+    }
+  })
+  scheduleTotalSpan.innerHTML = ' ' + previousSchedule + ' of ' + totalSchedules
+  const scheduleContainer = document.getElementById('schedule-container')
+  scheduleContainer.style.visibility = 'visible'
+  const scheduleExtra = document.getElementById('schedule-extra')
+  scheduleExtra.style.visibility = 'visible'
+}
+const goNextSchedule = () => {
+  //current schedule
+  const scheduleTotalSpan = document.getElementById('schedule-total-span')
+  const currentSchedule = Number(scheduleTotalSpan.innerHTML.split(' ')[1])
+  let nextSchedule = currentSchedule + 1
+  const totalSchedules = schedules.length
+  if (currentSchedule > totalSchedules - 1) {
+    nextSchedule = 1
+  }
+  //remove current schedule
+  const schedulediv = document.getElementById('schedule-body')
+  schedulediv.innerHTML = ''
+  // add next schedule
+  // show relevant time items
+  const timeItems = document.querySelectorAll('.schedule-time-item')
+  let heightOfOneHourTimeSlot = 48
+  timeItems.forEach((timeItem) => {
+    if (
+      Number(timeItem.getAttribute('data-time').split(':')[0]) >=
+        Number(schedules[nextSchedule - 1].min_hour.split(':')[0]) &&
+      Number(timeItem.getAttribute('data-time').split(':')[0]) <=
+        Number(schedules[nextSchedule - 1].max_hour.split(':')[0])
+    ) {
+      timeItem.style.display = 'block'
+      if (
+        Number(timeItem.getAttribute('data-time').split(':')[0]) ==
+        Number(schedules[nextSchedule - 1].min_hour.split(':')[0]) + 1
+      ) {
+        heightOfOneHourTimeSlot =
+          timeItem.offsetTop - timeItem.previousElementSibling.offsetTop
+      }
+    } else {
+      timeItem.style.display = 'none'
+    }
+  })
+  let colorCount = 0
+  schedules[nextSchedule - 1].courses_list.forEach((scheduleEntry) => {
+    if (scheduleEntry.course_code === 'BREAK') {
+    } else {
+      createScheduleEntry(
+        scheduleEntry,
+        scheduleEntry.days.length,
+        colorCount++,
+        heightOfOneHourTimeSlot
+      )
+    }
+  })
+  scheduleTotalSpan.innerHTML = ' ' + nextSchedule + ' of ' + totalSchedules
+  const scheduleContainer = document.getElementById('schedule-container')
+  scheduleContainer.style.visibility = 'visible'
+  const scheduleExtra = document.getElementById('schedule-extra')
+  scheduleExtra.style.visibility = 'visible'
+}
+const backToForm = () => {
+  const schedulediv = document.getElementById('schedule-body')
+  schedulediv.innerHTML = ''
+  const formContainer = document.getElementById('form-container')
+  formContainer.style.display = 'block'
+  const timeItems = document.querySelectorAll('.schedule-time-item')
+  timeItems.forEach((timeItem) => {
+    timeItem.style.display = 'none'
+  })
+  const scheduleContainer = document.getElementById('schedule-container')
+  scheduleContainer.style.visibility = 'hidden'
+  const scheduleExtra = document.getElementById('schedule-extra')
+  scheduleExtra.style.visibility = 'hidden'
+  const scheduleTotalHeader = document.getElementById('schedule-total-header')
+  scheduleTotalHeader.style.display = 'none'
+  const historyBtn = document.getElementById('historyBtn')
+  historyBtn.style.display = 'block'
+}
+window.addEventListener('resize', () => {
+  const schedulediv = document.getElementById('schedule-body')
+  if (schedulediv == null) {
+    return
+  }
+  schedulediv.innerHTML = ''
+  // show relevant time items
+  const timeItems = document.querySelectorAll('.schedule-time-item')
+  if (timeItems.length === 0) {
+    return
+  }
+
+  let heightOfOneHourTimeSlot = 48
+  const scheduleTotalSpan = document.getElementById('schedule-total-span')
+  if (scheduleTotalSpan == null) {
+    return
+  }
+  const currentSchedule = Number(scheduleTotalSpan.innerHTML.split(' ')[1])
+  timeItems.forEach((timeItem) => {
+    if (
+      Number(timeItem.getAttribute('data-time').split(':')[0]) >=
+        Number(schedules[currentSchedule - 1].min_hour.split(':')[0]) &&
+      Number(timeItem.getAttribute('data-time').split(':')[0]) <=
+        Number(schedules[currentSchedule - 1].max_hour.split(':')[0])
+    ) {
+      timeItem.style.display = 'block'
+      if (
+        Number(timeItem.getAttribute('data-time').split(':')[0]) ==
+        Number(schedules[currentSchedule - 1].min_hour.split(':')[0]) + 1
+      ) {
+        heightOfOneHourTimeSlot =
+          timeItem.offsetTop - timeItem.previousElementSibling.offsetTop
+      }
+    } else {
+      timeItem.style.display = 'none'
+    }
+  })
+  let colorCount = 0
+  schedules[currentSchedule - 1].courses_list.forEach((scheduleEntry) => {
+    if (scheduleEntry.course_code === 'BREAK') {
+    } else {
+      createScheduleEntry(
+        scheduleEntry,
+        scheduleEntry.days.length,
+        colorCount++,
+        heightOfOneHourTimeSlot
+      )
+    }
+  })
+})
+
+const downloadSchedule = async () => {
+  try {
+    const canvas = await html2canvas(
+      document.getElementById('schedule-container'),
+      { scale: 3.5, backgroundColor: '#1a1a1a' }
+    )
+
+    const scheduleTotalSpan = document.getElementById('schedule-total-span')
+    const currentSchedule = Number(scheduleTotalSpan.innerHTML.split(' ')[1])
+    const b64img = canvas.toDataURL('image/png')
+    let anchor = document.createElement('a')
+    anchor.href = b64img
+    anchor.download = `schedule-${currentSchedule}.png`
+    anchor.click()
+    anchor.remove()
+    URL.revokeObjectURL(b64img)
+    const alertBox = document.getElementById('alertBox')
+    alertBox.style.backgroundColor = '#ccc'
+    alertBox.style.color = '#1a1a1a'
+    alertBox.style.display = 'block'
+    alertBox.innerHTML = 'Schedule downloaded'
+    setTimeout(() => {
+      alertBox.innerHTML = ''
+      alertBox.style.display = 'none'
+    }, 5000)
+  } catch (err) {
+    const alertBox = document.getElementById('alertBox')
+    alertBox.style.backgroundColor = '#ccc'
+    alertBox.style.color = '#1a1a1a'
+    alertBox.style.display = 'block'
+    alertBox.innerHTML = 'Downloading failed, please try again later'
+    setTimeout(() => {
+      alertBox.innerHTML = ''
+      alertBox.style.display = 'none'
+    }, 5000)
+  }
+}
+const copyCRNs = () => {
+  const scheduleTotalSpan = document.getElementById('schedule-total-span')
+  const currentSchedule = Number(scheduleTotalSpan.innerHTML.split(' ')[1])
+  const crns = []
+  schedules[currentSchedule - 1].courses_list.forEach((scheduleEntry) => {
+    if (scheduleEntry.course_code === 'BREAK') {
+    } else {
+      crns.push(scheduleEntry.crn)
+    }
+  })
+  const crnsString = crns.join(', ')
+  navigator.clipboard.writeText(crnsString)
+  const alertBox = document.getElementById('alertBox')
+  alertBox.style.backgroundColor = '#ccc'
+  alertBox.style.color = '#1a1a1a'
+  alertBox.style.display = 'block'
+  alertBox.innerHTML = 'CRNs copied to clipboard'
+  setTimeout(() => {
+    alertBox.innerHTML = ''
+    alertBox.style.display = 'none'
+  }, 5000)
+}
