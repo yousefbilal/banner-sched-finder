@@ -37,7 +37,7 @@ userCollection = db.get_collection('users')
 historyCollection = db.get_collection('history')
 historyProjection = {"_id": 0, "courses": 1, "constraints": 1, "datetime": 1}
 adminCollection = db.get_collection('admin')
-adminProjection = {"_id": 0, "name": 1, "datetime": 1}
+adminProjection = {"_id": 0, "datetime": 1, "semester": 1}
 # end of mongo db
 
 
@@ -128,7 +128,9 @@ def getCourses():
             {}, projection).sort([("subject", 1), ("code", 1), ("section", 1)]))
         last_updated = adminCollection.find_one(
             {}, adminProjection)['datetime']
-        return jsonify({'subjects': subjects, 'courses': courses, 'token': id, 'last_updated': last_updated}), 200
+        semester = adminCollection.find_one(
+            {}, adminProjection)['semester']
+        return jsonify({'subjects': subjects, 'courses': courses, 'token': id, 'last_updated': last_updated, 'semester': semester}), 200
     except Exception as e:
         print(e)
         return jsonify({'message': 'error'}), 400
