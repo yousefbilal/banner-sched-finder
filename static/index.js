@@ -243,11 +243,11 @@ subjectsElements.forEach((element) => {
     calculateCredits()
   })
 })
-const updateTime = (time) => {
+const updateTime = (time, semester = '') => {
   const lastUpdated = document.getElementById('last-updated')
-  lastUpdated.innerHTML = `*Courses last updated on ${time.split('T')[0]} ${
-    time.split('T')[1].split('.')[0]
-  } `
+  lastUpdated.innerHTML = `*Semester : ${semester} <br/> *Courses last updated on ${
+    time.split('T')[0]
+  } ${time.split('T')[1].split('.')[0]} `
 }
 const initalDisplayOfCourses = async () => {
   try {
@@ -273,18 +273,17 @@ const initalDisplayOfCourses = async () => {
     const dropdown = document.querySelector('.subject')
     fillSubjects(subjects, dropdown)
     fillCodes(courses, document.querySelector('.code'))
-    updateTime(data.last_updated)
+    updateTime(data.last_updated, data.semester)
     // add change event listener to code dropdown
     const firstDropdown = document.getElementById('inputTextTwo0')
     const creditsSpan = document.getElementById('credit-hours')
-    creditsSpan.innerText = firstDropdown.options[firstDropdown.selectedIndex].getAttribute('credits')
+    creditsSpan.innerText =
+      firstDropdown.options[firstDropdown.selectedIndex].getAttribute('credits')
     firstDropdown.addEventListener('change', (e) => {
       e.stopPropagation()
       checkEditForm(courses, e.target.parentNode)
       calculateCredits()
     })
-
-
   } catch (e) {
     console.log(e.message)
     const alertBox = document.getElementById('alertBox')
@@ -303,7 +302,11 @@ calculateCredits = () => {
   const selectedCoursesEntries = Array.from(document.querySelectorAll('.entry'))
   const sum = selectedCoursesEntries.reduce((sum, course) => {
     const courseDropdown = course.querySelector('.code')
-    const credits = Number(courseDropdown.options[courseDropdown.selectedIndex].getAttribute('credits'))
+    const credits = Number(
+      courseDropdown.options[courseDropdown.selectedIndex].getAttribute(
+        'credits'
+      )
+    )
     return sum + credits
   }, 0)
   const creditsSpan = document.getElementById('credit-hours')
