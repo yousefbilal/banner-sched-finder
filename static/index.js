@@ -298,7 +298,7 @@ const initalDisplayOfCourses = async () => {
   }
 }
 
-calculateCredits = () => {
+const calculateCredits = () => {
   const selectedCoursesEntries = Array.from(document.querySelectorAll('.entry'))
   const sum = selectedCoursesEntries.reduce((sum, course) => {
     const courseDropdown = course.querySelector('.code')
