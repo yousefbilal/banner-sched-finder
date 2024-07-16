@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+
 # from matplotlib import pyplot as plt, dates
 # from matplotlib.patches import Rectangle
 # from datetime import datetime, timedelta
@@ -6,6 +7,7 @@ from dataclasses import dataclass
 # import random
 # import numpy as np
 from course import Course
+
 # from matplotlib.ticker import AutoMinorLocator
 # import matplotlib
 # from PIL import Image
@@ -19,7 +21,7 @@ class Schedule:
     courses_list: list[Course]
     min_hour: str
     max_hour: str
-    
+
     # def draw_schedule(self):
 
     #     min_time = min([i.time[0] for i in self.courses_list])

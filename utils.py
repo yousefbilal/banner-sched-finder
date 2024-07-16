@@ -13,12 +13,24 @@ from datetime import datetime
 #     return False, False
 
 
-def generate_scheds(lectures: list[list[Lecture]], labs: dict[str, list[Lab]]) -> list[Schedule]:
+def generate_scheds(
+    lectures: list[list[Lecture]], labs: dict[str, list[Lab]]
+) -> list[Schedule]:
 
-    def helper(lectures: list[list[Lecture]], labs: dict[str, list[Lab]], current_schedule: list[Course], all_schedules: list[Schedule], min_time: datetime, max_time: datetime) -> list[Schedule]:
+    def helper(
+        lectures: list[list[Lecture]],
+        labs: dict[str, list[Lab]],
+        current_schedule: list[Course],
+        all_schedules: list[Schedule],
+        min_time: datetime,
+        max_time: datetime,
+    ) -> list[Schedule]:
         if not lectures:  # if lectures is empty
             all_schedules.append(
-                Schedule(current_schedule[:], f"{min_time.hour}:00", f"{max_time.hour+1}:00"))
+                Schedule(
+                    current_schedule[:], f"{min_time.hour}:00", f"{max_time.hour+1}:00"
+                )
+            )
             return
 
         for lecture in lectures[0]:
@@ -38,13 +50,26 @@ def generate_scheds(lectures: list[list[Lecture]], labs: dict[str, list[Lab]]) -
                             current_schedule.append(lab)
                             cmin_time = min(cmin_time, lab.time[0])
                             cmax_time = max(cmax_time, lab.time[1])
-                            helper(lectures[1:], labs, current_schedule,
-                                   all_schedules, cmin_time, cmax_time)
+                            helper(
+                                lectures[1:],
+                                labs,
+                                current_schedule,
+                                all_schedules,
+                                cmin_time,
+                                cmax_time,
+                            )
                             current_schedule.pop()
                 else:
-                    helper(lectures[1:], labs, current_schedule,
-                           all_schedules, cmin_time, cmax_time)
+                    helper(
+                        lectures[1:],
+                        labs,
+                        current_schedule,
+                        all_schedules,
+                        cmin_time,
+                        cmax_time,
+                    )
                 current_schedule.pop()
+
     max_time = datetime(1, 1, 1, 0, 0)
     min_time = datetime(9999, 1, 1, 0, 0)
 
