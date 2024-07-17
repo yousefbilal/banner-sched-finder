@@ -62,6 +62,80 @@ const timings = [
   "21:45",
   "22:00",
 ];
+const colors = [
+  "#FF6B6B", // Red
+  "#7D3C98", // Purple
+  "#F9A825", // Yellow
+  "#1E90FF", // Blue
+  "#00B894", // Green
+  "#D63031", // Dark Red
+  "#6F1E51", // Dark Purple
+  "#FBC02D", // Amber
+  "#3498DB", // Dark Blue
+  "#00A86B", // Dark Green
+  "#E74C3C", // Light Red
+  "#8E44AD", // Light Purple
+  "#FDD835", // Light Yellow
+  "#2980B9", // Light Blue
+  "#27AE60", // Light Green
+];
+
+//Utility functions
+const displayAlert = (message) => {
+  const alertBox = document.getElementById("alertBox");
+  alertBox.innerText = message;
+  alertBox.style.backgroundColor = "#ccc";
+  alertBox.style.color = "#1a1a1a";
+  alertBox.style.display = "block";
+  setTimeout(() => {
+    alertBox.innerHTML = "";
+    alertBox.style.display = "none";
+  }, 5000);
+};
+
+const createElement = (elementType, attributes, innerText = "") => {
+  const element = document.createElement(elementType);
+  Object.keys(attributes).forEach((key) => {
+    element.setAttribute(key, attributes[key]);
+  });
+  if (innerText) element.innerText = innerText;
+  return element;
+};
+
+const removeEditForm = (element) => {
+  const formContainer = document.getElementById("form-container");
+  const editForm = formContainer.querySelector(
+    '.editForm[data-id="' + element.getAttribute("data-id") + '"]'
+  );
+  if (editForm) {
+    editForm.remove();
+  }
+};
+
+const fomratTime = (time) => {
+  return (
+    time.getUTCHours() +
+    ":" +
+    time.getUTCMinutes() +
+    (time.getUTCMinutes() === 0 ? "0" : "")
+  );
+};
+
+const createCourseOption = (course) => {
+  const startTime = new Date(course.time[0]);
+  const endTime = new Date(course.time[1]);
+  const option = createElement(
+    "option",
+    { value: course.section },
+    `${course.section} ${course.instructor} ${course.days} ${fomratTime(
+      startTime
+    )}-${fomratTime(endTime)}`
+  );
+  return option;
+};
+
+// --------------------------------------
+
 const fillSubjects = async (subjects, element) => {
   try {
     if (!subjects) {
@@ -69,121 +143,98 @@ const fillSubjects = async (subjects, element) => {
       throw new Error("Too fast!");
     }
     subjects.forEach((subject) => {
-      const option = document.createElement("option");
-      option.value = subject.subject;
-      option.innerText = subject.subject;
+      const option = createElement(
+        "option",
+        { value: subject.subject },
+        subject.subject
+      );
       element.appendChild(option);
     });
   } catch (e) {
     console.log(e.message);
-    const alertBox = document.getElementById("alertBox");
-    alertBox.innerHTML = e.message;
-    alertBox.style.backgroundColor = "#ccc";
-    alertBox.style.color = "#1a1a1a";
-    alertBox.style.display = "block";
-    setTimeout(() => {
-      alertBox.innerHTML = "";
-      alertBox.style.display = "none";
-    }, 5000);
+    displayAlert(e.message);
   }
 };
+
 const checkEditForm = (courses, element) => {
   const formContainer = document.getElementById("form-container");
+  const form = document.getElementById("form");
   const editForm = formContainer.querySelector(
     '.editForm[data-id="' + element.getAttribute("data-id") + '"]'
   );
   if (editForm == null) {
     return;
   }
-  if (editForm) {
-    editForm.remove();
-  }
-  // add edit form
-  const editFormNew = document.createElement("form");
-  editFormNew.className = "editForm";
+  removeEditForm(element);
   const subject = element.querySelector(".subject").value;
   const code = element.querySelector(".code").value;
-  editFormNew.setAttribute("data-id", element.getAttribute("data-id"));
-  editFormNew.setAttribute("data-entry-subject", subject);
-  editFormNew.setAttribute("data-entry-code", code);
+  // add edit form
+  const editFormNew = createElement("form", {
+    class: "editForm",
+    "data-id": element.getAttribute("data-id"),
+    "data-entry-subject": subject,
+    "data-entry-code": code,
+  });
+
   const editEntry = document.createElement("div");
   editEntry.className = "editEntry";
-  const editPanelSectionLabel = document.createElement("label");
-  editPanelSectionLabel.innerHTML = "Section";
-  editPanelSectionLabel.classList.add("formLabel");
-  const editPanelSection = document.createElement("select");
-  editPanelSection.setAttribute("name", "section");
-  editPanelSection.classList.add("input");
-  editPanelSection.classList.add("sectionSelect");
+  const editPanelSectionLabel = createElement(
+    "label",
+    { class: "formLabel" },
+    "Section"
+  );
+  const editPanelSection = createElement("select", {
+    name: "section",
+    class: "input sectionSelect",
+  });
   // any
-  const optionAny = document.createElement("option");
-  optionAny.value = "Any";
-  optionAny.innerHTML = "Any";
+  const optionAny = createElement("option", { value: "Any" }, "Any");
   editPanelSection.appendChild(optionAny);
 
   courses.forEach((course) => {
     if (course.subject === subject && course.code === code) {
-      const option = document.createElement("option");
-      const startTime = new Date(course.time[0]);
-      const endTime = new Date(course.time[1]);
-      let startTimeFormatted =
-        startTime.getUTCHours() + ":" + startTime.getUTCMinutes();
-      let endTimeFormatted =
-        endTime.getUTCHours() + ":" + endTime.getUTCMinutes();
-      if (startTime.getUTCMinutes() === 0) {
-        startTimeFormatted += "0";
-      }
-      if (endTime.getUTCMinutes() === 0) {
-        endTimeFormatted += "0";
-      }
-      option.value = course.section;
-      option.innerHTML =
-        course.section +
-        " " +
-        course.instructor +
-        " " +
-        course.days +
-        " " +
-        startTimeFormatted +
-        "-" +
-        endTimeFormatted;
+      const option = createCourseOption(course);
       editPanelSection.appendChild(option);
     }
   });
-  const addButton = document.createElement("input");
-  addButton.setAttribute("type", "button");
-  addButton.setAttribute("value", "+");
-  addButton.classList.add("inputBtn");
-  addButton.classList.add("addBtn");
+  const addButton = createElement("input", {
+    type: "button",
+    value: "+",
+    class: "inputBtn addBtn",
+  });
   addButton.onclick = (event) => {
     addSection(event);
   };
-  const deleteButton = document.createElement("input");
-  deleteButton.setAttribute("type", "button");
-  deleteButton.setAttribute("value", "x");
-  deleteButton.classList.add("inputBtn");
-  deleteButton.classList.add("deleteBtn");
+
+  const deleteButton = createElement("input", {
+    type: "button",
+    value: "x",
+    class: "inputBtn deleteBtn",
+  });
   deleteButton.onclick = (event) => {
     deleteSection(event);
   };
-  editEntry.appendChild(editPanelSectionLabel);
-  editEntry.appendChild(editPanelSection);
-  editEntry.appendChild(deleteButton);
-  editFormNew.appendChild(editEntry);
-  const editFormSave = document.createElement("input");
-  editFormSave.setAttribute("type", "button");
-  editFormSave.setAttribute("value", "Back");
-  editFormSave.classList.add("inputBtn");
-  editFormSave.classList.add("deleteBtn");
+
+  [editPanelSectionLabel, editPanelSection, deleteButton].forEach((element) => {
+    editEntry.appendChild(element);
+  });
+
+  const editFormSave = createElement("input", {
+    type: "button",
+    value: "Back",
+    class: "inputBtn deleteBtn",
+  });
   editFormSave.onclick = (event) => {
     editFormNew.style.display = "none";
     form.style.display = "block";
   };
-  editFormNew.appendChild(addButton);
-  editFormNew.appendChild(editFormSave);
+  [editEntry, addButton, editFormSave].forEach((element) => {
+    editFormNew.appendChild(element);
+  });
   formContainer.appendChild(editFormNew);
   editFormNew.style.display = "none";
 };
+
 const fillCodes = async (courses, element) => {
   try {
     if (!courses) {
@@ -194,13 +245,7 @@ const fillCodes = async (courses, element) => {
     element.innerHTML = "";
     // remove edit form for previous subject
     const entry = element.parentNode;
-    const formContainer = document.getElementById("form-container");
-    const editForm = formContainer.querySelector(
-      '.editForm[data-id="' + entry.getAttribute("data-id") + '"]'
-    );
-    if (editForm) {
-      editForm.remove();
-    }
+    removeEditForm(entry);
     //get selected subject
     const subject = element.parentNode.querySelector(".subject").value;
     const coursesWithSubject = courses.filter((course) => {
@@ -211,44 +256,28 @@ const fillCodes = async (courses, element) => {
         index === self.findIndex((c) => c.code === course.code)
     ); //filter out duplicates
     uniqueCoursesWithSubject.forEach((course) => {
-      const option = document.createElement("option");
-      option.value = course.code;
-      option.setAttribute("credits", course.credits);
-      if (course.full_name && course.full_name.includes("(Take it with")) {
-        option.innerHTML =
-          course.code + " - " + course.full_name.split("(Take")[0];
-      } else {
-        option.innerHTML = course.code + " - " + course.full_name;
-      }
+      const option = createElement(
+        "option",
+        { value: course.code, credits: course.credits },
+        course.full_name.includes("(Take it with")
+          ? course.code + " - " + course.full_name.split("(Take")[0]
+          : course.code + " - " + course.full_name
+      );
       element.appendChild(option);
     });
   } catch (e) {
     console.log(e.message);
-    const alertBox = document.getElementById("alertBox");
-    alertBox.innerHTML = e.message;
-    alertBox.style.backgroundColor = "#ccc";
-    alertBox.style.color = "#1a1a1a";
-    alertBox.style.display = "block";
-    setTimeout(() => {
-      alertBox.innerHTML = "";
-      alertBox.style.display = "none";
-    }, 5000);
+    displayAlert(e.message);
   }
 };
-const subjectsElements = document.querySelectorAll(".subject");
-subjectsElements.forEach((element) => {
-  element.addEventListener("change", (e) => {
-    e.stopPropagation();
-    fillCodes(courses, e.target.parentNode.querySelector(".code"));
-    calculateCredits();
-  });
-});
+
 const updateTime = (time, semester = "") => {
   const lastUpdated = document.getElementById("last-updated");
   lastUpdated.innerHTML = `*Semester : ${semester} <br/> *Courses last updated on ${
     time.split("T")[0]
   } ${time.split("T")[1].split(".")[0]} `;
 };
+
 const initalDisplayOfCourses = async () => {
   try {
     let token = localStorage.getItem("token");
@@ -288,18 +317,11 @@ const initalDisplayOfCourses = async () => {
     });
   } catch (e) {
     console.log(e.message);
-    const alertBox = document.getElementById("alertBox");
-    alertBox.innerHTML = e.message;
-    alertBox.style.backgroundColor = "#ccc";
-    alertBox.style.color = "#1a1a1a";
-    alertBox.style.display = "block";
-    setTimeout(() => {
-      alertBox.innerHTML = "";
-      alertBox.style.display = "none";
-    }, 5000);
+    displayAlert(e.message);
   }
 };
 
+document.addEventListener("DOMContentLoaded", initalDisplayOfCourses);
 const calculateCredits = () => {
   const selectedCoursesEntries = Array.from(
     document.querySelectorAll(".entry")
@@ -317,52 +339,56 @@ const calculateCredits = () => {
   creditsSpan.innerText = sum;
 };
 
-document.addEventListener("DOMContentLoaded", initalDisplayOfCourses);
 // ------------------------------
 const addEntry = (e) => {
-  const entry = document.createElement("div");
-  entry.className = "entry";
-  const dropdownlabel = document.createElement("label");
-  // dropdownlabel.setAttribute('for', 'subject')
-  dropdownlabel.innerHTML = "Subject";
-  dropdownlabel.classList.add("formLabel");
-  const dropdownselect = document.createElement("select");
-  dropdownselect.setAttribute("name", "subject");
-  dropdownselect.classList.add("input");
-  dropdownselect.classList.add("subject");
-  dropdownselect.setAttribute("required", "true");
-  const dropdownlabelTwo = document.createElement("label");
-  // dropdownlabelTwo.setAttribute('for', 'code')
-  dropdownlabelTwo.innerHTML = "Code";
-  dropdownlabelTwo.classList.add("formLabel");
-  const dropdownselectTwo = document.createElement("select");
-  dropdownselectTwo.setAttribute("name", "code");
-  dropdownselectTwo.classList.add("input");
-  dropdownselectTwo.classList.add("code");
-  dropdownselectTwo.setAttribute("required", "true");
-  const deleteButton = document.createElement("input");
-  deleteButton.setAttribute("type", "button");
-  deleteButton.setAttribute("value", "x");
-  deleteButton.classList.add("inputBtn");
-  deleteButton.classList.add("deleteBtn");
+  const entry = createElement("div", { class: "entry" });
+  const dropdownlabel = createElement(
+    "label",
+    { class: "formLabel" },
+    "Subject"
+  );
+  const dropdownselect = createElement("select", {
+    name: "subject",
+    class: "input subject",
+    required: "true",
+  });
+  const dropdownlabelTwo = createElement(
+    "label",
+    { class: "formLabel" },
+    "Code"
+  );
+  const dropdownselectTwo = createElement("select", {
+    name: "code",
+    class: "input code",
+    required: "true",
+  });
+  const deleteButton = createElement("input", {
+    type: "button",
+    value: "x",
+    class: "inputBtn deleteBtn",
+  });
   deleteButton.onclick = (event) => {
     deleteEntry(event);
   };
-  const editButton = document.createElement("input");
-  editButton.setAttribute("type", "button");
-  editButton.setAttribute("value", "Ξ");
-  editButton.classList.add("inputBtn");
-  editButton.classList.add("deleteBtn");
+  const editButton = createElement("input", {
+    type: "button",
+    value: "Ξ",
+    class: "inputBtn deleteBtn",
+  });
   editButton.onclick = (event) => {
     editEntry(event);
   };
-  entry.appendChild(dropdownlabel);
-  entry.appendChild(dropdownselect);
+  [
+    dropdownlabel,
+    dropdownselect,
+    dropdownlabelTwo,
+    dropdownselectTwo,
+    editButton,
+    deleteButton,
+  ].forEach((element) => {
+    entry.appendChild(element);
+  });
 
-  entry.appendChild(dropdownlabelTwo);
-  entry.appendChild(dropdownselectTwo);
-  entry.appendChild(editButton);
-  entry.appendChild(deleteButton);
   const entries = document.getElementById("entries");
   entries.appendChild(entry);
   dropdownselect.addEventListener("change", (e) => {
@@ -379,20 +405,14 @@ const addEntry = (e) => {
   fillCodes(courses, dropdownselectTwo);
   calculateCredits();
 };
+
 const deleteEntry = (e) => {
   const entry = e.target.parentNode;
-  // const subject = entry.querySelector('.subject').value
-  // const code = entry.querySelector('.code').value
-  const formContainer = document.getElementById("form-container");
-  const editForm = formContainer.querySelector(
-    '.editForm[data-id="' + entry.getAttribute("data-id") + '"]'
-  );
-  if (editForm) {
-    editForm.remove();
-  }
+  removeEditForm(entry);
   entry.remove();
   calculateCredits();
 };
+
 const editEntry = (e) => {
   try {
     if (!subjects) {
@@ -416,7 +436,6 @@ const editEntry = (e) => {
       return;
     }
     // create edit panel
-    const editForm = document.createElement("form");
     let randomid = Math.random().toString(36).substring(7);
     // make sure its unique
     while (
@@ -424,161 +443,114 @@ const editEntry = (e) => {
     ) {
       randomid = Math.random().toString(36).substring(7);
     }
-    editForm.className = "editForm";
-    editForm.setAttribute("data-entry-subject", subject);
-    editForm.setAttribute("data-entry-code", code);
-    editForm.setAttribute("data-id", randomid);
+    const editForm = createElement("form", {
+      class: "editForm",
+      "data-entry-subject": subject,
+      "data-entry-code": code,
+      "data-id": randomid,
+    });
     entry.setAttribute("data-id", randomid);
     form.style.display = "none";
-    const editEntry = document.createElement("div");
-    editEntry.className = "editEntry";
-    const editPanelSectionLabel = document.createElement("label");
-    editPanelSectionLabel.innerHTML = "Section";
-    editPanelSectionLabel.classList.add("formLabel");
-    const editPanelSection = document.createElement("select");
-    editPanelSection.setAttribute("name", "section");
-    editPanelSection.classList.add("input");
-    editPanelSection.classList.add("sectionSelect");
+    const editEntry = createElement("div", { class: "editEntry" });
+    const editPanelSectionLabel = createElement(
+      "label",
+      { class: "formLabel" },
+      "Section"
+    );
+    const editPanelSection = createElement("select", {
+      name: "section",
+      class: "input sectionSelect",
+    });
     // any
-    const optionAny = document.createElement("option");
-    optionAny.value = "Any";
-    optionAny.innerHTML = "Any";
+    const optionAny = createElement("option", { value: "Any" }, "Any");
     editPanelSection.appendChild(optionAny);
+
     courses.forEach((course) => {
       if (course.subject === subject && course.code === code) {
-        const option = document.createElement("option");
-        const startTime = new Date(course.time[0]);
-        const endTime = new Date(course.time[1]);
-        let startTimeFormatted =
-          startTime.getUTCHours() + ":" + startTime.getUTCMinutes();
-        let endTimeFormatted =
-          endTime.getUTCHours() + ":" + endTime.getUTCMinutes();
-        if (startTime.getUTCMinutes() === 0) {
-          startTimeFormatted += "0";
-        }
-        if (endTime.getUTCMinutes() === 0) {
-          endTimeFormatted += "0";
-        }
-        option.value = course.section;
-        option.innerHTML =
-          course.section +
-          " " +
-          course.instructor +
-          " " +
-          course.days +
-          " " +
-          startTimeFormatted +
-          "-" +
-          endTimeFormatted;
+        const option = createCourseOption(course);
         editPanelSection.appendChild(option);
       }
     });
-    const addButton = document.createElement("input");
-    addButton.setAttribute("type", "button");
-    addButton.setAttribute("value", "+");
-    addButton.classList.add("inputBtn");
-    addButton.classList.add("addBtn");
-    addButton.classList.add("addBtnEditForm");
+
+    const addButton = createElement("input", {
+      type: "button",
+      value: "+",
+      class: "inputBtn addBtn addBtnEditForm",
+    });
     addButton.onclick = (event) => {
       addSection(event);
     };
-    const deleteButton = document.createElement("input");
-    deleteButton.setAttribute("type", "button");
-    deleteButton.setAttribute("value", "x");
-    deleteButton.classList.add("inputBtn");
-    deleteButton.classList.add("deleteBtn");
+
+    const deleteButton = createElement("input", {
+      type: "button",
+      value: "x",
+      class: "inputBtn deleteBtn",
+    });
     deleteButton.onclick = (event) => {
       deleteSection(event);
     };
-    editEntry.appendChild(editPanelSectionLabel);
-    editEntry.appendChild(editPanelSection);
-    editEntry.appendChild(deleteButton);
-    editForm.appendChild(editEntry);
-    const editFormSave = document.createElement("input");
-    editFormSave.setAttribute("type", "button");
-    editFormSave.setAttribute("value", "Back");
-    editFormSave.classList.add("inputBtn");
-    editFormSave.classList.add("deleteBtn");
-    editFormSave.classList.add("backBtnEditForm");
+
+    [editPanelSectionLabel, editPanelSection, deleteButton].forEach(
+      (element) => {
+        editEntry.appendChild(element);
+      }
+    );
+
+    const editFormSave = createElement("input", {
+      type: "button",
+      value: "Back",
+      class: "inputBtn deleteBtn backBtnEditForm",
+    });
     editFormSave.onclick = (event) => {
       editForm.style.display = "none";
       form.style.display = "block";
     };
-    editForm.appendChild(addButton);
-    editForm.appendChild(editFormSave);
+
+    [editEntry, addButton, editFormSave].forEach((element) => {
+      editForm.appendChild(element);
+    });
     formContainer.appendChild(editForm);
   } catch (e) {
     console.log(e.message);
-    const alertBox = document.getElementById("alertBox");
-    alertBox.innerHTML = e.message;
-    alertBox.style.backgroundColor = "#ccc";
-    alertBox.style.color = "#1a1a1a";
-    alertBox.style.display = "block";
-    setTimeout(() => {
-      alertBox.innerHTML = "";
-      alertBox.style.display = "none";
-    }, 5000);
+    displayAlert(e.message);
   }
 };
+
 const addSection = (e) => {
   const formContainer = e.target.parentNode;
   const subject = formContainer.getAttribute("data-entry-subject");
   const code = formContainer.getAttribute("data-entry-code");
   // add section entry
-  const editEntry = document.createElement("div");
-  editEntry.className = "editEntry";
-  const editPanelSectionLabel = document.createElement("label");
-  editPanelSectionLabel.innerHTML = "Section";
-  editPanelSectionLabel.classList.add("formLabel");
-  const editPanelSection = document.createElement("select");
-  editPanelSection.setAttribute("name", "section");
-  editPanelSection.classList.add("input");
-  editPanelSection.classList.add("sectionSelect");
+  const editEntry = createElement("div", { class: "editEntry" });
+  const editPanelSectionLabel = createElement(
+    "label",
+    { class: "formLabel" },
+    "Section"
+  );
+  const editPanelSection = createElement("select", {
+    name: "section",
+    class: "input sectionSelect",
+  });
   // any
-  const optionAny = document.createElement("option");
-  optionAny.value = "Any";
-  optionAny.innerHTML = "Any";
+  const optionAny = createElement("option", { value: "Any" }, "Any");
   editPanelSection.appendChild(optionAny);
   courses.forEach((course) => {
     if (course.subject === subject && course.code === code) {
-      const option = document.createElement("option");
-      const startTime = new Date(course.time[0]);
-      const endTime = new Date(course.time[1]);
-      let startTimeFormatted =
-        startTime.getUTCHours() + ":" + startTime.getUTCMinutes();
-      let endTimeFormatted =
-        endTime.getUTCHours() + ":" + endTime.getUTCMinutes();
-      if (startTime.getUTCMinutes() === 0) {
-        startTimeFormatted += "0";
-      }
-      if (endTime.getUTCMinutes() === 0) {
-        endTimeFormatted += "0";
-      }
-      option.value = course.section;
-      option.innerHTML =
-        course.section +
-        " " +
-        course.instructor +
-        " " +
-        course.days +
-        " " +
-        startTimeFormatted +
-        "-" +
-        endTimeFormatted;
+      const option = createCourseOption(course);
       editPanelSection.appendChild(option);
     }
   });
-  const deleteButton = document.createElement("input");
-  deleteButton.setAttribute("type", "button");
-  deleteButton.setAttribute("value", "x");
-  deleteButton.classList.add("inputBtn");
-  deleteButton.classList.add("deleteBtn");
+  const deleteButton = createElement("input", {
+    type: "button",
+    value: "x",
+    class: "inputBtn deleteBtn",
+  });
   deleteButton.onclick = (event) => {
     deleteSection(event);
   };
-  editEntry.appendChild(editPanelSectionLabel);
-  editEntry.appendChild(editPanelSection);
-  editEntry.appendChild(deleteButton);
+  [editPanelSectionLabel, editPanelSection, deleteButton].forEach((element) => {
+    editEntry.appendChild(element);
+  });
   // add it third to last child
   formContainer.insertBefore(
     editEntry,
@@ -598,227 +570,221 @@ const displayAdvancedOptions = () => {
     form.style.display = "none";
     return;
   }
-  const advancedOptionsForm = document.createElement("form");
-  advancedOptionsForm.className = "advancedOptions";
-  advancedOptionsForm.id = "advancedOptions";
-  const advancedEntry = document.createElement("div");
-  advancedEntry.className = "advancedEntry";
-  const advancedOptionsFormLabel = document.createElement("label");
-  advancedOptionsFormLabel.innerHTML = "No 8 AM Classes";
-  advancedOptionsFormLabel.classList.add("formLabel");
-  const advancedOptionsFormInput = document.createElement("input");
-  advancedOptionsFormInput.setAttribute("type", "checkbox");
-  advancedOptionsFormInput.setAttribute("name", "no8AM");
-  advancedOptionsFormInput.classList.add("input");
-  advancedOptionsFormInput.classList.add("no8AM");
-  advancedOptionsFormInput.id = "no8AM";
+  const advancedOptionsForm = createElement("form", {
+    class: "advancedOptions",
+    id: "advancedOptions",
+  });
+  const advancedEntry = createElement("div", { class: "advancedEntry" });
+  const advancedOptionsFormLabel = createElement(
+    "label",
+    { class: "formLabel" },
+    "No 8 AM Classes"
+  );
+  const advancedOptionsFormInput = createElement("input", {
+    type: "checkbox",
+    name: "no8AM",
+    class: "input no8AM",
+    id: "no8AM",
+  });
   advancedEntry.appendChild(advancedOptionsFormLabel);
   advancedEntry.appendChild(advancedOptionsFormInput);
-  const advancedEntryTwo = document.createElement("div");
-  advancedEntryTwo.className = "advancedEntry";
-  const advancedOptionsFormLabelTwo = document.createElement("label");
-  advancedOptionsFormLabelTwo.innerHTML = "Only Open Sections";
-  advancedOptionsFormLabelTwo.classList.add("formLabel");
-  const advancedOptionsFormInputTwo = document.createElement("input");
-  advancedOptionsFormInputTwo.setAttribute("type", "checkbox");
-  advancedOptionsFormInputTwo.setAttribute("name", "noClosedCourses");
-  // advancedOptionsFormInputTwo.disabled = false
-  advancedOptionsFormInputTwo.classList.add("input");
-  advancedOptionsFormInputTwo.classList.add("noClosedCourses");
-  advancedOptionsFormInputTwo.id = "noClosedCourses";
+  const advancedEntryTwo = createElement("div", { class: "advancedEntry" });
+  const advancedOptionsFormLabelTwo = createElement(
+    "label",
+    { class: "formLabel" },
+    "Only Open Sections"
+  );
+  const advancedOptionsFormInputTwo = createElement("input", {
+    type: "checkbox",
+    name: "noClosedCourses",
+    class: "input noClosedCourses",
+    id: "noClosedCourses",
+  });
   advancedEntryTwo.appendChild(advancedOptionsFormLabelTwo);
   advancedEntryTwo.appendChild(advancedOptionsFormInputTwo);
-  const advancedEntryFour = document.createElement("div");
-  advancedEntryFour.className = "advancedEntry";
-  const advancedOptionsFormLabelFour = document.createElement("label");
-  advancedOptionsFormLabelFour.innerHTML = "No Classes after 5 PM";
-  advancedOptionsFormLabelFour.classList.add("formLabel");
-  const advancedOptionsFormInputFour = document.createElement("input");
-  advancedOptionsFormInputFour.setAttribute("type", "checkbox");
-  advancedOptionsFormInputFour.setAttribute("name", "noClassesAfter5PM");
-  advancedOptionsFormInputFour.classList.add("input");
-  advancedOptionsFormInputFour.classList.add("noClassesAfter5PM");
-  advancedOptionsFormInputFour.id = "noClassesAfter5PM";
+  const advancedEntryFour = createElement("div", { class: "advancedEntry" });
+  const advancedOptionsFormLabelFour = createElement(
+    "label",
+    {
+      class: "formLabel",
+    },
+    "No Classes after 5 PM"
+  );
+  const advancedOptionsFormInputFour = createElement("input", {
+    type: "checkbox",
+    name: "noClassesAfter5PM",
+    class: "input noClassesAfter5PM",
+    id: "noClassesAfter5PM",
+  });
   advancedEntryFour.appendChild(advancedOptionsFormLabelFour);
   advancedEntryFour.appendChild(advancedOptionsFormInputFour);
-  const advancedEntryThree = document.createElement("div");
-  advancedEntryThree.className = "advancedEntry";
-  const advancedOptionsFormLabelThree = document.createElement("label");
-  advancedOptionsFormLabelThree.innerHTML = "Break";
-  advancedOptionsFormLabelThree.classList.add("formLabel");
-  const advancedOptionsFormInputThree = document.createElement("select");
-  advancedOptionsFormInputThree.setAttribute("name", "breakBetween");
-  advancedOptionsFormInputThree.classList.add("input");
-  advancedOptionsFormInputThree.classList.add("breakBetween");
-  // advancedOptionsFormInputThree.setAttribute('placeholder', 'Start Time')
-  const advancedOptionsFormInputThreeExtra = document.createElement("select");
-  advancedOptionsFormInputThreeExtra.setAttribute("name", "breakBetween");
-  advancedOptionsFormInputThreeExtra.classList.add("input");
-  advancedOptionsFormInputThreeExtra.classList.add("breakBetween");
-  // advancedOptionsFormInputThreeExtra.setAttribute('placeholder', 'End Time')
+  const advancedEntryThree = createElement("div", { class: "advancedEntry" });
+  const advancedOptionsFormLabelThree = createElement(
+    "label",
+    { class: "formLabel" },
+    "Break"
+  );
+  const advancedOptionsFormInputThree = createElement("select", {
+    name: "breakBetween",
+    class: "input breakBetween",
+  });
+  const advancedOptionsFormInputThreeExtra = createElement("select", {
+    name: "breakBetween",
+    class: "input breakBetween",
+  });
   timings.forEach((time) => {
-    const option = document.createElement("option");
-    option.value = time;
-    option.innerHTML = time;
+    const option = createElement("option", { value: time }, time);
     advancedOptionsFormInputThree.appendChild(option);
     advancedOptionsFormInputThreeExtra.appendChild(option.cloneNode(true));
   });
-  const addBreakButton = document.createElement("input");
-  addBreakButton.setAttribute("type", "button");
-  addBreakButton.setAttribute("value", "+");
-  addBreakButton.classList.add("inputBtn");
-  addBreakButton.classList.add("deleteBtn");
-  addBreakButton.classList.add("addBtnBreak");
+  const addBreakButton = createElement("input", {
+    type: "button",
+    value: "+",
+    class: "inputBtn deleteBtn addBtnBreak",
+  });
   addBreakButton.onclick = (event) => {
     addBreakEntry(event);
   };
-  const deleteBreakButton = document.createElement("input");
-  deleteBreakButton.setAttribute("type", "button");
-  deleteBreakButton.setAttribute("value", "x");
-  deleteBreakButton.classList.add("inputBtn");
-  deleteBreakButton.classList.add("deleteBtn");
-  deleteBreakButton.classList.add("deleteBtnBreak");
+  const deleteBreakButton = createElement("input", {
+    type: "button",
+    value: "x",
+    class: "inputBtn deleteBtn deleteBtnBreak",
+  });
   deleteBreakButton.onclick = (event) => {
     deleteBreakEntry(event);
   };
   // days of break
-  const daysOfBreak = document.createElement("div");
-  daysOfBreak.className = "daysOfBreak";
-  const daysOfBreakLabel = document.createElement("label");
-  daysOfBreakLabel.innerHTML = "";
-  daysOfBreakLabel.classList.add("formLabel");
+  const daysOfBreak = createElement("div", { class: "daysOfBreak" });
+  const daysOfBreakLabel = createElement("label", { class: "formLabel" });
   daysOfBreak.appendChild(daysOfBreakLabel);
   // add checkboxes for days
   const days = ["M", "T", "W", "R" /*, 'F'*/];
   days.forEach((day) => {
-    const dayLabel = document.createElement("label");
-    dayLabel.innerHTML = day;
-    dayLabel.classList.add("formLabel");
-    const dayInput = document.createElement("input");
-    dayInput.setAttribute("type", "checkbox");
-    dayInput.setAttribute("name", "day");
-    dayInput.classList.add("input");
-    dayInput.classList.add("day");
-    dayInput.classList.add(day);
-    dayInput.value = day;
-    const singleDayContainer = document.createElement("div");
-    singleDayContainer.className = "singleDayContainer";
+    const dayLabel = createElement("label", { class: "formLabel" }, day);
+    const dayInput = createElement("input", {
+      type: "checkbox",
+      name: "day",
+      class: "input day " + day,
+      value: day,
+    });
+    const singleDayContainer = createElement("div", {
+      class: "singleDayContainer",
+    });
     singleDayContainer.appendChild(dayLabel);
     singleDayContainer.appendChild(dayInput);
     daysOfBreak.appendChild(singleDayContainer);
-    // daysOfBreak.appendChild(dayLabel)
-    // daysOfBreak.appendChild(dayInput)
   });
 
-  const backButton = document.createElement("input");
-  backButton.setAttribute("type", "button");
-  backButton.setAttribute("value", "Back");
-  backButton.classList.add("inputBtn");
-  backButton.classList.add("backBtn");
-  backButton.id = "backBtnAdvancedForm";
+  const backButton = createElement("input", {
+    type: "button",
+    value: "Back",
+    class: "inputBtn backBtn",
+    id: "backBtnAdvancedForm",
+  });
   backButton.onclick = (event) => {
     advancedOptionsForm.style.display = "none";
     form.style.display = "block";
   };
-  advancedEntryThree.appendChild(advancedOptionsFormLabelThree);
-  advancedEntryThree.appendChild(advancedOptionsFormInputThree);
-  advancedEntryThree.appendChild(advancedOptionsFormInputThreeExtra);
-
-  advancedOptionsForm.appendChild(advancedEntry);
-  advancedOptionsForm.appendChild(advancedEntryTwo);
-  advancedOptionsForm.appendChild(advancedEntryFour);
   daysOfBreak.appendChild(addBreakButton);
   daysOfBreak.appendChild(deleteBreakButton);
-  advancedEntryThree.appendChild(daysOfBreak);
-  advancedOptionsForm.appendChild(advancedEntryThree);
-  advancedOptionsForm.appendChild(backButton);
+  [
+    advancedOptionsFormLabelThree,
+    advancedOptionsFormInputThree,
+    advancedOptionsFormInputThreeExtra,
+    daysOfBreak,
+  ].forEach((element) => {
+    advancedEntryThree.appendChild(element);
+  });
+
+  [
+    advancedEntry,
+    advancedEntryTwo,
+    advancedEntryFour,
+    advancedEntryThree,
+    backButton,
+  ].forEach((element) => {
+    advancedOptionsForm.appendChild(element);
+  });
   formContainer.appendChild(advancedOptionsForm);
   form.style.display = "none";
 };
 const addBreakEntry = (e) => {
   const advancedOptionsForm = e.target.parentNode.parentNode.parentNode;
-  const advancedEntryThree = document.createElement("div");
-  advancedEntryThree.className = "advancedEntry";
-  const advancedOptionsFormLabelThree = document.createElement("label");
-  advancedOptionsFormLabelThree.innerHTML = "Break ";
-  advancedOptionsFormLabelThree.classList.add("formLabel");
-  const advancedOptionsFormInputThree = document.createElement("select");
-  advancedOptionsFormInputThree.setAttribute("name", "breakBetween");
-  advancedOptionsFormInputThree.classList.add("input");
-  advancedOptionsFormInputThree.classList.add("breakBetween");
-  // advancedOptionsFormInputThree.setAttribute('placeholder', 'Start Time')
-  const advancedOptionsFormInputThreeExtra = document.createElement("select");
-  advancedOptionsFormInputThreeExtra.setAttribute("name", "breakBetween");
-  advancedOptionsFormInputThreeExtra.classList.add("input");
-  advancedOptionsFormInputThreeExtra.classList.add("breakBetween");
-  // advancedOptionsFormInputThreeExtra.setAttribute('placeholder', 'End Time')
+  const advancedEntryThree = createElement("div", { class: "advancedEntry" });
+  const advancedOptionsFormLabelThree = createElement(
+    "label",
+    {
+      class: "formLabel",
+    },
+    "Break "
+  );
+  const advancedOptionsFormInputThree = createElement("select", {
+    name: "breakBetween",
+    class: "input breakBetween",
+  });
+  const advancedOptionsFormInputThreeExtra = createElement("select", {
+    name: "breakBetween",
+    class: "input breakBetween",
+  });
   timings.forEach((time) => {
-    const option = document.createElement("option");
-    option.value = time;
-    option.innerHTML = time;
+    const option = createElement("option", { value: time }, time);
     advancedOptionsFormInputThree.appendChild(option);
     advancedOptionsFormInputThreeExtra.appendChild(option.cloneNode(true));
   });
-  const addBreakButton = document.createElement("input");
-  addBreakButton.setAttribute("type", "button");
-  addBreakButton.setAttribute("value", "+");
-  addBreakButton.classList.add("inputBtn");
-  addBreakButton.classList.add("deleteBtn");
+  const addBreakButton = createElement("input", {
+    type: "button",
+    value: "+",
+    class: "inputBtn deleteBtn",
+  });
   addBreakButton.onclick = (event) => {
     addBreakEntry(event);
   };
-  const deleteBreakButton = document.createElement("input");
-  deleteBreakButton.setAttribute("type", "button");
-  deleteBreakButton.setAttribute("value", "x");
-  deleteBreakButton.classList.add("inputBtn");
-  deleteBreakButton.classList.add("deleteBtn");
+  const deleteBreakButton = createElement("input", {
+    type: "button",
+    value: "x",
+    class: "inputBtn deleteBtn",
+  });
   deleteBreakButton.onclick = (event) => {
     deleteBreakEntry(event);
   };
   // days of break
-  const daysOfBreak = document.createElement("div");
-  daysOfBreak.className = "daysOfBreak";
-  const daysOfBreakLabel = document.createElement("label");
-  daysOfBreakLabel.innerHTML = "";
-  daysOfBreakLabel.classList.add("formLabel");
+  const daysOfBreak = createElement("div", { class: "daysOfBreak" });
+  const daysOfBreakLabel = createElement("label", { class: "formLabel" });
   daysOfBreak.appendChild(daysOfBreakLabel);
   // add checkboxes for days
   const days = ["M", "T", "W", "R" /*, 'F'*/];
   days.forEach((day) => {
-    const dayLabel = document.createElement("label");
-    dayLabel.innerHTML = day;
-    dayLabel.classList.add("formLabel");
-    const dayInput = document.createElement("input");
-    dayInput.setAttribute("type", "checkbox");
-    dayInput.setAttribute("name", "day");
-    dayInput.classList.add("input");
-    dayInput.classList.add("day");
-    dayInput.value = day;
-    const singleDayContainer = document.createElement("div");
-    singleDayContainer.className = "singleDayContainer";
+    const dayLabel = createElement("label", { class: "formLabel" }, day);
+    const dayInput = createElement("input", {
+      type: "checkbox",
+      name: "day",
+      class: "input day " + day,
+      value: day,
+    });
+    const singleDayContainer = createElement("div", {
+      class: "singleDayContainer",
+    });
     singleDayContainer.appendChild(dayLabel);
     singleDayContainer.appendChild(dayInput);
     daysOfBreak.appendChild(singleDayContainer);
-    // daysOfBreak.appendChild(dayLabel)
-    // daysOfBreak.appendChild(dayInput)
   });
 
-  advancedEntryThree.appendChild(advancedOptionsFormLabelThree);
-  advancedEntryThree.appendChild(advancedOptionsFormInputThree);
-  advancedEntryThree.appendChild(advancedOptionsFormInputThreeExtra);
   daysOfBreak.appendChild(addBreakButton);
   daysOfBreak.appendChild(deleteBreakButton);
-  advancedEntryThree.appendChild(daysOfBreak);
-  // advancedOptionsForm.appendChild(advancedEntryThree)
+  [
+    advancedOptionsFormLabelThree,
+    advancedOptionsFormInputThree,
+    advancedOptionsFormInputThreeExtra,
+    daysOfBreak,
+  ].forEach((element) => {
+    advancedEntryThree.appendChild(element);
+  });
   advancedOptionsForm.insertBefore(
     advancedEntryThree,
     advancedOptionsForm.childNodes[advancedOptionsForm.childNodes.length - 1]
   );
-  // advancedOptionsForm.insertBefore(
-  //   daysOfBreak,
-  //   advancedOptionsForm.childNodes[advancedOptionsForm.childNodes.length - 1]
-  // )
 };
+
 const deleteBreakEntry = (e) => {
   const breakEntry = e.target.parentNode.parentNode;
   const advancedOptionsForm = breakEntry.parentNode;
@@ -837,37 +803,64 @@ const deleteBreakEntry = (e) => {
     return;
   }
   breakEntry.remove();
-  // daysOfBreak.remove()
 };
-const colors = [
-  "#FF6B6B", // Red
-  "#7D3C98", // Purple
-  "#F9A825", // Yellow
-  "#1E90FF", // Blue
-  "#00B894", // Green
-  "#D63031", // Dark Red
-  "#6F1E51", // Dark Purple
-  "#FBC02D", // Amber
-  "#3498DB", // Dark Blue
-  "#00A86B", // Dark Green
-  "#E74C3C", // Light Red
-  "#8E44AD", // Light Purple
-  "#FDD835", // Light Yellow
-  "#2980B9", // Light Blue
-  "#27AE60", // Light Green
-];
+
+const renderSchedule = (scheduleIndex) => {
+  //remove current schedule
+  const schedulediv = document.getElementById("schedule-body");
+  schedulediv.innerHTML = "";
+  // add next schedule
+  // show relevant time items
+  const timeItems = document.querySelectorAll(".schedule-time-item");
+  let heightOfOneHourTimeSlot = 48;
+  timeItems.forEach((timeItem) => {
+    if (
+      Number(timeItem.getAttribute("data-time").split(":")[0]) >=
+        Number(schedules[scheduleIndex].min_hour.split(":")[0]) &&
+      Number(timeItem.getAttribute("data-time").split(":")[0]) <=
+        Number(schedules[scheduleIndex].max_hour.split(":")[0])
+    ) {
+      timeItem.style.display = "block";
+      if (
+        Number(timeItem.getAttribute("data-time").split(":")[0]) ==
+        Number(schedules[scheduleIndex].min_hour.split(":")[0]) + 1
+      ) {
+        heightOfOneHourTimeSlot =
+          timeItem.offsetTop - timeItem.previousElementSibling.offsetTop;
+      }
+    } else {
+      timeItem.style.display = "none";
+    }
+  });
+  let colorCount = 0;
+  schedules[scheduleIndex].courses_list.forEach((scheduleEntry) => {
+    if (scheduleEntry.course_code === "BREAK") {
+    } else {
+      createScheduleEntry(
+        scheduleEntry,
+        scheduleEntry.days.length,
+        colorCount++,
+        heightOfOneHourTimeSlot
+      );
+    }
+  });
+  const scheduleTotalSpan = document.getElementById("schedule-total-span");
+  scheduleTotalSpan.innerText = ` ${scheduleIndex + 1} of ${schedules.length}`;
+  // const scheduleContainer = document.getElementById("schedule-container");
+  // scheduleContainer.style.visibility = "visible";
+  // const scheduleExtra = document.getElementById("schedule-extra");
+  // scheduleExtra.style.visibility = "visible";
+};
+
 const generateScheduleDOM = async (e) => {
+  const submitBtn = document.getElementById("submitBtn");
+  const historyBtn = document.getElementById("historyBtn");
+
   try {
     e.preventDefault();
-    const submitBtn = document.getElementById("submitBtn");
     submitBtn.disabled = true;
-    const alertBox = document.getElementById("alertBox");
-    alertBox.style.backgroundColor = "#ccc";
-    alertBox.style.color = "#1a1a1a";
-    alertBox.style.display = "block";
-    alertBox.innerHTML = "Generating Schedules...";
-    const historyBtn = document.getElementById("historyBtn");
     historyBtn.disabled = true;
+    displayAlert("Generating schedules...");
     const selectedCourses = document.querySelectorAll(".entry");
     const selectedCoursesArray = [];
     selectedCourses.forEach((course) => {
@@ -973,125 +966,72 @@ const generateScheduleDOM = async (e) => {
     if (!schedules || schedules.length === 0) {
       throw new Error("No schedules found");
     }
-    const schedulediv = document.getElementById("schedule-body");
-    schedulediv.innerHTML = "";
-    // add first schedule
-    // show relevant time items
-    const timeItems = document.querySelectorAll(".schedule-time-item");
-    let heightOfOneHourTimeSlot = 48;
-    timeItems.forEach((timeItem) => {
-      if (
-        Number(timeItem.getAttribute("data-time").split(":")[0]) >=
-          Number(schedules[0].min_hour.split(":")[0]) &&
-        Number(timeItem.getAttribute("data-time").split(":")[0]) <=
-          Number(schedules[0].max_hour.split(":")[0])
-      ) {
-        timeItem.style.display = "block";
-        if (
-          Number(timeItem.getAttribute("data-time").split(":")[0]) ==
-          Number(schedules[0].min_hour.split(":")[0]) + 1
-        ) {
-          heightOfOneHourTimeSlot =
-            timeItem.offsetTop - timeItem.previousElementSibling.offsetTop;
-        }
-      } else {
-        timeItem.style.display = "none";
-      }
-    });
-    let colorCount = 0;
-    schedules[0].courses_list.forEach((scheduleEntry) => {
-      if (scheduleEntry.course_code === "BREAK") {
-      } else {
-        createScheduleEntry(
-          scheduleEntry,
-          scheduleEntry.days.length,
-          colorCount++,
-          heightOfOneHourTimeSlot
-        );
-      }
-    });
-    const formContainer = document.getElementById("form-container");
-    formContainer.style.display = "none";
-    alertBox.innerHTML = "Schedule(s) generated";
+    renderSchedule(0);
     const scheduleContainer = document.getElementById("schedule-container");
     scheduleContainer.style.visibility = "visible";
     const scheduleExtra = document.getElementById("schedule-extra");
     scheduleExtra.style.visibility = "visible";
+    const formContainer = document.getElementById("form-container");
+    formContainer.style.display = "none";
     const scheduleTotalHeader = document.getElementById(
       "schedule-total-header"
     );
     scheduleTotalHeader.style.display = "flex";
-    scheduleTotalHeader.innerHTML =
-      '<input type="button" value="x" class="inputBtn backToFormBtn" onclick="backToForm()"/> <i class="fa-solid fa-arrow-left" onclick ="goPreviousSchedule()"></i> ' +
-      ' <span class="schedule-total-span" id="schedule-total-span"> 1 of ' +
-      schedules.length +
-      ' </span><i class="fa-solid fa-arrow-right" onclick="goNextSchedule()"></i>';
-    submitBtn.disabled = false;
     historyBtn.style.display = "none";
-    historyBtn.disabled = false;
-    setTimeout(() => {
-      alertBox.innerHTML = "";
-      alertBox.style.display = "none";
-    }, 5000);
+    displayAlert("Schedules generated");
   } catch (e) {
     console.log(e.message);
-    const submitBtn = document.getElementById("submitBtn");
-    submitBtn.disabled = false;
-    const alertBox = document.getElementById("alertBox");
-    alertBox.innerHTML = e.message;
-    const historyBtn = document.getElementById("historyBtn");
+    displayAlert(e.message);
     historyBtn.style.display = "block";
+  } finally {
+    submitBtn.disabled = false;
     historyBtn.disabled = false;
-    alertBox.style.backgroundColor = "#ccc";
-    alertBox.style.color = "#1a1a1a";
-    alertBox.style.display = "block";
-    setTimeout(() => {
-      alertBox.innerHTML = "";
-      alertBox.style.display = "none";
-    }, 5000);
   }
 };
+
 const createScheduleEntry = (entry, count, color, heightOfOneHourTimeSlot) => {
   for (let i = 0; i < count; i++) {
-    const scheduleEntry = document.createElement("div");
-    scheduleEntry.className = "schedule-entry";
+    const scheduleEntry = createElement("div", { class: "schedule-entry" });
     scheduleEntry.style.display = "none";
     scheduleEntry.style.backgroundColor = colors[color];
-    const scheduleEntryInfo = document.createElement("div");
-    scheduleEntryInfo.className = "schedule-entry-info";
-    scheduleEntryInfo.setAttribute("data-day", entry.days[i]);
-    const startTime = new Date(entry.time[0]);
-    const endTime = new Date(entry.time[1]);
-    let startTimeFormatted =
-      startTime.getUTCHours() + ":" + startTime.getUTCMinutes();
-    let endTimeFormatted =
-      endTime.getUTCHours() + ":" + endTime.getUTCMinutes();
-    if (startTime.getUTCMinutes() === 0) {
-      startTimeFormatted = startTimeFormatted + "0";
-    }
-    if (endTime.getUTCMinutes() === 0) {
-      endTimeFormatted = endTimeFormatted + "0";
-    }
-    scheduleEntryInfo.setAttribute("data-start-time", startTimeFormatted);
-    scheduleEntryInfo.setAttribute("data-end-time", endTimeFormatted);
-    const scheduleEntryInfoSubject = document.createElement("h1");
-    scheduleEntryInfoSubject.className = "schedule-name";
-    scheduleEntryInfoSubject.innerHTML =
-      entry.course_code + " " + entry.section;
-    const scheduleEntryInfoCode = document.createElement("h1");
-    scheduleEntryInfoCode.className = "schedule-crn";
-    scheduleEntryInfoCode.innerHTML = entry.crn;
-    const scheduleEntryInfoInstructor = document.createElement("h1");
-    scheduleEntryInfoInstructor.className = "schedule-professor";
-    scheduleEntryInfoInstructor.innerHTML = entry.instructor;
-    const scheduleEntryInfoTime = document.createElement("h1");
-    scheduleEntryInfoTime.className = "schedule-time";
-    scheduleEntryInfoTime.innerHTML =
-      startTimeFormatted + " - " + endTimeFormatted;
-    scheduleEntryInfo.appendChild(scheduleEntryInfoSubject);
-    scheduleEntryInfo.appendChild(scheduleEntryInfoCode);
-    scheduleEntryInfo.appendChild(scheduleEntryInfoInstructor);
-    scheduleEntryInfo.appendChild(scheduleEntryInfoTime);
+    const startTimeFormatted = fomratTime(new Date(entry.time[0]));
+    const endTimeFormatted = fomratTime(new Date(entry.time[1]));
+    const scheduleEntryInfo = createElement("div", {
+      class: "schedule-entry-info",
+      "data-day": entry.days[i],
+      "data-start-time": startTimeFormatted,
+      "data-end-time": endTimeFormatted,
+    });
+    const scheduleEntryInfoSubject = createElement(
+      "h1",
+      { class: "schedule-name" },
+      entry.course_code + " " + entry.section
+    );
+    const scheduleEntryInfoCode = createElement(
+      "h1",
+      { class: "schedule-crn" },
+      entry.crn
+    );
+    const scheduleEntryInfoInstructor = createElement(
+      "h1",
+      {
+        class: "schedule-professor",
+      },
+      entry.instructor
+    );
+    const scheduleEntryInfoTime = createElement(
+      "h1",
+      { class: "schedule-time" },
+      startTimeFormatted + " - " + endTimeFormatted
+    );
+    [
+      scheduleEntryInfoSubject,
+      scheduleEntryInfoCode,
+      scheduleEntryInfoInstructor,
+      scheduleEntryInfoTime,
+    ].forEach((element) => {
+      scheduleEntryInfo.appendChild(element);
+    });
     scheduleEntry.appendChild(scheduleEntryInfo);
     positionScheduleEntry(scheduleEntry, heightOfOneHourTimeSlot);
     if (
@@ -1099,7 +1039,7 @@ const createScheduleEntry = (entry, count, color, heightOfOneHourTimeSlot) => {
       entry.instructor != "TBA"
     ) {
       const instructorArray = entry.instructor.split(" ");
-      scheduleEntryInfoInstructor.innerHTML =
+      scheduleEntryInfoInstructor.innerText =
         instructorArray[0] + " " + instructorArray[instructorArray.length - 1];
     }
   }
@@ -1180,108 +1120,33 @@ const goPreviousSchedule = () => {
   //current schedule
   const scheduleTotalSpan = document.getElementById("schedule-total-span");
   const currentSchedule = Number(scheduleTotalSpan.innerHTML.split(" ")[1]);
-  let previousSchedule = currentSchedule - 1;
-  const totalSchedules = schedules.length;
-  if (previousSchedule < 1) {
-    previousSchedule = totalSchedules;
+  let previousSchedule = currentSchedule - 2;
+  if (previousSchedule < 0) {
+    previousSchedule = totalSchedules - 1;
   }
-  //remove current schedule
-  const schedulediv = document.getElementById("schedule-body");
-  schedulediv.innerHTML = "";
-  // add previous schedule
-  // show relevant time items
-  const timeItems = document.querySelectorAll(".schedule-time-item");
-  let heightOfOneHourTimeSlot = 48;
-  timeItems.forEach((timeItem) => {
-    if (
-      Number(timeItem.getAttribute("data-time").split(":")[0]) >=
-        Number(schedules[previousSchedule - 1].min_hour.split(":")[0]) &&
-      Number(timeItem.getAttribute("data-time").split(":")[0]) <=
-        Number(schedules[previousSchedule - 1].max_hour.split(":")[0])
-    ) {
-      timeItem.style.display = "block";
-      if (
-        Number(timeItem.getAttribute("data-time").split(":")[0]) ==
-        Number(schedules[previousSchedule - 1].min_hour.split(":")[0]) + 1
-      ) {
-        heightOfOneHourTimeSlot =
-          timeItem.offsetTop - timeItem.previousElementSibling.offsetTop;
-      }
-    } else {
-      timeItem.style.display = "none";
-    }
-  });
-  let colorCount = 0;
-  schedules[previousSchedule - 1].courses_list.forEach((scheduleEntry) => {
-    if (scheduleEntry.course_code === "BREAK") {
-    } else {
-      createScheduleEntry(
-        scheduleEntry,
-        scheduleEntry.days.length,
-        colorCount++,
-        heightOfOneHourTimeSlot
-      );
-    }
-  });
-  scheduleTotalSpan.innerHTML =
-    " " + previousSchedule + " of " + totalSchedules;
-  const scheduleContainer = document.getElementById("schedule-container");
-  scheduleContainer.style.visibility = "visible";
-  const scheduleExtra = document.getElementById("schedule-extra");
-  scheduleExtra.style.visibility = "visible";
+  renderSchedule(previousSchedule);
+
+  // scheduleTotalSpan.innerHTML =
+  //   " " + previousSchedule + " of " + totalSchedules;
+  // const scheduleContainer = document.getElementById("schedule-container");
+  // scheduleContainer.style.visibility = "visible";
+  // const scheduleExtra = document.getElementById("schedule-extra");
+  // scheduleExtra.style.visibility = "visible";
 };
 const goNextSchedule = () => {
   //current schedule
   const scheduleTotalSpan = document.getElementById("schedule-total-span");
   const currentSchedule = Number(scheduleTotalSpan.innerHTML.split(" ")[1]);
-  let nextSchedule = currentSchedule + 1;
-  const totalSchedules = schedules.length;
-  if (currentSchedule > totalSchedules - 1) {
-    nextSchedule = 1;
+  let nextSchedule = currentSchedule; //zero indexing
+  if (currentSchedule >= schedules.length) {
+    nextSchedule = 0;
   }
   //remove current schedule
-  const schedulediv = document.getElementById("schedule-body");
-  schedulediv.innerHTML = "";
-  // add next schedule
-  // show relevant time items
-  const timeItems = document.querySelectorAll(".schedule-time-item");
-  let heightOfOneHourTimeSlot = 48;
-  timeItems.forEach((timeItem) => {
-    if (
-      Number(timeItem.getAttribute("data-time").split(":")[0]) >=
-        Number(schedules[nextSchedule - 1].min_hour.split(":")[0]) &&
-      Number(timeItem.getAttribute("data-time").split(":")[0]) <=
-        Number(schedules[nextSchedule - 1].max_hour.split(":")[0])
-    ) {
-      timeItem.style.display = "block";
-      if (
-        Number(timeItem.getAttribute("data-time").split(":")[0]) ==
-        Number(schedules[nextSchedule - 1].min_hour.split(":")[0]) + 1
-      ) {
-        heightOfOneHourTimeSlot =
-          timeItem.offsetTop - timeItem.previousElementSibling.offsetTop;
-      }
-    } else {
-      timeItem.style.display = "none";
-    }
-  });
-  let colorCount = 0;
-  schedules[nextSchedule - 1].courses_list.forEach((scheduleEntry) => {
-    if (scheduleEntry.course_code === "BREAK") {
-    } else {
-      createScheduleEntry(
-        scheduleEntry,
-        scheduleEntry.days.length,
-        colorCount++,
-        heightOfOneHourTimeSlot
-      );
-    }
-  });
-  scheduleTotalSpan.innerHTML = " " + nextSchedule + " of " + totalSchedules;
-  const scheduleContainer = document.getElementById("schedule-container");
-  scheduleContainer.style.visibility = "visible";
-  const scheduleExtra = document.getElementById("schedule-extra");
-  scheduleExtra.style.visibility = "visible";
+  renderSchedule(nextSchedule);
+  // const scheduleContainer = document.getElementById("schedule-container");
+  // scheduleContainer.style.visibility = "visible";
+  // const scheduleExtra = document.getElementById("schedule-extra");
+  // scheduleExtra.style.visibility = "visible";
 };
 const backToForm = () => {
   const schedulediv = document.getElementById("schedule-body");
@@ -1301,56 +1166,6 @@ const backToForm = () => {
   const historyBtn = document.getElementById("historyBtn");
   historyBtn.style.display = "block";
 };
-window.addEventListener("resize", () => {
-  const schedulediv = document.getElementById("schedule-body");
-  if (schedulediv == null) {
-    return;
-  }
-  schedulediv.innerHTML = "";
-  // show relevant time items
-  const timeItems = document.querySelectorAll(".schedule-time-item");
-  if (timeItems.length === 0) {
-    return;
-  }
-
-  let heightOfOneHourTimeSlot = 48;
-  const scheduleTotalSpan = document.getElementById("schedule-total-span");
-  if (scheduleTotalSpan == null) {
-    return;
-  }
-  const currentSchedule = Number(scheduleTotalSpan.innerHTML.split(" ")[1]);
-  timeItems.forEach((timeItem) => {
-    if (
-      Number(timeItem.getAttribute("data-time").split(":")[0]) >=
-        Number(schedules[currentSchedule - 1].min_hour.split(":")[0]) &&
-      Number(timeItem.getAttribute("data-time").split(":")[0]) <=
-        Number(schedules[currentSchedule - 1].max_hour.split(":")[0])
-    ) {
-      timeItem.style.display = "block";
-      if (
-        Number(timeItem.getAttribute("data-time").split(":")[0]) ==
-        Number(schedules[currentSchedule - 1].min_hour.split(":")[0]) + 1
-      ) {
-        heightOfOneHourTimeSlot =
-          timeItem.offsetTop - timeItem.previousElementSibling.offsetTop;
-      }
-    } else {
-      timeItem.style.display = "none";
-    }
-  });
-  let colorCount = 0;
-  schedules[currentSchedule - 1].courses_list.forEach((scheduleEntry) => {
-    if (scheduleEntry.course_code === "BREAK") {
-    } else {
-      createScheduleEntry(
-        scheduleEntry,
-        scheduleEntry.days.length,
-        colorCount++,
-        heightOfOneHourTimeSlot
-      );
-    }
-  });
-});
 
 const downloadSchedule = async () => {
   try {
@@ -1362,31 +1177,16 @@ const downloadSchedule = async () => {
     const scheduleTotalSpan = document.getElementById("schedule-total-span");
     const currentSchedule = Number(scheduleTotalSpan.innerHTML.split(" ")[1]);
     const b64img = canvas.toDataURL("image/png");
-    let anchor = document.createElement("a");
-    anchor.href = b64img;
-    anchor.download = `schedule-${currentSchedule}.png`;
+    const anchor = createElement("a", {
+      href: b64img,
+      download: `schedule-${currentSchedule}.png`,
+    });
     anchor.click();
     anchor.remove();
     URL.revokeObjectURL(b64img);
-    const alertBox = document.getElementById("alertBox");
-    alertBox.style.backgroundColor = "#ccc";
-    alertBox.style.color = "#1a1a1a";
-    alertBox.style.display = "block";
-    alertBox.innerHTML = "Schedule downloaded";
-    setTimeout(() => {
-      alertBox.innerHTML = "";
-      alertBox.style.display = "none";
-    }, 5000);
+    displayAlert("Schedule downloaded");
   } catch (err) {
-    const alertBox = document.getElementById("alertBox");
-    alertBox.style.backgroundColor = "#ccc";
-    alertBox.style.color = "#1a1a1a";
-    alertBox.style.display = "block";
-    alertBox.innerHTML = "Downloading failed, please try again later";
-    setTimeout(() => {
-      alertBox.innerHTML = "";
-      alertBox.style.display = "none";
-    }, 5000);
+    displayAlert("Downloading failed, please try again later");
   }
 };
 const copyCRNs = () => {
@@ -1401,13 +1201,36 @@ const copyCRNs = () => {
   });
   const crnsString = crns.join(", ");
   navigator.clipboard.writeText(crnsString);
-  const alertBox = document.getElementById("alertBox");
-  alertBox.style.backgroundColor = "#ccc";
-  alertBox.style.color = "#1a1a1a";
-  alertBox.style.display = "block";
-  alertBox.innerHTML = "CRNs copied to clipboard";
-  setTimeout(() => {
-    alertBox.innerHTML = "";
-    alertBox.style.display = "none";
-  }, 5000);
+  displayAlert("CRNs copied to clipboard");
 };
+
+window.addEventListener("resize", () => {
+  const schedulediv = document.getElementById("schedule-body");
+  if (schedulediv == null) {
+    return;
+  }
+  const timeItems = document.querySelectorAll(".schedule-time-item");
+  if (timeItems.length === 0) {
+    return;
+  }
+  const scheduleTotalHeader = document.getElementById("schedule-total-header");
+  if (!scheduleTotalHeader.checkVisibility()) {
+    return;
+  }
+
+  const scheduleTotalSpan = document.getElementById("schedule-total-span");
+  if (scheduleTotalSpan == null) {
+    return;
+  }
+  const currentSchedule = Number(scheduleTotalSpan.innerHTML.split(" ")[1]);
+  renderSchedule(currentSchedule - 1);
+});
+
+const subjectsElements = document.querySelectorAll(".subject");
+subjectsElements.forEach((element) => {
+  element.addEventListener("change", (e) => {
+    e.stopPropagation();
+    fillCodes(courses, e.target.parentNode.querySelector(".code"));
+    calculateCredits();
+  });
+});

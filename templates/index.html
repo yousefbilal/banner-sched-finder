@@ -147,7 +147,12 @@
         id="historyBtn"
       />
     </div>
-    <div class="schedule-total-header" id="schedule-total-header"></div>
+    <div class="schedule-total-header" id="schedule-total-header"> 
+      <input type="button" value="x" class="inputBtn backToFormBtn" onclick="backToForm()"/> 
+      <i class="fa-solid fa-arrow-left" onclick ="goPreviousSchedule()"></i>
+      <span class="schedule-total-span" id="schedule-total-span"></span>
+      <i class="fa-solid fa-arrow-right" onclick="goNextSchedule()"></i>
+    </div>
     <div class="schedules">
       <div class="schedule-container" id="schedule-container">
         <div class="schedule-header">
