@@ -134,8 +134,40 @@ const createCourseOption = (course) => {
   return option;
 };
 
+const createEditEntry = (subject, code) => {
+  const editEntry = createElement("div", { class: "editEntry" });
+  const editPanelSectionLabel = createElement(
+    "label",
+    { class: "formLabel" },
+    "Section"
+  );
+  const editPanelSection = createElement("select", {
+    name: "section",
+    class: "input sectionSelect",
+  });
+  // any
+  const optionAny = createElement("option", { value: "Any" }, "Any");
+  editPanelSection.appendChild(optionAny);
+  courses.forEach((course) => {
+    if (course.subject === subject && course.code === code) {
+      const option = createCourseOption(course);
+      editPanelSection.appendChild(option);
+    }
+  });
+  const deleteButton = createElement("input", {
+    type: "button",
+    value: "x",
+    class: "inputBtn deleteBtn",
+  });
+  deleteButton.onclick = (event) => {
+    deleteSection(event);
+  };
+  [editPanelSectionLabel, editPanelSection, deleteButton].forEach((element) => {
+    editEntry.appendChild(element);
+  });
+  return editEntry;
+};
 // --------------------------------------
-
 const fillSubjects = async (subjects, element) => {
   try {
     if (!subjects) {
@@ -175,28 +207,7 @@ const checkEditForm = (courses, element) => {
     "data-entry-subject": subject,
     "data-entry-code": code,
   });
-
-  const editEntry = document.createElement("div");
-  editEntry.className = "editEntry";
-  const editPanelSectionLabel = createElement(
-    "label",
-    { class: "formLabel" },
-    "Section"
-  );
-  const editPanelSection = createElement("select", {
-    name: "section",
-    class: "input sectionSelect",
-  });
-  // any
-  const optionAny = createElement("option", { value: "Any" }, "Any");
-  editPanelSection.appendChild(optionAny);
-
-  courses.forEach((course) => {
-    if (course.subject === subject && course.code === code) {
-      const option = createCourseOption(course);
-      editPanelSection.appendChild(option);
-    }
-  });
+  const editEntry = createEditEntry(subject, code);
   const addButton = createElement("input", {
     type: "button",
     value: "+",
@@ -205,19 +216,6 @@ const checkEditForm = (courses, element) => {
   addButton.onclick = (event) => {
     addSection(event);
   };
-
-  const deleteButton = createElement("input", {
-    type: "button",
-    value: "x",
-    class: "inputBtn deleteBtn",
-  });
-  deleteButton.onclick = (event) => {
-    deleteSection(event);
-  };
-
-  [editPanelSectionLabel, editPanelSection, deleteButton].forEach((element) => {
-    editEntry.appendChild(element);
-  });
 
   const editFormSave = createElement("input", {
     type: "button",
@@ -337,7 +335,6 @@ const calculateCredits = () => {
   const creditsSpan = document.getElementById("credit-hours");
   creditsSpan.innerText = sum;
 };
-
 // ------------------------------
 const addEntry = (e) => {
   const entry = createElement("div", { class: "entry" });
@@ -450,26 +447,8 @@ const editEntry = (e) => {
     });
     entry.setAttribute("data-id", randomid);
     form.style.display = "none";
-    const editEntry = createElement("div", { class: "editEntry" });
-    const editPanelSectionLabel = createElement(
-      "label",
-      { class: "formLabel" },
-      "Section"
-    );
-    const editPanelSection = createElement("select", {
-      name: "section",
-      class: "input sectionSelect",
-    });
-    // any
-    const optionAny = createElement("option", { value: "Any" }, "Any");
-    editPanelSection.appendChild(optionAny);
 
-    courses.forEach((course) => {
-      if (course.subject === subject && course.code === code) {
-        const option = createCourseOption(course);
-        editPanelSection.appendChild(option);
-      }
-    });
+    const editEntry = createEditEntry(subject, code);
 
     const addButton = createElement("input", {
       type: "button",
@@ -479,21 +458,6 @@ const editEntry = (e) => {
     addButton.onclick = (event) => {
       addSection(event);
     };
-
-    const deleteButton = createElement("input", {
-      type: "button",
-      value: "x",
-      class: "inputBtn deleteBtn",
-    });
-    deleteButton.onclick = (event) => {
-      deleteSection(event);
-    };
-
-    [editPanelSectionLabel, editPanelSection, deleteButton].forEach(
-      (element) => {
-        editEntry.appendChild(element);
-      }
-    );
 
     const editFormSave = createElement("input", {
       type: "button",
@@ -520,36 +484,7 @@ const addSection = (e) => {
   const subject = formContainer.getAttribute("data-entry-subject");
   const code = formContainer.getAttribute("data-entry-code");
   // add section entry
-  const editEntry = createElement("div", { class: "editEntry" });
-  const editPanelSectionLabel = createElement(
-    "label",
-    { class: "formLabel" },
-    "Section"
-  );
-  const editPanelSection = createElement("select", {
-    name: "section",
-    class: "input sectionSelect",
-  });
-  // any
-  const optionAny = createElement("option", { value: "Any" }, "Any");
-  editPanelSection.appendChild(optionAny);
-  courses.forEach((course) => {
-    if (course.subject === subject && course.code === code) {
-      const option = createCourseOption(course);
-      editPanelSection.appendChild(option);
-    }
-  });
-  const deleteButton = createElement("input", {
-    type: "button",
-    value: "x",
-    class: "inputBtn deleteBtn",
-  });
-  deleteButton.onclick = (event) => {
-    deleteSection(event);
-  };
-  [editPanelSectionLabel, editPanelSection, deleteButton].forEach((element) => {
-    editEntry.appendChild(element);
-  });
+  const editEntry = createEditEntry(subject, code);
   // add it third to last child
   formContainer.insertBefore(
     editEntry,
