@@ -36,6 +36,16 @@ class Course:
             return True, [i for i in re.findall("Sec\.([0-9]+)", course_name)]
         return False, []
 
+    def to_dict(self):
+        return {
+            "course_code": self.course_code,
+            "crn": self.crn,
+            "section": self.section,
+            "time": self.time,
+            "days": self.days,
+            "instructor": self.instructor,
+        }
+
 
 @dataclass
 class Lab(Course):

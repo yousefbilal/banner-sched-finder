@@ -22,6 +22,13 @@ class Schedule:
     min_hour: str
     max_hour: str
 
+    def to_dict(self):
+        return {
+            "courses_list": [course.to_dict() for course in self.courses_list],
+            "min_hour": self.min_hour,
+            "max_hour": self.max_hour,
+        }
+
     # def draw_schedule(self):
 
     #     min_time = min([i.time[0] for i in self.courses_list])

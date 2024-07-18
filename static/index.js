@@ -321,7 +321,6 @@ const initalDisplayOfCourses = async () => {
   }
 };
 
-document.addEventListener("DOMContentLoaded", initalDisplayOfCourses);
 const calculateCredits = () => {
   const selectedCoursesEntries = Array.from(
     document.querySelectorAll(".entry")
@@ -557,10 +556,12 @@ const addSection = (e) => {
     formContainer.childNodes[formContainer.childNodes.length - 2]
   );
 };
+
 const deleteSection = (e) => {
   const sectionEntry = e.target.parentNode;
   sectionEntry.remove();
 };
+
 const displayAdvancedOptions = () => {
   const formContainer = document.getElementById("form-container");
   const form = document.getElementById("form");
@@ -708,6 +709,7 @@ const displayAdvancedOptions = () => {
   formContainer.appendChild(advancedOptionsForm);
   form.style.display = "none";
 };
+
 const addBreakEntry = (e) => {
   const advancedOptionsForm = e.target.parentNode.parentNode.parentNode;
   const advancedEntryThree = createElement("div", { class: "advancedEntry" });
@@ -846,10 +848,6 @@ const renderSchedule = (scheduleIndex) => {
   });
   const scheduleTotalSpan = document.getElementById("schedule-total-span");
   scheduleTotalSpan.innerText = ` ${scheduleIndex + 1} of ${schedules.length}`;
-  // const scheduleContainer = document.getElementById("schedule-container");
-  // scheduleContainer.style.visibility = "visible";
-  // const scheduleExtra = document.getElementById("schedule-extra");
-  // scheduleExtra.style.visibility = "visible";
 };
 
 const generateScheduleDOM = async (e) => {
@@ -1116,23 +1114,18 @@ const positionScheduleEntry = (element, heightOfOneHourTimeSlot) => {
     console.log(e.message);
   }
 };
+
 const goPreviousSchedule = () => {
   //current schedule
   const scheduleTotalSpan = document.getElementById("schedule-total-span");
   const currentSchedule = Number(scheduleTotalSpan.innerHTML.split(" ")[1]);
   let previousSchedule = currentSchedule - 2;
   if (previousSchedule < 0) {
-    previousSchedule = totalSchedules - 1;
+    previousSchedule = schedules.length - 1;
   }
   renderSchedule(previousSchedule);
-
-  // scheduleTotalSpan.innerHTML =
-  //   " " + previousSchedule + " of " + totalSchedules;
-  // const scheduleContainer = document.getElementById("schedule-container");
-  // scheduleContainer.style.visibility = "visible";
-  // const scheduleExtra = document.getElementById("schedule-extra");
-  // scheduleExtra.style.visibility = "visible";
 };
+
 const goNextSchedule = () => {
   //current schedule
   const scheduleTotalSpan = document.getElementById("schedule-total-span");
@@ -1143,11 +1136,8 @@ const goNextSchedule = () => {
   }
   //remove current schedule
   renderSchedule(nextSchedule);
-  // const scheduleContainer = document.getElementById("schedule-container");
-  // scheduleContainer.style.visibility = "visible";
-  // const scheduleExtra = document.getElementById("schedule-extra");
-  // scheduleExtra.style.visibility = "visible";
 };
+
 const backToForm = () => {
   const schedulediv = document.getElementById("schedule-body");
   schedulediv.innerHTML = "";
@@ -1189,6 +1179,7 @@ const downloadSchedule = async () => {
     displayAlert("Downloading failed, please try again later");
   }
 };
+
 const copyCRNs = () => {
   const scheduleTotalSpan = document.getElementById("schedule-total-span");
   const currentSchedule = Number(scheduleTotalSpan.innerHTML.split(" ")[1]);
@@ -1203,6 +1194,8 @@ const copyCRNs = () => {
   navigator.clipboard.writeText(crnsString);
   displayAlert("CRNs copied to clipboard");
 };
+
+document.addEventListener("DOMContentLoaded", initalDisplayOfCourses);
 
 window.addEventListener("resize", () => {
   const schedulediv = document.getElementById("schedule-body");

@@ -247,7 +247,10 @@ def generatedom(user_id):
         if len(all_schedules) == 0:
             return jsonify({"message": "no schedules found"}), 400
 
-        return jsonify({"schedules": all_schedules}), 200
+        return (
+            jsonify({"schedules": [schedule.to_dict() for schedule in all_schedules]}),
+            200,
+        )
 
 
 @app.route("/getHistory", methods=["GET"])
@@ -271,7 +274,7 @@ def clearHistory(user_id):
 
 
 if __name__ == "__main__":
-    # app.run(debug=True, port=8080)
-    from waitress import serve
+    app.run(debug=True, port=8080)
+        # from waitress import serve
 
-    serve(app, host="0.0.0.0", port=8080, threads=100)
+        # serve(app, host="0.0.0.0", port=8080, threads=100)
