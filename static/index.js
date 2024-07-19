@@ -788,7 +788,6 @@ const renderSchedule = (scheduleIndex) => {
 const generateSchedules = async (selectedCourses, breaks, noClosedCourses) => {
   controller = new AbortController();
   const signal = controller.signal;
-
   const response = await fetch("/generateScheduleDOM", {
     method: "POST",
     headers: {
@@ -808,20 +807,19 @@ const generateSchedules = async (selectedCourses, breaks, noClosedCourses) => {
     const decoder = new TextDecoder("utf-8");
     let buffer = "";
     let isFirstChunk = true;
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) {
-        if (isFirstChunk) throw new Error("No schedules found");
-        break;
-      }
-      isFirstChunk = false;
-      buffer += decoder.decode(value, { stream: true });
-      let chunks = buffer.split("\n");
-      buffer = chunks.pop(); // Keep the incomplete part
-      for (const chunk of chunks) {
-        const trimmed = chunk.trim();
-        if (trimmed) {
-          const json = JSON.parse(trimmed);
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) {
+          if (isFirstChunk) throw new Error("No schedules found");
+          break;
+        }
+        isFirstChunk = false;
+        buffer += decoder.decode(value, { stream: true });
+        let chunks = buffer.split("\n");
+        buffer = chunks.pop(); // Keep the incomplete part
+        for (const chunk of chunks) {
+          const json = JSON.parse(chunk);
           schedules.push(json);
           const scheduleTotalSpan = document.getElementById(
             "schedule-total-span"
@@ -848,6 +846,8 @@ const generateSchedules = async (selectedCourses, breaks, noClosedCourses) => {
           }
         }
       }
+    } catch (e) {
+      //swallow the abortion error
     }
   }
 };
@@ -1112,6 +1112,7 @@ const goNextSchedule = () => {
 };
 
 const backToForm = () => {
+  if (controller) controller.abort();
   const schedulediv = document.getElementById("schedule-body");
   schedulediv.innerHTML = "";
   const formContainer = document.getElementById("form-container");

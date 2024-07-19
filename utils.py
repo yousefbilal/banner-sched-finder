@@ -3,17 +3,6 @@ from course import *
 from datetime import datetime
 from typing import Iterator
 import json
-import time
-
-# def find_course(courses, title):
-#     '''the first return value represents whether a course exists
-#         given the course title, and return True if the course found is a lab
-#         as the second return value
-#         Note: I treated labs with no lecture as a lecture and the "and" check is for that reason'''
-#     for course in courses:
-#         if course == title:
-#             return True, title[-1] == 'R' or (title[-1] == 'L' and title[:-1] in courses)
-#     return False, False
 
 
 def generate_scheds(
@@ -70,5 +59,10 @@ def generate_scheds(
 
     max_time = datetime(1, 1, 1, 0, 0)
     min_time = datetime(9999, 1, 1, 0, 0)
-    for schedule in helper(lectures, labs, [], min_time, max_time):
-        yield json.dumps(schedule.to_dict(), default=str) + "\n"
+    try:
+        for schedule in helper(lectures, labs, [], min_time, max_time):
+            yield json.dumps(schedule.to_dict(), default=str) + "\n"
+    except GeneratorExit:
+        print("Client closed the connection")
+    except Exception as e:
+        print(f"An error occurred: {e}")
