@@ -79,7 +79,7 @@ const colors = [
   "#2980B9", // Light Blue
   "#27AE60", // Light Green
 ];
-
+let controller;
 //Utility functions
 const displayAlert = (message) => {
   const alertBox = document.getElementById("alertBox");
@@ -782,7 +782,74 @@ const renderSchedule = (scheduleIndex) => {
     }
   });
   const scheduleTotalSpan = document.getElementById("schedule-total-span");
-  scheduleTotalSpan.innerText = ` ${scheduleIndex + 1} of ${schedules.length}`;
+  scheduleTotalSpan.innerText = `${scheduleIndex + 1} of ${schedules.length}`;
+};
+
+const generateSchedules = async (selectedCourses, breaks, noClosedCourses) => {
+  controller = new AbortController();
+  const signal = controller.signal;
+
+  const response = await fetch("/generateScheduleDOM", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("token"),
+    },
+    body: JSON.stringify({
+      selectedCourses,
+      breaks,
+      noClosedCourses,
+    }),
+    signal: signal,
+  });
+  if (response.ok) {
+    schedules = [];
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder("utf-8");
+    let buffer = "";
+    let isFirstChunk = true;
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) {
+        if (isFirstChunk) throw new Error("No schedules found");
+        break;
+      }
+      isFirstChunk = false;
+      buffer += decoder.decode(value, { stream: true });
+      let chunks = buffer.split("\n");
+      buffer = chunks.pop(); // Keep the incomplete part
+      for (const chunk of chunks) {
+        const trimmed = chunk.trim();
+        if (trimmed) {
+          const json = JSON.parse(trimmed);
+          schedules.push(json);
+          const scheduleTotalSpan = document.getElementById(
+            "schedule-total-span"
+          );
+          scheduleTotalSpan.innerText = scheduleTotalSpan.innerText.replace(
+            /\d+$/,
+            schedules.length
+          );
+          if (schedules.length === 1) {
+            renderSchedule(0);
+            const scheduleContainer =
+              document.getElementById("schedule-container");
+            scheduleContainer.style.visibility = "visible";
+            const scheduleExtra = document.getElementById("schedule-extra");
+            scheduleExtra.style.visibility = "visible";
+            const formContainer = document.getElementById("form-container");
+            formContainer.style.display = "none";
+            const scheduleTotalHeader = document.getElementById(
+              "schedule-total-header"
+            );
+            scheduleTotalHeader.style.display = "flex";
+            historyBtn.style.display = "none";
+            displayAlert("Schedules generated");
+          }
+        }
+      }
+    }
+  }
 };
 
 const generateScheduleDOM = async (e) => {
@@ -882,36 +949,7 @@ const generateScheduleDOM = async (e) => {
     if (selectedCoursesArray.length === 0) {
       throw new Error("Please add at least one course");
     }
-    const response = await fetch("/generateScheduleDOM", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
-      body: JSON.stringify({
-        selectedCoursesArray,
-        breaks,
-        noClosedCourses: noClosedCourses,
-      }),
-    });
-    const data = await response.json();
-    schedules = data.schedules;
-    if (!schedules || schedules.length === 0) {
-      throw new Error("No schedules found");
-    }
-    renderSchedule(0);
-    const scheduleContainer = document.getElementById("schedule-container");
-    scheduleContainer.style.visibility = "visible";
-    const scheduleExtra = document.getElementById("schedule-extra");
-    scheduleExtra.style.visibility = "visible";
-    const formContainer = document.getElementById("form-container");
-    formContainer.style.display = "none";
-    const scheduleTotalHeader = document.getElementById(
-      "schedule-total-header"
-    );
-    scheduleTotalHeader.style.display = "flex";
-    historyBtn.style.display = "none";
-    displayAlert("Schedules generated");
+    await generateSchedules(selectedCoursesArray, breaks, noClosedCourses);
   } catch (e) {
     console.log(e.message);
     displayAlert(e.message);
@@ -1053,7 +1091,7 @@ const positionScheduleEntry = (element, heightOfOneHourTimeSlot) => {
 const goPreviousSchedule = () => {
   //current schedule
   const scheduleTotalSpan = document.getElementById("schedule-total-span");
-  const currentSchedule = Number(scheduleTotalSpan.innerHTML.split(" ")[1]);
+  const currentSchedule = Number(scheduleTotalSpan.innerHTML.split(" ")[0]);
   let previousSchedule = currentSchedule - 2;
   if (previousSchedule < 0) {
     previousSchedule = schedules.length - 1;
@@ -1064,7 +1102,7 @@ const goPreviousSchedule = () => {
 const goNextSchedule = () => {
   //current schedule
   const scheduleTotalSpan = document.getElementById("schedule-total-span");
-  const currentSchedule = Number(scheduleTotalSpan.innerHTML.split(" ")[1]);
+  const currentSchedule = Number(scheduleTotalSpan.innerHTML.split(" ")[0]);
   let nextSchedule = currentSchedule; //zero indexing
   if (currentSchedule >= schedules.length) {
     nextSchedule = 0;
@@ -1100,7 +1138,7 @@ const downloadSchedule = async () => {
     );
 
     const scheduleTotalSpan = document.getElementById("schedule-total-span");
-    const currentSchedule = Number(scheduleTotalSpan.innerHTML.split(" ")[1]);
+    const currentSchedule = Number(scheduleTotalSpan.innerHTML.split(" ")[0]);
     const b64img = canvas.toDataURL("image/png");
     const anchor = createElement("a", {
       href: b64img,
@@ -1117,7 +1155,7 @@ const downloadSchedule = async () => {
 
 const copyCRNs = () => {
   const scheduleTotalSpan = document.getElementById("schedule-total-span");
-  const currentSchedule = Number(scheduleTotalSpan.innerHTML.split(" ")[1]);
+  const currentSchedule = Number(scheduleTotalSpan.innerHTML.split(" ")[0]);
   const crns = [];
   schedules[currentSchedule - 1].courses_list.forEach((scheduleEntry) => {
     if (scheduleEntry.course_code === "BREAK") {
@@ -1150,7 +1188,7 @@ window.addEventListener("resize", () => {
   if (scheduleTotalSpan == null) {
     return;
   }
-  const currentSchedule = Number(scheduleTotalSpan.innerHTML.split(" ")[1]);
+  const currentSchedule = Number(scheduleTotalSpan.innerHTML.split(" ")[0]);
   renderSchedule(currentSchedule - 1);
 });
 

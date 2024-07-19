@@ -41,7 +41,7 @@ class Course:
             "course_code": self.course_code,
             "crn": self.crn,
             "section": self.section,
-            "time": self.time,
+            "time": [t.strftime("%a, %d %b %Y %H:%M:%S GMT") for t in self.time],
             "days": self.days,
             "instructor": self.instructor,
         }

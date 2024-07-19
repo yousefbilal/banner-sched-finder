@@ -1,13 +1,16 @@
 from course import *
 from utils import *
 import os
-import io
-import base64
-
-# import jwt
 import uuid
 from functools import wraps
-from flask import Flask, jsonify, render_template, request
+from flask import (
+    Flask,
+    jsonify,
+    render_template,
+    request,
+    stream_with_context,
+    Response,
+)
 
 # mongo db
 from pymongo.mongo_client import MongoClient
@@ -53,7 +56,7 @@ adminProjection = {"_id": 0, "datetime": 1, "semester": 1}
 # end of mongo db
 
 
-def generateHelper(selectedCoursesArray, breaks, noClosedCourses):
+def prepare_courses(selectedCoursesArray, breaks, noClosedCourses):
     try:
         lectures_list = []
         lectures_dict = dict()
@@ -135,15 +138,8 @@ def generateHelper(selectedCoursesArray, breaks, noClosedCourses):
                     )
                 ]
             )
-        all_schedules = generate_scheds(lectures_list, labs_dict)
-        # if (len(all_schedules) == 0):
-        #     return all_schedules
-        # print(all_schedules)
-        # insert the schedules into the database
-        # schedulesCollection.insert_one(
-        #     {"courses": selectedCoursesArrayString, "schedules": all_schedules.to_dict()})
+        return lectures_list, labs_dict
 
-        return all_schedules
     except Exception as e:
         print(e)
         return []
@@ -207,14 +203,14 @@ def generatedom(user_id):
     if request.method == "POST":
         data = request.get_json()
         print(data)
-        selectedCoursesArray = data["selectedCoursesArray"]
+        selectedCourses = data["selectedCourses"]
         breaks = data["breaks"]
         noClosedCourses = data["noClosedCourses"]
         # history save
         entry = historyCollection.find_one(
             {
                 "id": user_id,
-                "courses": selectedCoursesArray,
+                "courses": selectedCourses,
                 "constraints": {"breaks": breaks, "noClosedCourses": noClosedCourses},
             }
         )
@@ -222,7 +218,7 @@ def generatedom(user_id):
             historyCollection.insert_one(
                 {
                     "id": user_id,
-                    "courses": selectedCoursesArray,
+                    "courses": selectedCourses,
                     "constraints": {
                         "breaks": breaks,
                         "noClosedCourses": noClosedCourses,
@@ -234,7 +230,7 @@ def generatedom(user_id):
             historyCollection.update_one(
                 {
                     "id": user_id,
-                    "courses": selectedCoursesArray,
+                    "courses": selectedCourses,
                     "constraints": {
                         "breaks": breaks,
                         "noClosedCourses": noClosedCourses,
@@ -243,13 +239,13 @@ def generatedom(user_id):
                 {"$set": {"datetime": datetime.utcnow()}},
             )
         # end of history save
-        all_schedules = generateHelper(selectedCoursesArray, breaks, noClosedCourses)
-        if len(all_schedules) == 0:
-            return jsonify({"message": "no schedules found"}), 400
+        lectures_list, labs_dict = prepare_courses(
+            selectedCourses, breaks, noClosedCourses
+        )
 
-        return (
-            jsonify({"schedules": [schedule.to_dict() for schedule in all_schedules]}),
-            200,
+        return Response(
+            stream_with_context(generate_scheds(lectures_list, labs_dict)),
+            content_type="application/json",
         )
 
 
@@ -275,6 +271,6 @@ def clearHistory(user_id):
 
 if __name__ == "__main__":
     app.run(debug=True, port=8080)
-        # from waitress import serve
+    # from waitress import serve
 
-        # serve(app, host="0.0.0.0", port=8080, threads=100)
+    # serve(app, host="0.0.0.0", port=8080, threads=100)

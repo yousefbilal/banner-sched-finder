@@ -1,6 +1,9 @@
 from schedule import Schedule
 from course import *
 from datetime import datetime
+from typing import Iterator
+import json
+import time
 
 # def find_course(courses, title):
 #     '''the first return value represents whether a course exists
@@ -15,21 +18,18 @@ from datetime import datetime
 
 def generate_scheds(
     lectures: list[list[Lecture]], labs: dict[str, list[Lab]]
-) -> list[Schedule]:
+) -> Iterator[str]:
 
     def helper(
         lectures: list[list[Lecture]],
         labs: dict[str, list[Lab]],
         current_schedule: list[Course],
-        all_schedules: list[Schedule],
         min_time: datetime,
         max_time: datetime,
-    ) -> list[Schedule]:
+    ) -> Iterator[Schedule]:
         if not lectures:  # if lectures is empty
-            all_schedules.append(
-                Schedule(
-                    current_schedule[:], f"{min_time.hour}:00", f"{max_time.hour+1}:00"
-                )
+            yield Schedule(
+                current_schedule[:], f"{min_time.hour}:00", f"{max_time.hour+1}:00"
             )
             return
 
@@ -50,21 +50,19 @@ def generate_scheds(
                             current_schedule.append(lab)
                             cmin_time = min(cmin_time, lab.time[0])
                             cmax_time = max(cmax_time, lab.time[1])
-                            helper(
+                            yield from helper(
                                 lectures[1:],
                                 labs,
                                 current_schedule,
-                                all_schedules,
                                 cmin_time,
                                 cmax_time,
                             )
                             current_schedule.pop()
                 else:
-                    helper(
+                    yield from helper(
                         lectures[1:],
                         labs,
                         current_schedule,
-                        all_schedules,
                         cmin_time,
                         cmax_time,
                     )
@@ -72,7 +70,5 @@ def generate_scheds(
 
     max_time = datetime(1, 1, 1, 0, 0)
     min_time = datetime(9999, 1, 1, 0, 0)
-
-    all_scheds = []
-    helper(lectures, labs, [], all_scheds, min_time, max_time)
-    return all_scheds
+    for schedule in helper(lectures, labs, [], min_time, max_time):
+        yield json.dumps(schedule.to_dict(), default=str) + "\n"
