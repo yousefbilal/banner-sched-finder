@@ -1,0 +1,7 @@
+*
+!static/
+!templates/
+!course.py
+!app.py
+!utils.py
+!requirements.txt

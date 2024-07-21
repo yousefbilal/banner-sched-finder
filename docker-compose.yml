@@ -1,0 +1,15 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+networks:
+  default:
+    external: true
+    name: nginx-network

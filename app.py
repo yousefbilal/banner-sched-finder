@@ -14,10 +14,13 @@ from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from course import Course, Lecture, Lab
 from utils import generate_schedules
+from dotenv import load_dotenv
 
+load_dotenv(".env")
 app = Flask(__name__)
 # mongo db
-uri = os.environ.get("MONGODB_URI")
+
+uri = os.getenv("MONGODB_URI")
 # Create a new client and connect to the server
 client = MongoClient(uri, server_api=ServerApi("1"))
 # Send a ping to confirm a successful connection
