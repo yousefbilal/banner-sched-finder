@@ -1,14 +1,12 @@
-from schedule import Schedule
-from course import *
+from course import Course, Lecture, Lab, Schedule
 from datetime import datetime
 from typing import Iterator
 import json
 
 
-def generate_scheds(
+def generate_schedules(
     lectures: list[list[Lecture]], labs: dict[str, list[Lab]]
 ) -> Iterator[str]:
-
     def helper(
         lectures: list[list[Lecture]],
         labs: dict[str, list[Lab]],
@@ -23,7 +21,6 @@ def generate_scheds(
             return
 
         for lecture in lectures[0]:
-
             if not lecture.is_conflicting(current_schedule):
                 current_schedule.append(lecture)
                 if lecture.course_code != "BREAK":

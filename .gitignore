@@ -160,13 +160,7 @@ cython_debug/
 #.idea/
 
 py311/
-py310/
 
-testing
-
-input.txt
-output
-*.png
 hidden.py
 
 .vscode

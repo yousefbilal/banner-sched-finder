@@ -1,5 +1,4 @@
-from course import *
-from utils import *
+from datetime import datetime
 import os
 import uuid
 from functools import wraps
@@ -11,14 +10,13 @@ from flask import (
     stream_with_context,
     Response,
 )
-
-# mongo db
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
+from course import Course, Lecture, Lab
+from utils import generate_schedules
 
 app = Flask(__name__)
 # mongo db
-
 uri = os.environ.get("MONGODB_URI")
 # Create a new client and connect to the server
 client = MongoClient(uri, server_api=ServerApi("1"))
@@ -214,7 +212,7 @@ def generatedom(user_id):
                 "constraints": {"breaks": breaks, "noClosedCourses": noClosedCourses},
             }
         )
-        if entry == None:
+        if entry is None:
             historyCollection.insert_one(
                 {
                     "id": user_id,
@@ -244,7 +242,7 @@ def generatedom(user_id):
         )
 
         return Response(
-            stream_with_context(generate_scheds(lectures_list, labs_dict)),
+            stream_with_context(generate_schedules(lectures_list, labs_dict)),
             content_type="application/json",
         )
 

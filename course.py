@@ -14,7 +14,7 @@ class Course:
     is_required_with_section: bool
     required_sections: list
 
-    def is_conflicting(self, current_sched: list):
+    def is_conflicting(self, current_sched: list) -> bool:
         for course in current_sched:
             same_day = False
             for day in self.days:
@@ -30,13 +30,13 @@ class Course:
         return False
 
     @staticmethod
-    def find_required_sections(course_name):
+    def find_required_sections(course_name) -> tuple[bool, list[str]]:
         if "Take it with" in course_name:
             # the regex pattern returns a list of section numbers
             return True, [i for i in re.findall("Sec\.([0-9]+)", course_name)]
         return False, []
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return {
             "course_code": self.course_code,
             "crn": self.crn,
@@ -49,7 +49,7 @@ class Course:
 
 @dataclass
 class Lab(Course):
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Lab({self.course_code} - {self.section} - {self.crn} - {self.days} - {self.time} - {self.instructor})"
 
 
@@ -58,13 +58,6 @@ class Lecture(Course):
     has_lab: bool
     is_required_with_section: bool
     required_sections: list
-    # def __init__(self, course_code, crn, section, time, days, instructor, courses_list, is_required_with_section, required_sections):
-    #     super().__init__(course_code,crn, section, time,days, instructor, is_required_with_section, required_sections)
-    #     self.has_lab = False
-    #     for course in courses_list:
-    #         if self.course_code + 'L' == course or self.course_code + 'R' == course:
-    #             self.has_lab = True
-    #             break
 
     def get_available_labs(self, lab_dict: dict[str, list[Lab]]) -> list[Lab]:
         available_labs = []
@@ -79,12 +72,12 @@ class Lecture(Course):
                 available_labs.append(lab)
         return available_labs
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Lecture({self.course_code} - {self.section} - {self.crn} - {self.days} - {self.time} - {self.instructor})"
 
     @classmethod
-    def createBreak(cls, start_time, end_time, days):
-        return Lecture(
+    def createBreak(cls, start_time, end_time, days) -> "Lecture":
+        return cls(
             "BREAK",
             "",
             "",
@@ -111,13 +104,13 @@ class Lecture(Course):
         courses_list,
         is_required_with_section,
         required_sections,
-    ):
+    ) -> "Lecture":
         has_lab = False
         for course in courses_list:
             if course_code + "L" == course or course_code + "R" == course:
                 has_lab = True
                 break
-        return Lecture(
+        return cls(
             course_code,
             crn,
             section,
@@ -128,3 +121,17 @@ class Lecture(Course):
             required_sections,
             has_lab,
         )
+
+
+@dataclass(slots=True)
+class Schedule:
+    courses_list: list[Course]
+    min_hour: str
+    max_hour: str
+
+    def to_dict(self) -> dict:
+        return {
+            "courses_list": [course.to_dict() for course in self.courses_list],
+            "min_hour": self.min_hour,
+            "max_hour": self.max_hour,
+        }
