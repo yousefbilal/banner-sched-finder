@@ -10,10 +10,8 @@ from flask import (
     stream_with_context,
     Response,
 )
-from pymongo.mongo_client import MongoClient
-from pymongo.server_api import ServerApi
 from course import Course, Lecture, Lab
-from utils import generate_schedules
+from utils import generate_schedules, init_db
 from dotenv import load_dotenv
 
 load_dotenv(".env")
@@ -21,39 +19,12 @@ app = Flask(__name__)
 # mongo db
 
 uri = os.getenv("MONGODB_URI")
-# Create a new client and connect to the server
-client = MongoClient(uri, server_api=ServerApi("1"))
-# Send a ping to confirm a successful connection
-try:
-    client.admin.command("ping")
-    print("Successfully connected to MongoDB!")
-except Exception as e:
-    print(e)
-
-# Get the database
-db = client.get_database("banner")
-# Get the collection
-collection = db.get_collection("subjectss24")
-coursesCollection = db.get_collection("coursesf24")
-subjProjection = {"_id": 0, "subject": 1}
-projection = {
-    "_id": 0,
-    "full_name": 1,
-    "subject": 1,
-    "code": 1,
-    "credits": 1,
-    "section": 1,
-    "instructor": 1,
-    "time": 1,
-    "days": 1,
-}
-# schedulesCollection = db.get_collection('schedules')
-# schedulesProjection = {"_id": 0, "courses": 1, "schedules": 1}
-userCollection = db.get_collection("users")
-historyCollection = db.get_collection("history")
-historyProjection = {"_id": 0, "courses": 1, "constraints": 1, "datetime": 1}
-adminCollection = db.get_collection("admin")
-adminProjection = {"_id": 0, "datetime": 1, "semester": 1}
+db = init_db(uri, "banner")
+subjects_collection = db.get_collection("subjects")
+courses_collection = db.get_collection("courses")
+user_collection = db.get_collection("users")
+history_collection = db.get_collection("history")
+metadata_collection = db.get_collection("metadata")
 # end of mongo db
 
 
@@ -71,7 +42,7 @@ def prepare_courses(selectedCoursesArray, breaks, noClosedCourses):
             if dataCourse["sections"][0] != "Any":
                 for section in dataCourse["sections"]:
                     courses += list(
-                        coursesCollection.find(
+                        courses_collection.find(
                             {
                                 "code": dataCourse["code"],
                                 "subject": dataCourse["subject"],
@@ -82,7 +53,7 @@ def prepare_courses(selectedCoursesArray, breaks, noClosedCourses):
                     )
             else:
                 courses = list(
-                    coursesCollection.find(
+                    courses_collection.find(
                         {
                             "code": dataCourse["code"],
                             "subject": dataCourse["subject"],
@@ -172,24 +143,19 @@ def getCourses():
             id = str(uuid.uuid4())
             # token = jwt.encode({'id': id}, secret_key, algorithm='HS256')
             # insert the id into the database
-            userCollection.insert_one({"id": id, "datetime": datetime.utcnow()})
-        subjects = list(collection.find({}, subjProjection).sort([("subject", 1)]))
+            user_collection.insert_one({"id": id, "datetime": datetime.utcnow()})
+        subjects = list(subjects_collection.find({}, {"_id": 0}).sort([("subject", 1)]))
         courses = list(
-            coursesCollection.find({}, projection).sort(
+            courses_collection.find({}, {"_id": 0}).sort(
                 [("subject", 1), ("code", 1), ("section", 1)]
             )
         )
-        last_updated = adminCollection.find_one({}, adminProjection)["datetime"]
-        semester = adminCollection.find_one({}, adminProjection)["semester"]
+        metadata = metadata_collection.find_one(
+            {}, {"_id": 0, "last_updated": 1, "semester": 1}
+        )
         return (
             jsonify(
-                {
-                    "subjects": subjects,
-                    "courses": courses,
-                    "token": id,
-                    "last_updated": last_updated,
-                    "semester": semester,
-                }
+                {"subjects": subjects, "courses": courses, "token": id, **metadata}
             ),
             200,
         )
@@ -208,7 +174,7 @@ def generatedom(user_id):
         breaks = data["breaks"]
         noClosedCourses = data["noClosedCourses"]
         # history save
-        entry = historyCollection.find_one(
+        entry = history_collection.find_one(
             {
                 "id": user_id,
                 "courses": selectedCourses,
@@ -216,7 +182,7 @@ def generatedom(user_id):
             }
         )
         if entry is None:
-            historyCollection.insert_one(
+            history_collection.insert_one(
                 {
                     "id": user_id,
                     "courses": selectedCourses,
@@ -228,7 +194,7 @@ def generatedom(user_id):
                 }
             )
         else:
-            historyCollection.update_one(
+            history_collection.update_one(
                 {
                     "id": user_id,
                     "courses": selectedCourses,
@@ -255,7 +221,7 @@ def generatedom(user_id):
 def getHistory(user_id):
     if request.method == "GET":
         history = list(
-            historyCollection.find({"id": user_id}, historyProjection)
+            history_collection.find({"id": user_id}, {"_id": 0})
             .sort([("datetime", -1)])
             .limit(10)
         )  # limited to 10
@@ -271,7 +237,7 @@ def clearHistory(user_id):
 
 
 if __name__ == "__main__":
-    # app.run(debug=True, port=8080)
-    from waitress import serve
+    app.run(debug=True, port=8080)
+    # from waitress import serve
 
-    serve(app, host="0.0.0.0", port=8080, threads=100)
+    # serve(app, host="0.0.0.0", port=8080, threads=100)

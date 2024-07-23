@@ -272,8 +272,8 @@ const fillCodes = async (courses, element) => {
 const updateTime = (time, semester = "") => {
   const lastUpdated = document.getElementById("last-updated");
   lastUpdated.innerHTML = `*Semester : ${semester} <br/> *Courses last updated on ${
-    time.split("T")[0]
-  } ${time.split("T")[1].split(".")[0]} `;
+  new Date(time).toLocaleString()
+  }`;
 };
 
 const initalDisplayOfCourses = async () => {

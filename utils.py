@@ -2,6 +2,20 @@ from course import Course, Lecture, Lab, Schedule
 from datetime import datetime
 from typing import Iterator
 import json
+from pymongo import MongoClient
+from pymongo.server_api import ServerApi
+from pymongo.database import Database
+
+
+def init_db(uri: str, db_name: str) -> Database:
+    client = MongoClient(uri, server_api=ServerApi("1"))
+    try:
+        client.admin.command("ping")
+        print("Successfully connected to MongoDB!")
+    except Exception as e:
+        print(e)
+
+    return client.get_database(db_name)
 
 
 def generate_schedules(
