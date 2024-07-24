@@ -16,7 +16,6 @@ from dotenv import load_dotenv
 
 load_dotenv(".env")
 app = Flask(__name__)
-# mongo db
 
 uri = os.getenv("MONGODB_URI")
 db = init_db(uri, "banner")
@@ -25,7 +24,6 @@ courses_collection = db.get_collection("courses")
 user_collection = db.get_collection("users")
 history_collection = db.get_collection("history")
 metadata_collection = db.get_collection("metadata")
-# end of mongo db
 
 
 def prepare_courses(selectedCoursesArray, breaks, noClosedCourses):
@@ -36,7 +34,7 @@ def prepare_courses(selectedCoursesArray, breaks, noClosedCourses):
         selectedCoursesArrayString = [
             f"{obj['subject']} {obj['code']}" for obj in selectedCoursesArray
         ]
-        isAvailable = ["Y"] if noClosedCourses else ["Y", "N"]
+        isAvailable = [True] if noClosedCourses else [True, False]
         for dataCourse in selectedCoursesArray:
             courses = []
             if dataCourse["sections"][0] != "Any":
@@ -61,7 +59,8 @@ def prepare_courses(selectedCoursesArray, breaks, noClosedCourses):
                         }
                     )
                 )
-
+            if len(courses) == 0:
+                return [], {}
             course_code = dataCourse["subject"] + " " + dataCourse["code"]
             courses.sort(key=lambda x: x["section"])  # not always necessary
             for course in courses:
@@ -114,7 +113,7 @@ def prepare_courses(selectedCoursesArray, breaks, noClosedCourses):
 
     except Exception as e:
         print(e)
-        return []
+        return [], {}
 
 
 @app.route("/")
@@ -135,7 +134,7 @@ def get_id(f):
 
 
 @app.route("/getCourses", methods=["GET"])
-def getCourses():
+def get_courses():
     try:
         auth = request.headers.get("Authorization")
         id = None
@@ -146,9 +145,20 @@ def getCourses():
             user_collection.insert_one({"id": id, "datetime": datetime.utcnow()})
         subjects = list(subjects_collection.find({}, {"_id": 0}).sort([("subject", 1)]))
         courses = list(
-            courses_collection.find({}, {"_id": 0}).sort(
-                [("subject", 1), ("code", 1), ("section", 1)]
-            )
+            courses_collection.find(
+                {},
+                {
+                    "_id": 0,
+                    "full_name": 1,
+                    "subject": 1,
+                    "code": 1,
+                    "credits": 1,
+                    "section": 1,
+                    "instructor": 1,
+                    "time": 1,
+                    "days": 1,
+                },
+            ).sort([("subject", 1), ("code", 1), ("section", 1)])
         )
         metadata = metadata_collection.find_one(
             {}, {"_id": 0, "last_updated": 1, "semester": 1}
@@ -164,9 +174,9 @@ def getCourses():
         return jsonify({"message": "error"}), 400
 
 
-@app.route("/generateScheduleDOM", methods=["POST"])
+@app.route("/generateSchedules", methods=["POST"])
 @get_id
-def generatedom(user_id):
+def generate(user_id):
     if request.method == "POST":
         data = request.get_json()
         print(data)
@@ -209,7 +219,8 @@ def generatedom(user_id):
         lectures_list, labs_dict = prepare_courses(
             selectedCourses, breaks, noClosedCourses
         )
-
+        if len(lectures_list) == 0:
+            return jsonify({"message": "No schedules found"}), 404
         return Response(
             stream_with_context(generate_schedules(lectures_list, labs_dict)),
             content_type="application/json",
@@ -218,7 +229,7 @@ def generatedom(user_id):
 
 @app.route("/getHistory", methods=["GET"])
 @get_id
-def getHistory(user_id):
+def get_history(user_id):
     if request.method == "GET":
         history = list(
             history_collection.find({"id": user_id}, {"_id": 0})
@@ -230,7 +241,7 @@ def getHistory(user_id):
 
 @app.route("/clearHistory", methods=["POST"])
 @get_id
-def clearHistory(user_id):
+def clear_history(user_id):
     if request.method == "POST":
         db.get_collection("history").delete_many({"id": user_id})
         return jsonify({"message": "History Cleared"}), 200
@@ -238,6 +249,3 @@ def clearHistory(user_id):
 
 if __name__ == "__main__":
     app.run(debug=True, port=8080)
-    # from waitress import serve
-
-    # serve(app, host="0.0.0.0", port=8080, threads=100)

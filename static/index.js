@@ -1,6 +1,5 @@
 let subjects;
 let courses;
-let coursesWithInfo;
 let schedules;
 const timings = [
   "None",
@@ -80,27 +79,6 @@ const colors = [
   "#27AE60", // Light Green
 ];
 let controller;
-//Utility functions
-const displayAlert = (message) => {
-  const alertBox = document.getElementById("alertBox");
-  alertBox.innerText = message;
-  alertBox.style.backgroundColor = "#ccc";
-  alertBox.style.color = "#1a1a1a";
-  alertBox.style.display = "block";
-  setTimeout(() => {
-    alertBox.innerHTML = "";
-    alertBox.style.display = "none";
-  }, 5000);
-};
-
-const createElement = (elementType, attributes, innerText = "") => {
-  const element = document.createElement(elementType);
-  Object.keys(attributes).forEach((key) => {
-    element.setAttribute(key, attributes[key]);
-  });
-  if (innerText) element.innerText = innerText;
-  return element;
-};
 
 const removeEditForm = (element) => {
   const formContainer = document.getElementById("form-container");
@@ -271,9 +249,9 @@ const fillCodes = async (courses, element) => {
 
 const updateTime = (time, semester = "") => {
   const lastUpdated = document.getElementById("last-updated");
-  lastUpdated.innerHTML = `*Semester : ${semester} <br/> *Courses last updated on ${
-  new Date(time).toLocaleString()
-  }`;
+  lastUpdated.innerHTML = `*Semester : ${semester} <br/> *Courses last updated on ${new Date(
+    time
+  ).toLocaleString()}`;
 };
 
 const initalDisplayOfCourses = async () => {
@@ -284,14 +262,7 @@ const initalDisplayOfCourses = async () => {
     } else {
       token = "Bearer " + token;
     }
-    const response = await fetch("/getCourses", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-    });
-    const data = await response.json();
+    const data = await getCoursesService(token);
     if (token == "null") {
       localStorage.setItem("token", data.token);
     }
@@ -788,67 +759,64 @@ const renderSchedule = (scheduleIndex) => {
 const generateSchedules = async (selectedCourses, breaks, noClosedCourses) => {
   controller = new AbortController();
   const signal = controller.signal;
-  const response = await fetch("/generateScheduleDOM", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("token"),
-    },
-    body: JSON.stringify({
+  let reader;
+  try {
+    reader = await generateSchedulesStream(
       selectedCourses,
       breaks,
       noClosedCourses,
-    }),
-    signal: signal,
-  });
-  if (response.ok) {
-    schedules = [];
-    const reader = response.body.getReader();
-    const decoder = new TextDecoder("utf-8");
-    let buffer = "";
-    let isFirstChunk = true;
-    try {
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) {
-          if (isFirstChunk) throw new Error("No schedules found");
-          break;
-        }
-        isFirstChunk = false;
-        buffer += decoder.decode(value, { stream: true });
-        let chunks = buffer.split("\n");
-        buffer = chunks.pop(); // Keep the incomplete part
-        for (const chunk of chunks) {
-          const json = JSON.parse(chunk);
-          schedules.push(json);
-          const scheduleTotalSpan = document.getElementById(
-            "schedule-total-span"
+      signal
+    );
+  } catch (e) {
+    console.log(e.message);
+    displayAlert(e.message);
+    return;
+  }
+  schedules = [];
+  const decoder = new TextDecoder("utf-8");
+  let buffer = "";
+  let isFirstChunk = true;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) {
+        if (isFirstChunk) displayAlert("No schedules found");
+        break;
+      }
+      isFirstChunk = false;
+      buffer += decoder.decode(value, { stream: true });
+      let chunks = buffer.split("\n");
+      buffer = chunks.pop(); // Keep the incomplete part
+      for (const chunk of chunks) {
+        const json = JSON.parse(chunk);
+        schedules.push(json);
+        const scheduleTotalSpan = document.getElementById(
+          "schedule-total-span"
+        );
+        scheduleTotalSpan.innerText = scheduleTotalSpan.innerText.replace(
+          /\d+$/,
+          schedules.length
+        );
+        if (schedules.length === 1) {
+          renderSchedule(0);
+          const scheduleContainer =
+            document.getElementById("schedule-container");
+          scheduleContainer.style.visibility = "visible";
+          const scheduleExtra = document.getElementById("schedule-extra");
+          scheduleExtra.style.visibility = "visible";
+          const formContainer = document.getElementById("form-container");
+          formContainer.style.display = "none";
+          const scheduleTotalHeader = document.getElementById(
+            "schedule-total-header"
           );
-          scheduleTotalSpan.innerText = scheduleTotalSpan.innerText.replace(
-            /\d+$/,
-            schedules.length
-          );
-          if (schedules.length === 1) {
-            renderSchedule(0);
-            const scheduleContainer =
-              document.getElementById("schedule-container");
-            scheduleContainer.style.visibility = "visible";
-            const scheduleExtra = document.getElementById("schedule-extra");
-            scheduleExtra.style.visibility = "visible";
-            const formContainer = document.getElementById("form-container");
-            formContainer.style.display = "none";
-            const scheduleTotalHeader = document.getElementById(
-              "schedule-total-header"
-            );
-            scheduleTotalHeader.style.display = "flex";
-            historyBtn.style.display = "none";
-            displayAlert("Schedules generated");
-          }
+          scheduleTotalHeader.style.display = "flex";
+          historyBtn.style.display = "none";
+          displayAlert("Schedules generated");
         }
       }
-    } catch (e) {
-      //swallow the abortion error
     }
+  } catch (e) {
+    //swallow the abortion error
   }
 };
 

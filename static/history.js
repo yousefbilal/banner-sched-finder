@@ -24,39 +24,29 @@ const goToHistory = async (button) => {
 
     const historyBody = document.getElementById("history-body");
     historyBody.innerHTML = "No history found";
-    const response = await fetch("/getHistory", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
-    });
-    const data = await response.json();
+    const data = await getHistoryService();
     if (data.history.length === 0) {
       historyBody.innerHTML = "No history found";
       return;
     }
     historyBody.innerHTML = "";
     data.history.forEach((element) => {
-      const row = document.createElement("tr");
-      row.classList.add("history-entry");
-      const datetime = document.createElement("td");
-      datetime.classList.add("history-datetime");
-      const courses = document.createElement("td");
-      courses.classList.add("history-courses");
-      const month = new Date(element.datetime).getMonth() + 1;
-      const day = new Date(element.datetime).getDate();
-      const year = new Date(element.datetime).getFullYear();
-      const hour = new Date(element.datetime).getHours();
-      const minute = new Date(element.datetime).getMinutes();
+      const row = createElement("tr", { class: "history-entry" });
+      const datetime = createElement("td", { class: "history-datetime" });
+      const courses = createElement("td", { class: "history-courses" });
+      const date = new Date(element.datetime);
+      const month = date.getMonth() + 1;
+      const day = date.getDate();
+      const year = date.getFullYear();
+      const hour = date.getHours();
+      const minute = date.getMinutes();
       datetime.innerText =
         month +
         "/" +
         day +
         "/" +
         year +
-        " " +
-        "\n" +
+        " \n" +
         hour +
         ":" +
         minute +
@@ -116,15 +106,7 @@ const goToHistory = async (button) => {
     });
   } catch (e) {
     console.log(e.message);
-    const alertBox = document.getElementById("alertBox");
-    alertBox.innerHTML = e.message;
-    alertBox.style.backgroundColor = "#ccc";
-    alertBox.style.color = "#1a1a1a";
-    alertBox.style.display = "block";
-    setTimeout(() => {
-      alertBox.innerHTML = "";
-      alertBox.style.display = "none";
-    }, 5000);
+    displayAlert(e.message);
   }
 };
 
@@ -228,23 +210,9 @@ const clearHistory = async () => {
   ) {
     return;
   }
-  const response = fetch("/clearHistory", {
-    //await
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("token"),
-    },
-  });
+  const response = clearHistoryService();
   //   const data = await response.json()
   const historyBody = document.getElementById("history-body");
   historyBody.innerHTML = "No history found";
-  const alertBox = document.getElementById("alertBox");
-  alertBox.style.backgroundColor = "#ccc";
-  alertBox.style.color = "#1a1a1a";
-  alertBox.style.display = "block";
-  alertBox.innerText = "History cleared";
-  setTimeout(() => {
-    alertBox.style.display = "none";
-  }, 3000);
+  displayAlert(response.message);
 };
