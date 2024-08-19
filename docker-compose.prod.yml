@@ -1,0 +1,9 @@
+services:
+  app:
+    image: ghcr.io/yousefbilal/banner-sched-finder:sha256-c5c12bafa001912672de56964e717431cdabd2f4916981a89b1552aa671bd82e.sig
+    environment:
+      - MONGODB_URI=${MONGODB_URI}
+networks:
+  default:
+    external: true
+    name: nginx-network

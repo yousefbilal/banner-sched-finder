@@ -5,11 +5,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - 8080:8080
-    env_file:
-      - .env
+    environment:
+      - MONGODB_URI=${MONGODB_URI}
     volumes:
       - .:/app
-networks:
-  default:
-    external: true
-    name: nginx-network
