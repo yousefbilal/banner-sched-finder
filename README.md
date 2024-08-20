@@ -16,4 +16,4 @@ Run `app.py`<br>
 
 ### Credits
 
-Developed by [_yousefbilal_](https://github.com/yousefbilal) & [_akvn_](https://github.com/akvnn) 
+Developed by [_yousefbilal_](https://github.com/yousefbilal) & [_akvn_](https://github.com/akvnn)
