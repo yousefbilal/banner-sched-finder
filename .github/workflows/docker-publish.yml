@@ -74,3 +74,7 @@ jobs:
         # This step uses the identity token to provision an ephemeral certificate
         # against the sigstore community Fulcio instance.
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+
+      - name: Trigger webhook
+        run: |
+          curl -X POST http://aus-scheduler.com:9000/hooks/redeploy-webhook -H "Authorization: Bearer ${{ secrets.WEBHOOK_SECRET }}"
