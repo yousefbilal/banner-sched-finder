@@ -7,7 +7,7 @@ This website was made to make it easier for the American University of Sharjah s
 ### Prerequisites
 
 Clone the repository<br>
-Install required packages using
+Install required packages using 
 ```powershell
 pip install -r requirements.txt
 ```    
