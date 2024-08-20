@@ -18,3 +18,35 @@ const createElement = (elementType, attributes, innerText = "") => {
   if (innerText) element.innerText = innerText;
   return element;
 };
+
+const setKeyHoldEvent = (key, initDelay, minDelay, decrement, eventHandler) => {
+  let valid = false;
+  let delay = initDelay;
+  let timer;
+  window.addEventListener("keydown", (e) => {
+    if (e.key == key) {
+      if (e.repeat && valid) {
+        eventHandler();
+        valid = false;
+        setTimeout(() => {
+          valid = true;
+          if (delay > minDelay) delay -= decrement;
+        }, delay);
+      } else if (!e.repeat) {
+        eventHandler();
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          valid = true;
+        }, delay);
+      }
+    }
+  });
+
+  window.addEventListener("keyup", (e) => {
+    if (e.key == key) {
+      clearTimeout(timer);
+      valid = false;
+      delay = initDelay;
+    }
+  });
+};

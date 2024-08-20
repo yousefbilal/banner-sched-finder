@@ -1,6 +1,6 @@
 let subjects;
 let courses;
-let schedules;
+let schedules = [];
 const timings = [
   "None",
   "08:00",
@@ -1057,7 +1057,7 @@ const positionScheduleEntry = (element, heightOfOneHourTimeSlot) => {
 };
 
 const goPreviousSchedule = () => {
-  //current schedule
+  if (schedules.length === 0) return;
   const scheduleTotalSpan = document.getElementById("schedule-total-span");
   const currentSchedule = Number(scheduleTotalSpan.innerHTML.split(" ")[0]);
   let previousSchedule = currentSchedule - 2;
@@ -1068,19 +1068,19 @@ const goPreviousSchedule = () => {
 };
 
 const goNextSchedule = () => {
-  //current schedule
+  if (schedules.length === 0) return;
   const scheduleTotalSpan = document.getElementById("schedule-total-span");
   const currentSchedule = Number(scheduleTotalSpan.innerHTML.split(" ")[0]);
   let nextSchedule = currentSchedule; //zero indexing
   if (currentSchedule >= schedules.length) {
     nextSchedule = 0;
   }
-  //remove current schedule
   renderSchedule(nextSchedule);
 };
 
 const backToForm = () => {
   if (controller) controller.abort();
+  schedules = [];
   const schedulediv = document.getElementById("schedule-body");
   schedulediv.innerHTML = "";
   const formContainer = document.getElementById("form-container");
@@ -1169,3 +1169,6 @@ subjectsElements.forEach((element) => {
     calculateCredits();
   });
 });
+
+setKeyHoldEvent("ArrowRight", 500, 50, 50, goNextSchedule);
+setKeyHoldEvent("ArrowLeft", 500, 50, 50, goPreviousSchedule);
