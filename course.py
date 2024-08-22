@@ -64,10 +64,15 @@ class Lecture(Course):
         labs_list = lab_dict[self.course_code]
         for lab in labs_list:
             if (
-                not self.is_required_with_section and not lab.is_required_with_section
-            ) or (
-                self.is_required_with_section
-                and lab.section.lstrip("0") in self.required_sections
+                (not self.is_required_with_section and not lab.is_required_with_section)
+                or (
+                    self.is_required_with_section
+                    and lab.section.lstrip("0") in self.required_sections
+                )
+                or (
+                    lab.is_required_with_section
+                    and self.section.lstrip("0") in lab.required_sections
+                )
             ):
                 available_labs.append(lab)
         return available_labs
