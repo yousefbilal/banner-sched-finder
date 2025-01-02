@@ -3,6 +3,7 @@ services:
     image: ghcr.io/yousefbilal/banner-sched-finder:main
     environment:
       - MONGODB_URI=${MONGODB_URI}
+    restart: unless-stopped
 networks:
   default:
     external: true
